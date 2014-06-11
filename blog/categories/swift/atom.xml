@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Swift | Hacker School Blog]]></title>
+  <link href="http://lauraskelton.github.io/blog/categories/swift/atom.xml" rel="self"/>
+  <link href="http://lauraskelton.github.io/"/>
+  <updated>2014-06-11T14:32:02-04:00</updated>
+  <id>http://lauraskelton.github.io/</id>
+  <author>
+    <name><![CDATA[Laura Skelton]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Hacker School Day 1]]></title>
+    <link href="http://lauraskelton.github.io/blog/2014/06/11/hacker-school-day-1/"/>
+    <updated>2014-06-11T14:25:15-04:00</updated>
+    <id>http://lauraskelton.github.io/blog/2014/06/11/hacker-school-day-1</id>
+    <content type="html"><![CDATA[<p>Things got much more tricky when I started trying to implement SimpleShare, my Bluetooth LE (CoreBluetooth) mesh network sharing app, in Swift, using the new Multipeer Connectivity framework instead of Bluetooth. There were much more complicated things I needed to do in Obj-C, and the app couldn&rsquo;t be &ldquo;translated&rdquo; in the same way as the simpler apps just by changing to the new syntax, since Swift actually works differently in key ways than Obj-C does.</p>
+
+<p>Things I learned about Swift:</p>
+
+<ul>
+<li>Optional variables: You can no longer have variables that aren&rsquo;t set or that are nil like you could in Obj-C. If you don&rsquo;t know what a variable is when the class is created, you have to make it an optional variable by putting a ? after the type declaration.</li>
+</ul>
+
+
+<p>```objc
+class MyClass {</p>
+
+<pre><code>var mystring: String?
+</code></pre>
+
+<p>}
+```
+* Global variables: It seems that any variables you set within a class but outside of a function act like public parameters for that class and are accessible to read or set from other classes
+* Calling functions from another class: You call a function from another class by writing the class name followed by a dot then the function name with its arguments, eg:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">MyClass</span><span class="p">.</span><span class="n">someFunction</span><span class="p">(</span><span class="n">arg1</span><span class="p">,</span><span class="n">arg2</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><code>objc
+MyClass.someFunction(arg1,arg2)
+</code>
+* Init functions are a special case: Instead of calling
+<code>objc
+MyClass.init(arg1,arg2)
+</code>
+like you would for any other function, just calling
+<code>objc
+MyClass(arg1,arg2)
+</code>
+is how you can init an instance of a class.
+* Convenience init: If your init function requires arguments to create a class instance, you can create a second init method for convenience that creates an instance with default values.
+```objc
+class SimpleMesh {</p>
+
+<pre><code>init(simpleMeshAppID: String) {
+    self.simpleMeshAppID = simpleMeshAppID
+    self.myItemIDs = ["first", "second", "third", "fourth", "fifth"]
+}
+convenience init() {
+    self.init(simpleMeshAppID: "[NO ID]")
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>In the afternoon, I made a plan with Jorge and Kyle to work on a mesh networking inspector to figure out the limitations of Multipeer Connectivity so that we can build a stable mesh networking messaging app. We decided to move forward on the project in Objective-C while continuing to learn Swift on the side so we can finish more quickly.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Hacker School Day 0]]></title>
+    <link href="http://lauraskelton.github.io/blog/2014/06/11/hacker-school-day-0/"/>
+    <updated>2014-06-11T13:37:53-04:00</updated>
+    <id>http://lauraskelton.github.io/blog/2014/06/11/hacker-school-day-0</id>
+    <content type="html"><![CDATA[<p>First day of Hacker School! It was amazing to meet so many people who shared interests and had new ideas about programming.</p>
+
+<p>I had planned to get to work on Machine Learning and getting comfortable with neural networks, but since the announcement of the new Swift language for iOS, there was a lot of interest in diving into learning that.</p>
+
+<p>I learned about algebraic data structures from some other Hacker Schoolers over lunch, which was cool. I could see the recursive tree structure being a useful way to set up a decision tree in another language and will have to learn more about whether the data structures available in some other programming languages would make the machine learning algorithms possible to be coded in a more obvious, intuitive way than they are generally set up in Python.</p>
+
+<p>I got together with a group in the afternoon to learn about Swift and the new Playgrounds Apple introduced in XCode 6. Playgrounds are cool because you can copy a snippet of code you&rsquo;re working on and see how the variables are being set and the values are changing over time as it runs through a loop.</p>
+
+<p>I paired with Denise on getting some Swift code working. We figured out the brand-new syntax for hooking up variables to Storyboard outlets so we could generate a simple app with a button and some labels that changed text. We learned that every variable in Swift is public, as opposed to Obj-C which lets you set only certain parameters to be accessible from other classes. Once we got things going, the syntax seems much simpler and faster than all of the boilerplate code you have to write to do the same things in Obj-C.</p>
+
+<p>Later in the afternoon I worked on copying some simple demo apps I&rsquo;d written previously in Obj-C into Swift so I could get more comfortable with the new syntax. Translating the very basic apps was relatively straightforward.</p>
+
+<p>Coolest thing from Day 0:
+Emoji as variable and function names in Swift! Cutest language ever?
+<img src="https://pbs.twimg.com/media/BpuK07CCAAAzcDX.jpg" title="Swift Emoji" alt="swift emoji" /></p>
+]]></content>
+  </entry>
+  
+</feed>
