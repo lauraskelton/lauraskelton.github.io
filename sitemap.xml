@@ -2,30 +2,42 @@
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
         <loc>http://lauraskelton.github.io/blog/2014/06/10/hacker-school-day-0/</loc>
-        <lastmod>2014-06-12T20:50:46-04:00</lastmod>
+        <lastmod>2014-06-12T21:30:39-04:00</lastmod>
     </url>
     <url>
         <loc>http://lauraskelton.github.io/blog/2014/06/11/hacker-school-day-1/</loc>
-        <lastmod>2014-06-12T20:53:46-04:00</lastmod>
+        <lastmod>2014-06-12T21:30:39-04:00</lastmod>
     </url>
     <url>
         <loc>http://lauraskelton.github.io/blog/2014/06/11/hacker-school-day-2/</loc>
-        <lastmod>2014-06-12T21:24:43-04:00</lastmod>
+        <lastmod>2014-06-12T21:30:39-04:00</lastmod>
     </url>
     <url>
         <loc>http://lauraskelton.github.io/blog/2014/06/12/hacker-school-day-3/</loc>
-        <lastmod>2014-06-12T21:24:04-04:00</lastmod>
+        <lastmod>2014-06-12T21:30:39-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://lauraskelton.github.io/archives/</loc>
+        <lastmod>2014-06-12T21:30:39-04:00</lastmod>
     </url>
     <url>
         <loc>http://lauraskelton.github.io/blog/archives/</loc>
-        <lastmod>2014-06-12T21:24:43-04:00</lastmod>
+        <lastmod>2014-06-12T21:30:39-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://lauraskelton.github.io/categories/</loc>
+        <lastmod>2014-06-12T21:30:39-04:00</lastmod>
     </url>
     <url>
         <loc>http://lauraskelton.github.io/</loc>
-        <lastmod>2014-06-12T21:24:43-04:00</lastmod>
+        <lastmod>2014-06-12T21:30:39-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://lauraskelton.github.io/posts/</loc>
+        <lastmod>2014-06-12T21:30:39-04:00</lastmod>
     </url>
     <url>
         <loc>http://lauraskelton.github.io/robots.txt</loc>
-        <lastmod>2014-06-10T19:59:27-04:00</lastmod>
+        <lastmod>2014-06-12T21:30:39-04:00</lastmod>
     </url>
 </urlset>
