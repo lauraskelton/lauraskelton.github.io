@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Mesh-Networking | Hacker School Daily Log]]></title>
   <link href="http://lauraskelton.github.io/blog/categories/mesh-networking/atom.xml" rel="self"/>
   <link href="http://lauraskelton.github.io/"/>
-  <updated>2014-06-12T23:42:23-04:00</updated>
+  <updated>2014-06-12T23:48:16-04:00</updated>
   <id>http://lauraskelton.github.io/</id>
   <author>
     <name><![CDATA[Laura Skelton]]></name>
@@ -128,7 +128,7 @@ uint32_t Wheel(byte WheelPos) {
 <p>Things I learned about Swift:</p>
 
 <ul>
-<li>Optional variables: You can no longer have variables that aren&rsquo;t set or that are nil like you could in Obj-C. If you don&rsquo;t know what a variable is when the class is created, you have to make it an optional variable by putting a ? after the type declaration.</li>
+<li>Optional variables: You can no longer have variables that aren&rsquo;t set or that are nil like you could in Obj-C. If you don&rsquo;t know what a variable is when the class is created, you have to make it an optional variable by putting a <code>?</code> after the type declaration.</li>
 </ul>
 
 
