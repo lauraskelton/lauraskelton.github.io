@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Bluetooth-LE | Hacker School Daily Log]]></title>
   <link href="http://lauraskelton.github.io/blog/categories/bluetooth-le/atom.xml" rel="self"/>
   <link href="http://lauraskelton.github.io/"/>
-  <updated>2014-06-12T22:57:35-04:00</updated>
+  <updated>2014-06-12T23:42:23-04:00</updated>
   <id>http://lauraskelton.github.io/</id>
   <author>
     <name><![CDATA[Laura Skelton]]></name>
@@ -83,9 +83,9 @@ uint32_t Wheel(byte WheelPos) {
   
   <entry>
     <title type="html"><![CDATA[Hacker School Day 1]]></title>
-    <link href="http://lauraskelton.github.io/blog/2014/06/11/hacker-school-day-1/"/>
-    <updated>2014-06-11T14:25:15-04:00</updated>
-    <id>http://lauraskelton.github.io/blog/2014/06/11/hacker-school-day-1</id>
+    <link href="http://lauraskelton.github.io/blog/2014/06/10/hacker-school-day-1/"/>
+    <updated>2014-06-10T14:25:15-04:00</updated>
+    <id>http://lauraskelton.github.io/blog/2014/06/10/hacker-school-day-1</id>
     <content type="html"><![CDATA[<p>Things got much more tricky when I started trying to implement SimpleShare, my Bluetooth LE (CoreBluetooth) mesh network sharing app, in Swift, using the new Multipeer Connectivity framework instead of Bluetooth. There were much more complicated things I needed to do in Obj-C, and the app couldn&rsquo;t be &ldquo;translated&rdquo; in the same way as the simpler apps just by changing to the new syntax, since Swift actually works differently in key ways than Obj-C does.</p>
 
 <p>Things I learned about Swift:</p>
