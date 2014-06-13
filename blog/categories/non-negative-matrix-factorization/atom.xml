@@ -1,59 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
 
-<!doctype html>
-<!-- START OF _layouts/default.html -->
-<html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" >
-		<meta content="width=device-width,initial-scale=1" name="viewport">
-		<meta content="" name="description">
-		<meta content="Hacker School Blog" name="author">
-		
-		<title>Hacker School Day 3 &mdash; Hacker School Blog</title>
-		
-		<!-- Styles -->
-		<link href="/stylesheets/main.css" rel="stylesheet">
-		
-		<!-- Google webfonts -->
-		<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Tangerine">
-		<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Cousine">
-		
-		<!-- jQuery and plugins -->
-		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-		<script src="/js/jquery.zclip.min.js"></script>
-		
-		<!-- Syntax highlighter -->
-		<link href="/stylesheets/prettify-hemisu.css" type="text/css" rel="stylesheet" />
-		<script type="text/javascript" src="/js/prettify.js"></script>
-		
-		<!--<link href="http://feeds.feedburner.com/turkeltaub" rel="alternate" title="Hacker School Blog" type="application/rss+xml" />-->
-		
-	</head>
-	<body onload="prettyPrint()">
-	
-		<div class="wrap">
-	
-			<header>
-				<div class="title">Hacker School Blog</div>
-				
-				<div class="navi">
-					<ul>
-						<li><a href="/">Blog</a></li>
-						<li><a href="/blog/archives">Archives</a></li>
-					</ul>
-				</div> <!-- // .navi -->
-			</header>
-		
-				<!-- START OF _layouts/post.html -->
+  <title><![CDATA[Category: Non-Negative-Matrix-Factorization | Hacker School Blog]]></title>
+  <link href="http://lauraskelton.github.io/blog/categories/non-negative-matrix-factorization/atom.xml" rel="self"/>
+  <link href="http://lauraskelton.github.io/"/>
+  <updated>2014-06-12T21:24:04-04:00</updated>
+  <id>http://lauraskelton.github.io/</id>
+  <author>
+    <name><![CDATA[Laura Skelton]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
 
-<!-- START OF _includes/article.html -->
-<article>
-	<header>
-		<h1><a href="/blog/2014/06/12/hacker-school-day-3/">Hacker School Day 3</a></h1>
-		<time>12 June 2014</time>
-	</header>
-		<div class="content">
-			<p>I started working on fixing some of the bugginess of the Multipeer Connectivity framework in ObjC in the morning. I tried to hack it so that Multipeer would continue working when the app was in background mode (not currently possible due to Apple&rsquo;s imposed limitations), so that we could have a count of how many people were connected to the network.</p>
+  
+  <entry>
+    <title type="html"><![CDATA[Hacker School Day 3]]></title>
+    <link href="http://lauraskelton.github.io/blog/2014/06/12/hacker-school-day-3/"/>
+    <updated>2014-06-12T20:55:09-04:00</updated>
+    <id>http://lauraskelton.github.io/blog/2014/06/12/hacker-school-day-3</id>
+    <content type="html"><![CDATA[<p>I started working on fixing some of the bugginess of the Multipeer Connectivity framework in ObjC in the morning. I tried to hack it so that Multipeer would continue working when the app was in background mode (not currently possible due to Apple&rsquo;s imposed limitations), so that we could have a count of how many people were connected to the network.</p>
 
 <p>I also spent some time working on a problem that seems to be coming from issues with lower-level Bluetooth LE frameworks, where there are errors when trying to reconnect to the same peer multiple times after disconnecting. The issues are linked, because there can be problems rejoining the network after the backgrounded app is opened again and tries to reconnect. I suspect it has to do with sessions not fully closing from the first session when the device attempts to start a new session.</p>
 
@@ -70,73 +35,7 @@
 <p>I have one more chapter in the book I&rsquo;ve been working through that I&rsquo;m excited to get through tomorrow, on Genetic Programming, which is all about writing programs that can actually modify themselves and evolve the code itself. Super cool!</p>
 
 <p>I&rsquo;m also looking forward to getting started on learning about Neural Networks more in-depth. I&rsquo;d really like to understand on a deep conceptual level what neural nets are really doing, and this online book looks like a great way to get started- <a href="http://neuralnetworksanddeeplearning.com">http://neuralnetworksanddeeplearning.com</a></p>
-
-			
-			
-		</div>
-	<footer>
-		
-
-
-		
-
-
-
+]]></content>
+  </entry>
   
-		
-			Tagged under
-		
-    <a class='category' href='/blog/categories/machine-learning/'>Machine-Learning</a>, <a class='category' href='/blog/categories/mesh-networking/'>Mesh-Networking</a>, <a class='category' href='/blog/categories/multipeer-connectivity/'>Multipeer-Connectivity</a>, <a class='category' href='/blog/categories/neural-networks/'>Neural-Networks</a>, <a class='category' href='/blog/categories/non-negative-matrix-factorization/'>Non-Negative-Matrix-Factorization</a>, <a class='category' href='/blog/categories/objective-c/'>Objective-C</a>
-	
-
-
-	
-	
-	</footer>
-	
-</article>
-<!-- END OF _includes/article.html -->
-
-
-<!-- END OF _/layouts/post.html -->
-
-		
-			<footer>
-				Copyright &copy; 2014
-
-	Laura Skelton
-
-
-			</footer>
-			
-		</div> <!-- // .wrap -->
-	</body>
-	<script>
-		$(document).ready(function() {
-			// Make images center
-			$('p:has(img)').css('text-align', 'center');
-			
-			// Add the image's title attribute as a caption
-			$('p:has(img)').append(function () {
-				return '<div class="caption">' + ($('img', this).attr('title') || "") + '</div>';
-			});
-			
-			// Prettify code
-			$('code').addClass('prettyprint');
-			$('pre code').addClass('linenums');
-			
-			// Copy to clipboard with button
-			$('pre:has(code)').prepend(function(){
-				return '<div class="clip-btn">copy to clipboard</div>';
-			});
-			$('.clip-btn').zclip({
-				path:'/js/ZeroClipboard.swf',
-				copy: $(this).next('code').text(),
-				afterCopy: function(){
-					$(this).replaceWith('<div class="clip-btn">copied!');
-					}
-			});
-		});
-	</script>
-</html>
-<!-- END OF _layouts/default.html -->
+</feed>

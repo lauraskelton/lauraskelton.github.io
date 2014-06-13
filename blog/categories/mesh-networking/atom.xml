@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Mesh-Networking | Hacker School Blog]]></title>
   <link href="http://lauraskelton.github.io/blog/categories/mesh-networking/atom.xml" rel="self"/>
   <link href="http://lauraskelton.github.io/"/>
-  <updated>2014-06-12T21:22:38-04:00</updated>
+  <updated>2014-06-12T21:24:04-04:00</updated>
   <id>http://lauraskelton.github.io/</id>
   <author>
     <name><![CDATA[Laura Skelton]]></name>
@@ -12,6 +12,31 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Hacker School Day 3]]></title>
+    <link href="http://lauraskelton.github.io/blog/2014/06/12/hacker-school-day-3/"/>
+    <updated>2014-06-12T20:55:09-04:00</updated>
+    <id>http://lauraskelton.github.io/blog/2014/06/12/hacker-school-day-3</id>
+    <content type="html"><![CDATA[<p>I started working on fixing some of the bugginess of the Multipeer Connectivity framework in ObjC in the morning. I tried to hack it so that Multipeer would continue working when the app was in background mode (not currently possible due to Apple&rsquo;s imposed limitations), so that we could have a count of how many people were connected to the network.</p>
+
+<p>I also spent some time working on a problem that seems to be coming from issues with lower-level Bluetooth LE frameworks, where there are errors when trying to reconnect to the same peer multiple times after disconnecting. The issues are linked, because there can be problems rejoining the network after the backgrounded app is opened again and tries to reconnect. I suspect it has to do with sessions not fully closing from the first session when the device attempts to start a new session.</p>
+
+<p>I got a much deeper understanding of the capabilities of Multipeer while I was walking through the code handling the sessions and peers within the network, but in the end I concluded that Multipeer is still pretty buggy. I&rsquo;m reconsidering starting with our own implementation of a mesh network in Bluetooth LE instead of using Multipeer, since it seems like Multipeer doesn&rsquo;t really allow us to avoid some of the tricky issues we were handling in CoreBluetooth, and possibly the higher-level framework gives us less power to debug and work around some of the problems. CoreBluetooth also possibly avoids some of the issues with Multipeer not working in background mode, since we can set a Bluetooth LE message to broadcast in the background, and detecting a nearby iBeacon should be able to &ldquo;wake up&rdquo; an app even if it has been closed by the user.</p>
+
+<p>I switched tasks to continue working through Programming Collective Intelligence, an amazing book on Machine Learning algorithms. It was wonderful to get into working on Machine Learning again, since it&rsquo;s what I had originally intended to focus on at Hacker School before I was swept up with Swift.</p>
+
+<p>I worked through the chapter on Non-negative Matrix Factorization today, which was actually way more awesome than it sounds. You can scan through a bunch of articles and get word counts, just like in an earlier chapter on document classification using a naive Bayesian classifier. The Bayesian classifier used a weighted probability based on the word counts to predict which category a document belonged to out of a set of predetermined category options, and based on initial training data.</p>
+
+<p>Non-negative Matrix Factorization is WAY cooler! It starts with the same word-count information for each article set up in a matrix, then factors the matrix into two matrices that, multiplied together, would be approximately equal to the original matrix (articles vs. words). The two factor matrices give you some really neat information about the data set, and they actually extract what the features (categories/themes) are automatically given a set number of desired features. The features can be described by which words are most likely to appear in them. So the first factor matrix has a column for each word and a row for each feature/theme/category, with each number in the matrix being the likelihood that a particular word belongs to that theme, and the second factor matrix has a row for each article and a column for each feature, and the numbers in the matrix correspond to the weight of each theme in that article.</p>
+
+<p>It&rsquo;s very cool to see how some clever math and optimization can actually allow the algorithm to come up with its own categories/classes of articles (or anything else you&rsquo;re studying), without having any training data or input from the user about what is expected.</p>
+
+<p>I have one more chapter in the book I&rsquo;ve been working through that I&rsquo;m excited to get through tomorrow, on Genetic Programming, which is all about writing programs that can actually modify themselves and evolve the code itself. Super cool!</p>
+
+<p>I&rsquo;m also looking forward to getting started on learning about Neural Networks more in-depth. I&rsquo;d really like to understand on a deep conceptual level what neural nets are really doing, and this online book looks like a great way to get started- <a href="http://neuralnetworksanddeeplearning.com">http://neuralnetworksanddeeplearning.com</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Hacker School Day 2]]></title>
