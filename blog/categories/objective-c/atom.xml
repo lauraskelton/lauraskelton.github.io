@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Objective-C | Hacker School Blog]]></title>
   <link href="http://lauraskelton.github.io/blog/categories/objective-c/atom.xml" rel="self"/>
   <link href="http://lauraskelton.github.io/"/>
-  <updated>2014-06-12T21:24:04-04:00</updated>
+  <updated>2014-06-12T21:24:43-04:00</updated>
   <id>http://lauraskelton.github.io/</id>
   <author>
     <name><![CDATA[Laura Skelton]]></name>
@@ -35,6 +35,23 @@
 <p>I have one more chapter in the book I&rsquo;ve been working through that I&rsquo;m excited to get through tomorrow, on Genetic Programming, which is all about writing programs that can actually modify themselves and evolve the code itself. Super cool!</p>
 
 <p>I&rsquo;m also looking forward to getting started on learning about Neural Networks more in-depth. I&rsquo;d really like to understand on a deep conceptual level what neural nets are really doing, and this online book looks like a great way to get started- <a href="http://neuralnetworksanddeeplearning.com">http://neuralnetworksanddeeplearning.com</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Hacker School Day 2]]></title>
+    <link href="http://lauraskelton.github.io/blog/2014/06/11/hacker-school-day-2/"/>
+    <updated>2014-06-11T20:44:53-04:00</updated>
+    <id>http://lauraskelton.github.io/blog/2014/06/11/hacker-school-day-2</id>
+    <content type="html"><![CDATA[<p>I had such a fun day! In the morning I learned how to use Arduino to control Neopixel RGB LED lights from Adafruit. It was so fast to get going with this, and the code was easy to tweak to change the patterns the lights would display.</p>
+
+<p>I&rsquo;m so excited to learn more about hardware and connecting apps to display patterns with the lights.</p>
+
+<p>I spent some time brainstorming about Mesh Networking with a group. We want to create our own implementation of ICMP (Internet Control Message Protocol) over Bluetooth LE, using iBeacons as a sort of push notification to alert nearby devices that messages are available, and broadcasting messages through the nodes of the network to get to the intended user.</p>
+
+<p>We&rsquo;re planning to link the mesh network up with a hardware project using the programmable RGB LED lights from Adafruit to represent the users of the network. I thought it would be cool to make a sort of giant firefly jar with light-dots flying around inside, with one dot representing each user-node of the mesh network. The ObjC iOS app would allow users to join the network and then set their dot&rsquo;s color, which would be reflected in the physical firefly jar.</p>
+
+<p>We found a source for an affordable Bluetooth LE adapter for the Arduino and mapped out a plan for how to design the network on the whiteboard. Excited to give it a go tomorrow!</p>
 ]]></content>
   </entry>
   
