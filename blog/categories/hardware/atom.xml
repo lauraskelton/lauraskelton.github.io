@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Hardware | Hacker School Blog]]></title>
+  <title><![CDATA[Category: Hardware | Hacker School Daily Log]]></title>
   <link href="http://lauraskelton.github.io/blog/categories/hardware/atom.xml" rel="self"/>
   <link href="http://lauraskelton.github.io/"/>
-  <updated>2014-06-12T21:30:54-04:00</updated>
+  <updated>2014-06-12T22:57:35-04:00</updated>
   <id>http://lauraskelton.github.io/</id>
   <author>
     <name><![CDATA[Laura Skelton]]></name>
@@ -19,6 +19,57 @@
     <updated>2014-06-11T20:44:53-04:00</updated>
     <id>http://lauraskelton.github.io/blog/2014/06/11/hacker-school-day-2</id>
     <content type="html"><![CDATA[<p>I had such a fun day! In the morning I learned how to use Arduino to control Neopixel RGB LED lights from Adafruit. It was so fast to get going with this, and the code was easy to tweak to change the patterns the lights would display.</p>
+
+<p><img class="center" src="/images/posts/adapixels.jpg" title="&lsquo;adafruit neopixels&rsquo; &lsquo;adafruit neopixels&rsquo;" ></p>
+
+<p>We wrote some code a little later that cycled through a rainbow with alternating pixels flashing opposite colors off and on.</p>
+
+<p>```java
+void rainbow(uint8_t wait) {
+  uint16_t i, j;</p>
+
+<p>  for(j=0; j&lt;256; j++) {</p>
+
+<pre><code>for(i=0; i&lt;strip.numPixels(); i++) {
+  if (i%2==0) {
+      if ((j/10) %2==0) {
+        strip.setPixelColor(i, Wheel((255-i-j) &amp; 255));
+      } else {
+        strip.setPixelColor(i,0,0,0);
+      }
+  } else {
+    if ((j/10) %2!=0) {
+         strip.setPixelColor(i, Wheel((i+j) &amp; 255));
+      } else {
+        strip.setPixelColor(i,0,0,0);
+      }
+  }
+}
+strip.show();
+delay(wait);
+</code></pre>
+
+<p>  }
+}
+```</p>
+
+<p><code>Wheel</code> is a neat little function in the Adafruit Neopixel code that converts a value from 0 to 255 to an RGB color value.</p>
+
+<p><code>java
+// Input a value 0 to 255 to get a color value.
+// The colours are a transition r - g - b - back to r.
+uint32_t Wheel(byte WheelPos) {
+  if(WheelPos &lt; 85) {
+   return strip.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
+  } else if(WheelPos &lt; 170) {
+   WheelPos -= 85;
+   return strip.Color(255 - WheelPos * 3, 0, WheelPos * 3);
+  } else {
+   WheelPos -= 170;
+   return strip.Color(0, WheelPos * 3, 255 - WheelPos * 3);
+  }
+}
+</code></p>
 
 <p>I&rsquo;m so excited to learn more about hardware and connecting apps to display patterns with the lights.</p>
 

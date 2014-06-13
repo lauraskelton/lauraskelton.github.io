@@ -3,194 +3,268 @@
 <!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
 <!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
-
 <head>
+  <meta charset="utf-8">
+  <title>Hacker School Daily Log</title>
+  <meta name="author" content="Laura Skelton">
 
+  
+  <meta name="description" content="I started working on fixing some of the bugginess of the Multipeer Connectivity framework in ObjC in the morning. I tried to hack it so that &hellip;">
+  
 
-<meta charset="utf-8">
-<meta http-equiv="cleartype" content="on">
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>A Tech Blog by Jake Zimmerman - Hacker School Blog</title>
-<meta name="author" content="Laura Skelton">
+  
+  <link rel="canonical" href="http://lauraskelton.github.io">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Hacker School Daily Log" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Poller+One' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Germania+One' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fontdiner+Swanky' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Cardo' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Sorts+Mill+Goudy' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=EB+Garamond' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Della+Respira' rel='stylesheet' type='text/css'>
 
-
-
-
-<meta name="description" content="A tech blog by Jake Zimmerman. Updates occaisonally with tips, tricks, and hacks that have helped me out.">
-
-<meta name="keywords" content="Jekyll theme themes responsive blog modern tech hacks ">
-
-
-<!-- http://t.co/dKP3o1e -->
-<meta name="HandheldFriendly" content="True">
-<meta name="MobileOptimized" content="320">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<!-- Twitter Cards -->
-
-
-<!-- Open Graph -->
-<meta property="og:local" content="en_US">
-<meta property="og:type" content="article">
-<meta property="og:url" content="http://lauraskelton.github.io">
-<meta property="og:title" content="A Tech Blog by Jake Zimmerman">
-<meta property="og:description" content="A tech blog by Jake Zimmerman. Updates occaisonally with tips, tricks, and hacks that have helped me out.">
-
-  <meta property="og:image" content="threaded-blue-on-black-cropped.png">
-
-<meta property="og:site_name" content="Hacker School Blog">
-
-<link rel="canonical" href="http://lauraskelton.github.io">
-<link href="/favicon.png" rel="icon">
-<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-<link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-<link href="/atom.xml" rel="alternate" title="Hacker School Blog" type="application/atom+xml">
-
-<script src="/javascripts/vendor/modernizr-2.6.2.custom.min.js"></script>
-
-
-
-<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-
+  
 
 </head>
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<logo>
 
-<body id="post-index" class="feature">
-  <!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
-  <nav id="dl-menu" class="dl-menuwrapper" role="navigation">
-	<button class="dl-trigger">Open Menu</button>
-	<ul class="dl-menu">
-		<li><a href="/">Home</a></li>
-		<li>
-			<a href="#">About</a>
-			<ul class="dl-submenu">
-				<li>
-					<img src="" alt="Laura Skelton photo" class="author-photo">
-					<h4>Laura Skelton</h4>
-					<p></p>
-				</li>
-				<li><a href="//www.zimmerman.io">Learn More</a></li>
-				
-				
-				
-				
-			</ul><!-- /.dl-submenu -->
-		</li>
-		<li>
-			<a href="#">Posts</a>
-			<ul class="dl-submenu">
-				<li><a href="/posts/">All Posts</a></li>
-				<li><a href="/categories/">All Categories</a></li>
-			</ul>
-		</li>
-		
-	</ul><!-- /.dl-menu -->
-</nav><!-- /.dl-menuwrapper -->
+<img src="/logo.png" alt="Website Logo. Upload to /source/logo.png ; disable in /source/_includes/logo.html" height="32px" width="32px">
+</logo>
 
 
-  <div class="entry-header">
-    
-    
-      <div class="entry-image">
-        <img src="threaded-blue-on-black-cropped.png" alt="A Tech Blog by Jake Zimmerman">
-      </div><!-- /.entry-image -->
-    
-    <div class="header-title">
-      <div class="header-title-wrap">
-        <h1>Hacker School Blog</h1>
-        <h2>Tracking my hacker school time</h2>
-      </div><!-- /.header-title-wrap -->
-    </div><!-- /.header-title -->
-  </div><!-- /.entry-header -->
 
-  <div id="main" role="main">
-    
-
-<article class="hentry">
+<body >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Hacker School Daily Log</a></h1>
   
-
-
-
-<header>
-  <div class="entry-meta">
-    <span class="entry-date date published updated">
-      <time datetime="2014-06-12T20:55:09-04:00">
-        <a href="/blog/2014/06/12/hacker-school-day-3/">June 12, 2014</a>
-      </time>
-    </span>
-    <span class="author vcard">
-      <span class="fn">
-        <a href="" title="About Laura Skelton">Laura Skelton</a>
-      </span>
-    </span>
-    
-  </div><!-- /.entry-meta -->
+    <h2>Laura Skelton | Summer 2014 Batch</h2>
   
-    <h1 class="entry-title">
-      <a href="/blog/2014/06/12/hacker-school-day-3/" rel="bookmark" title="Hacker School Day 3" itemprop="url">Hacker School Day 3</a>
-    </h1>
-  
+</hgroup>
+
 </header>
+  <nav role="navigation"><ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
 
-<div class="entry-content">
-  <p>I started working on fixing some of the bugginess of the Multipeer Connectivity framework in ObjC in the morning. I tried to hack it so that Multipeer would continue working when the app was in background mode (not currently possible due to Apple&rsquo;s imposed limitations), so that we could have a count of how many people were connected to the network.</p>
+<br>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:lauraskelton.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<!--
+<ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+-->
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/06/12/hacker-school-day-3/">Hacker School Day 3</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-12T20:55:09-04:00" pubdate data-updated="true">Jun 12<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I started working on fixing some of the bugginess of the Multipeer Connectivity framework in ObjC in the morning. I tried to hack it so that Multipeer would continue working when the app was in background mode (not currently possible due to Apple&rsquo;s imposed limitations), so that we could have a count of how many people were connected to the network.</p>
 
 <p>I also spent some time working on a problem that seems to be coming from issues with lower-level Bluetooth LE frameworks, where there are errors when trying to reconnect to the same peer multiple times after disconnecting. The issues are linked, because there can be problems rejoining the network after the backgrounded app is opened again and tries to reconnect. I suspect it has to do with sessions not fully closing from the first session when the device attempts to start a new session.</p>
 
-<p>I got a much deeper understanding of the capabilities of Multipeer while I was walking through the code handling the sessions and peers within the network, but in the end I concluded that Multipeer is still pretty buggy. I&rsquo;m reconsidering starting with our own implementation of a mesh network in Bluetooth LE instead of using Multipeer, since it seems like Multipeer doesn&rsquo;t really allow us to avoid some of the tricky issues we were handling in CoreBluetooth, and possibly the higher-level framework gives us less power to debug and work around some of the problems. CoreBluetooth also possibly avoids some of the issues with Multipeer not working in background mode, since we can set a Bluetooth LE message to broadcast in the background, and detecting a nearby iBeacon should be able to &ldquo;wake up&rdquo; an app even if it has been closed by the user.</p>
+<p>I got a much deeper understanding of the capabilities of Multipeer while I was walking through the code handling the sessions and peers within the network, but in the end I concluded that Multipeer is still pretty buggy. I&rsquo;m reconsidering starting with our own implementation of a mesh network in Bluetooth LE instead of using Multipeer, since it seems like Multipeer doesn&rsquo;t really allow us to avoid some of the tricky issues we were handling in CoreBluetooth, and possibly the higher-level framework gives us less power to debug and work around some of the problems. CoreBluetooth also possibly avoids some of the issues with Multipeer not working in background mode, since we can set a Bluetooth LE message to broadcast in the background, and detecting a nearby iBeacon should be able to &ldquo;wake up&rdquo; an app even if it has been closed by the user. Plus I&rsquo;ve already played around with CoreBluetooth with my <a href="https://github.com/lauraskelton/simple-share">SimpleShare</a> Bluetooth LE Local Sharing project.</p>
 
-<p>I switched tasks to continue working through Programming Collective Intelligence, an amazing book on Machine Learning algorithms. It was wonderful to get into working on Machine Learning again, since it&rsquo;s what I had originally intended to focus on at Hacker School before I was swept up with Swift.</p>
+<p>I switched tasks to continue working through <a href="http://shop.oreilly.com/product/9780596529321.do">Programming Collective Intelligence</a>, an amazing book on Machine Learning algorithms. It was wonderful to get into working on Machine Learning again, since it&rsquo;s what I had originally intended to focus on at Hacker School before I was swept up with Swift.</p>
 
-<p>I worked through the chapter on Non-negative Matrix Factorization today, which was actually way more awesome than it sounds. You can scan through a bunch of articles and get word counts, just like in an earlier chapter on document classification using a naive Bayesian classifier. The Bayesian classifier used a weighted probability based on the word counts to predict which category a document belonged to out of a set of predetermined category options, and based on initial training data.</p>
+<p><img class="center" src="/images/posts/pci.jpg" title="programming collective intelligence" alt="programming collective intelligence"></p>
 
-<p>Non-negative Matrix Factorization is WAY cooler! It starts with the same word-count information for each article set up in a matrix, then factors the matrix into two matrices that, multiplied together, would be approximately equal to the original matrix (articles vs. words). The two factor matrices give you some really neat information about the data set, and they actually extract what the features (categories/themes) are automatically given a set number of desired features. The features can be described by which words are most likely to appear in them. So the first factor matrix has a column for each word and a row for each feature/theme/category, with each number in the matrix being the likelihood that a particular word belongs to that theme, and the second factor matrix has a row for each article and a column for each feature, and the numbers in the matrix correspond to the weight of each theme in that article.</p>
+<p>I worked through the chapter on Non-Negative Matrix Factorization today, which was actually way more awesome than it sounds. You can scan through a bunch of articles and get word counts, just like in an earlier chapter on document classification using a naive Bayesian classifier. The Bayesian classifier used a weighted probability based on the word counts to predict which category a document belonged to out of a set of predetermined category options, and based on initial training data.</p>
+
+<p>Non-Negative Matrix Factorization is WAY cooler! It starts with the same word-count information for each article set up in a matrix, then factors the matrix into two matrices that, multiplied together, would be approximately equal to the original matrix (articles vs. words). The two factor matrices give you some really neat information about the data set, and they actually extract what the features (categories/themes) are automatically given a set number of desired features. The features can be described by which words are most likely to appear in them. So the first factor matrix has a column for each word and a row for each feature/theme/category, with each number in the matrix being the likelihood that a particular word belongs to that theme, and the second factor matrix has a row for each article and a column for each feature, and the numbers in the matrix correspond to the weight of each theme in that article.</p>
+
+<p><img class="center" src="/images/posts/nmf1.jpg" title="'non-negative matrix factorization'" ></p>
+
+<p><img class="center" src="/images/posts/nmf2.jpg" title="'non-negative matrix factorization'" ></p>
+
+<p><img class="center" src="/images/posts/nmf.jpg" title="'non-negative matrix factorization'" ></p>
 
 <p>It&rsquo;s very cool to see how some clever math and optimization can actually allow the algorithm to come up with its own categories/classes of articles (or anything else you&rsquo;re studying), without having any training data or input from the user about what is expected.</p>
 
 <p>I have one more chapter in the book I&rsquo;ve been working through that I&rsquo;m excited to get through tomorrow, on Genetic Programming, which is all about writing programs that can actually modify themselves and evolve the code itself. Super cool!</p>
 
-<p>I&rsquo;m also looking forward to getting started on learning about Neural Networks more in-depth. I&rsquo;d really like to understand on a deep conceptual level what neural nets are really doing, and this online book looks like a great way to get started- <a href="http://neuralnetworksanddeeplearning.com">http://neuralnetworksanddeeplearning.com</a></p>
+<p>I&rsquo;m also looking forward to getting started on learning about Neural Networks more in-depth. I&rsquo;d really like to understand on a deep conceptual level what neural nets are really doing, and this online book looks like a great way to get started. <a href="http://neuralnetworksanddeeplearning.com">http://neuralnetworksanddeeplearning.com</a></p>
 
+<p>I ended the day by doing a short presentation about a beer clustering project I did a couple of months ago in Python. My beer recommendations iOS app generated over 200,000 beer ratings, which has been a pretty cool data set to play around with. I started by scattering beers randomly in a 2 dimensional grid, then moved the points to try to get the distances between each beer to approximate the Pearson distance I calculated by comparing user ratings of all of the beers to find which were most similar (and so should be closer together on the beer map), and which beers were most different, and so should be far apart. I figured out some tricks to break out of the local minimums I kept running into, and ended up with a <a href="http://beerchooser.com/beermap/beergmap.html">pretty cool map</a> of many different beers and how they are related by user preference to each other. (The green color represents IBU &ndash; International Bittering Units, a measure of bitterness/hoppiness in beer, and the blue color represents ABV, or alcohol content, of each beer.)</p>
+
+<p>It was my first time ever presenting a coding project I&rsquo;d done in front of a group of people, and it was a cool experience to share something I&rsquo;d been working on with a group that could follow what I&rsquo;d done and understand what was neat about it. It was great practice for me in talking about my coding work to a larger group, which I have done much more with my design work than with my programming projects.</p>
+</div>
   
   
-</div><!-- /.entry-content -->
 
 
-
-
-
-</article><!-- /.hentry -->
-
-<article class="hentry">
+    </article>
   
-
-
-
-<header>
-  <div class="entry-meta">
-    <span class="entry-date date published updated">
-      <time datetime="2014-06-11T20:44:53-04:00">
-        <a href="/blog/2014/06/11/hacker-school-day-2/">June 11, 2014</a>
-      </time>
-    </span>
-    <span class="author vcard">
-      <span class="fn">
-        <a href="" title="About Laura Skelton">Laura Skelton</a>
-      </span>
-    </span>
+  
+    <article>
+      
+  <header>
     
-  </div><!-- /.entry-meta -->
-  
-    <h1 class="entry-title">
-      <a href="/blog/2014/06/11/hacker-school-day-2/" rel="bookmark" title="Hacker School Day 2" itemprop="url">Hacker School Day 2</a>
-    </h1>
-  
-</header>
+      <h1 class="entry-title"><a href="/blog/2014/06/11/hacker-school-day-2/">Hacker School Day 2</a></h1>
+    
+    
+      <p class="meta">
+        
 
-<div class="entry-content">
-  <p>I had such a fun day! In the morning I learned how to use Arduino to control Neopixel RGB LED lights from Adafruit. It was so fast to get going with this, and the code was easy to tweak to change the patterns the lights would display.</p>
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-11T20:44:53-04:00" pubdate data-updated="true">Jun 11<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I had such a fun day! In the morning I learned how to use Arduino to control Neopixel RGB LED lights from Adafruit. It was so fast to get going with this, and the code was easy to tweak to change the patterns the lights would display.</p>
+
+<p><img class="center" src="/images/posts/adapixels.jpg" title="adafruit neopixels" alt="adafruit neopixels"></p>
+
+<p>We wrote some code a little later that cycled through a rainbow with alternating pixels flashing opposite colors off and on.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kt">void</span> <span class="nf">rainbow</span><span class="o">(</span><span class="n">uint8_t</span> <span class="n">wait</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>  <span class="n">uint16_t</span> <span class="n">i</span><span class="o">,</span> <span class="n">j</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">for</span><span class="o">(</span><span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span> <span class="n">j</span><span class="o">&lt;</span><span class="mi">256</span><span class="o">;</span> <span class="n">j</span><span class="o">++)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">for</span><span class="o">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">strip</span><span class="o">.</span><span class="na">numPixels</span><span class="o">();</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span><span class='line'>      <span class="k">if</span> <span class="o">(</span><span class="n">i</span><span class="o">%</span><span class="mi">2</span><span class="o">==</span><span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>          <span class="k">if</span> <span class="o">((</span><span class="n">j</span><span class="o">/</span><span class="mi">10</span><span class="o">)</span> <span class="o">%</span><span class="mi">2</span><span class="o">==</span><span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">strip</span><span class="o">.</span><span class="na">setPixelColor</span><span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="n">Wheel</span><span class="o">((</span><span class="mi">255</span><span class="o">-</span><span class="n">i</span><span class="o">-</span><span class="n">j</span><span class="o">)</span> <span class="o">&amp;</span> <span class="mi">255</span><span class="o">));</span>
+</span><span class='line'>          <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">strip</span><span class="o">.</span><span class="na">setPixelColor</span><span class="o">(</span><span class="n">i</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">);</span>
+</span><span class='line'>          <span class="o">}</span>
+</span><span class='line'>      <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="o">((</span><span class="n">j</span><span class="o">/</span><span class="mi">10</span><span class="o">)</span> <span class="o">%</span><span class="mi">2</span><span class="o">!=</span><span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>             <span class="n">strip</span><span class="o">.</span><span class="na">setPixelColor</span><span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="n">Wheel</span><span class="o">((</span><span class="n">i</span><span class="o">+</span><span class="n">j</span><span class="o">)</span> <span class="o">&amp;</span> <span class="mi">255</span><span class="o">));</span>
+</span><span class='line'>          <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">strip</span><span class="o">.</span><span class="na">setPixelColor</span><span class="o">(</span><span class="n">i</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">);</span>
+</span><span class='line'>          <span class="o">}</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="n">strip</span><span class="o">.</span><span class="na">show</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">delay</span><span class="o">(</span><span class="n">wait</span><span class="o">);</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>Wheel</code> is a neat little function in the Adafruit Neopixel code that converts a value from 0 to 255 to an RGB color value.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="c1">// Input a value 0 to 255 to get a color value.</span>
+</span><span class='line'><span class="c1">// The colours are a transition r - g - b - back to r.</span>
+</span><span class='line'><span class="n">uint32_t</span> <span class="nf">Wheel</span><span class="o">(</span><span class="kt">byte</span> <span class="n">WheelPos</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">if</span><span class="o">(</span><span class="n">WheelPos</span> <span class="o">&lt;</span> <span class="mi">85</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>   <span class="k">return</span> <span class="n">strip</span><span class="o">.</span><span class="na">Color</span><span class="o">(</span><span class="n">WheelPos</span> <span class="o">*</span> <span class="mi">3</span><span class="o">,</span> <span class="mi">255</span> <span class="o">-</span> <span class="n">WheelPos</span> <span class="o">*</span> <span class="mi">3</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span>
+</span><span class='line'>  <span class="o">}</span> <span class="k">else</span> <span class="k">if</span><span class="o">(</span><span class="n">WheelPos</span> <span class="o">&lt;</span> <span class="mi">170</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>   <span class="n">WheelPos</span> <span class="o">-=</span> <span class="mi">85</span><span class="o">;</span>
+</span><span class='line'>   <span class="k">return</span> <span class="n">strip</span><span class="o">.</span><span class="na">Color</span><span class="o">(</span><span class="mi">255</span> <span class="o">-</span> <span class="n">WheelPos</span> <span class="o">*</span> <span class="mi">3</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">WheelPos</span> <span class="o">*</span> <span class="mi">3</span><span class="o">);</span>
+</span><span class='line'>  <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+</span><span class='line'>   <span class="n">WheelPos</span> <span class="o">-=</span> <span class="mi">170</span><span class="o">;</span>
+</span><span class='line'>   <span class="k">return</span> <span class="n">strip</span><span class="o">.</span><span class="na">Color</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="n">WheelPos</span> <span class="o">*</span> <span class="mi">3</span><span class="o">,</span> <span class="mi">255</span> <span class="o">-</span> <span class="n">WheelPos</span> <span class="o">*</span> <span class="mi">3</span><span class="o">);</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>I&rsquo;m so excited to learn more about hardware and connecting apps to display patterns with the lights.</p>
 
@@ -199,45 +273,42 @@
 <p>We&rsquo;re planning to link the mesh network up with a hardware project using the programmable RGB LED lights from Adafruit to represent the users of the network. I thought it would be cool to make a sort of giant firefly jar with light-dots flying around inside, with one dot representing each user-node of the mesh network. The ObjC iOS app would allow users to join the network and then set their dot&rsquo;s color, which would be reflected in the physical firefly jar.</p>
 
 <p>We found a source for an affordable Bluetooth LE adapter for the Arduino and mapped out a plan for how to design the network on the whiteboard. Excited to give it a go tomorrow!</p>
-
+</div>
   
   
-</div><!-- /.entry-content -->
 
 
-
-
-
-</article><!-- /.hentry -->
-
-<article class="hentry">
+    </article>
   
-
-
-
-<header>
-  <div class="entry-meta">
-    <span class="entry-date date published updated">
-      <time datetime="2014-06-11T14:25:15-04:00">
-        <a href="/blog/2014/06/11/hacker-school-day-1/">June 11, 2014</a>
-      </time>
-    </span>
-    <span class="author vcard">
-      <span class="fn">
-        <a href="" title="About Laura Skelton">Laura Skelton</a>
-      </span>
-    </span>
+  
+    <article>
+      
+  <header>
     
-  </div><!-- /.entry-meta -->
-  
-    <h1 class="entry-title">
-      <a href="/blog/2014/06/11/hacker-school-day-1/" rel="bookmark" title="Hacker School Day 1" itemprop="url">Hacker School Day 1</a>
-    </h1>
-  
-</header>
+      <h1 class="entry-title"><a href="/blog/2014/06/11/hacker-school-day-1/">Hacker School Day 1</a></h1>
+    
+    
+      <p class="meta">
+        
 
-<div class="entry-content">
-  <p>Things got much more tricky when I started trying to implement SimpleShare, my Bluetooth LE (CoreBluetooth) mesh network sharing app, in Swift, using the new Multipeer Connectivity framework instead of Bluetooth. There were much more complicated things I needed to do in Obj-C, and the app couldn&rsquo;t be &ldquo;translated&rdquo; in the same way as the simpler apps just by changing to the new syntax, since Swift actually works differently in key ways than Obj-C does.</p>
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-11T14:25:15-04:00" pubdate data-updated="true">Jun 11<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Things got much more tricky when I started trying to implement SimpleShare, my Bluetooth LE (CoreBluetooth) mesh network sharing app, in Swift, using the new Multipeer Connectivity framework instead of Bluetooth. There were much more complicated things I needed to do in Obj-C, and the app couldn&rsquo;t be &ldquo;translated&rdquo; in the same way as the simpler apps just by changing to the new syntax, since Swift actually works differently in key ways than Obj-C does.</p>
 
 <p>Things I learned about Swift:</p>
 
@@ -258,42 +329,13 @@
 
 
 <ul>
-<li>Global variables: It seems that any variables you set within a class but outside of a function act like public parameters for that class and are accessible to read or set from other classes</li>
-<li>Calling functions from another class: You call a function from another class by writing the class name followed by a dot then the function name with its arguments, eg:</li>
+<li><p>Global variables: It seems that any variables you set within a class but outside of a function act like public parameters for that class and are accessible to read or set from other classes</p></li>
+<li><p>Calling functions from another class: You call a function from another class by writing the class name followed by a dot then the function name with its arguments, eg: <code>MyClass.someFunction(arg1,arg2)</code></p></li>
+<li><p>Init functions are a special case: Instead of calling <code>MyClass.init(arg1,arg2)</code> like you would for any other function, just calling <code>MyClass(arg1,arg2)</code>
+is how you can init an instance of a class.</p></li>
+<li><p>Convenience init: If your init function requires arguments to create a class instance, you can create a second init method for convenience that creates an instance with default values.</p></li>
 </ul>
 
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">MyClass</span><span class="p">.</span><span class="n">someFunction</span><span class="p">(</span><span class="n">arg1</span><span class="p">,</span><span class="n">arg2</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">MyClass</span><span class="p">.</span><span class="n">someFunction</span><span class="p">(</span><span class="n">arg1</span><span class="p">,</span><span class="n">arg2</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>Init functions are a special case: Instead of calling</li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">MyClass</span><span class="p">.</span><span class="n">init</span><span class="p">(</span><span class="n">arg1</span><span class="p">,</span><span class="n">arg2</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>like you would for any other function, just calling</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">MyClass</span><span class="p">(</span><span class="n">arg1</span><span class="p">,</span><span class="n">arg2</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>is how you can init an instance of a class.
-* Convenience init: If your init function requires arguments to create a class instance, you can create a second init method for convenience that creates an instance with default values.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -317,45 +359,42 @@
 
 
 <p>In the afternoon, I made a plan with Jorge and Kyle to work on a mesh networking inspector to figure out the limitations of Multipeer Connectivity so that we can build a stable mesh networking messaging app. We decided to move forward on the project in Objective-C while continuing to learn Swift on the side so we can finish more quickly.</p>
-
+</div>
   
   
-</div><!-- /.entry-content -->
 
 
-
-
-
-</article><!-- /.hentry -->
-
-<article class="hentry">
+    </article>
   
-
-
-
-<header>
-  <div class="entry-meta">
-    <span class="entry-date date published updated">
-      <time datetime="2014-06-10T13:37:53-04:00">
-        <a href="/blog/2014/06/10/hacker-school-day-0/">June 10, 2014</a>
-      </time>
-    </span>
-    <span class="author vcard">
-      <span class="fn">
-        <a href="" title="About Laura Skelton">Laura Skelton</a>
-      </span>
-    </span>
+  
+    <article>
+      
+  <header>
     
-  </div><!-- /.entry-meta -->
-  
-    <h1 class="entry-title">
-      <a href="/blog/2014/06/10/hacker-school-day-0/" rel="bookmark" title="Hacker School Day 0" itemprop="url">Hacker School Day 0</a>
-    </h1>
-  
-</header>
+      <h1 class="entry-title"><a href="/blog/2014/06/10/hacker-school-day-0/">Hacker School Day 0</a></h1>
+    
+    
+      <p class="meta">
+        
 
-<div class="entry-content">
-  <p>First day of Hacker School! It was amazing to meet so many people who shared interests and had new ideas about programming.</p>
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-10T13:37:53-04:00" pubdate data-updated="true">Jun 10<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>First day of Hacker School! It was amazing to meet so many people who shared interests and had new ideas about programming.</p>
 
 <p>I had planned to get to work on Machine Learning and getting comfortable with neural networks, but since the announcement of the new Swift language for iOS, there was a lot of interest in diving into learning that.</p>
 
@@ -368,46 +407,95 @@
 <p>Later in the afternoon I worked on copying some simple demo apps I&rsquo;d written previously in Obj-C into Swift so I could get more comfortable with the new syntax. Translating the very basic apps was relatively straightforward.</p>
 
 <p>Coolest thing from Day 0:
-Emoji as variable and function names in Swift! Cutest language ever?
-<img src="https://pbs.twimg.com/media/BpuK07CCAAAzcDX.jpg" title="Swift Emoji" alt="swift emoji" /></p>
+Emoji as variable and function names in Swift! Cutest language ever?</p>
 
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">import</span> <span class="n">UIKit</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">class</span> <span class="nl">MyViewController:</span> <span class="n">UIViewController</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="err">@</span><span class="kt">IBOutlet</span> <span class="n">var</span> <span class="err">🐶</span><span class="o">:</span> <span class="n">UILabel</span>
+</span><span class='line'>    <span class="n">var</span> <span class="err">😻</span> <span class="o">=</span> <span class="s">&quot;🐶🐷🐹🐰🐱&quot;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="err">@</span><span class="kt">IBOutlet</span> <span class="n">var</span> <span class="err">🐹</span><span class="o">:</span> <span class="n">UIButton</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">override</span> <span class="n">func</span> <span class="n">viewDidLoad</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">super</span><span class="p">.</span><span class="n">viewDidLoad</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="err">🐶</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="err">😻</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="err">@</span><span class="kt">IBAction</span> <span class="n">func</span> <span class="err">🐭</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>        <span class="err">🐶</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="s">&quot;🐰🐯🐵🐮🐨&quot;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
   
   
-</div><!-- /.entry-content -->
 
 
-
-
-
-</article><!-- /.hentry -->
-
-
-<div class="pagination">
+    </article>
   
-  <a href="/archives">Blog Archives</a>
+  <div class="pagination">
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+  </div>
+</div>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Website copyright &copy; 2014 - Laura Skelton |
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> | Themed with <a href="https://github.com/TheChymera/Koenigspress">Königspress</a></span>.
+</p>
+
+</footer>
   
-</div><!-- /.pagination -->
-
-  </div><!-- /#main -->
-
-  <div class="footer-wrapper">
-    <footer role="contentinfo">
-      <span>&copy; 2014 Laura Skelton. Powered by <a href="http://octopress.org">Octopress</a> using the <a href="https://github.com/Z1MM32M4N/hpstr-theme/">HPSTR Theme for Octopress</a>.</span>
-
-    </footer>
-  </div><!-- /.footer-wrapper -->
-
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="/javascripts/vendor/jquery-1.9.1.min.js"><\/script>')</script>
-<!--
-<script src="/javascripts/octopress.js" type="text/javascript"></script>
--->
-<script src="/javascripts/scripts.min.js"></script>
 
 
 
-          
-  
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
 
 </body>
 </html>

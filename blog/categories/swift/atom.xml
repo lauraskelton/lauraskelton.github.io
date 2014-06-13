@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Swift | Hacker School Blog]]></title>
+  <title><![CDATA[Category: Swift | Hacker School Daily Log]]></title>
   <link href="http://lauraskelton.github.io/blog/categories/swift/atom.xml" rel="self"/>
   <link href="http://lauraskelton.github.io/"/>
-  <updated>2014-06-12T21:30:54-04:00</updated>
+  <updated>2014-06-12T22:57:35-04:00</updated>
   <id>http://lauraskelton.github.io/</id>
   <author>
     <name><![CDATA[Laura Skelton]]></name>
@@ -35,40 +35,26 @@ class MyClass {</p>
 
 <p>}
 ```
-* Global variables: It seems that any variables you set within a class but outside of a function act like public parameters for that class and are accessible to read or set from other classes
-* Calling functions from another class: You call a function from another class by writing the class name followed by a dot then the function name with its arguments, eg:</p>
+* Global variables: It seems that any variables you set within a class but outside of a function act like public parameters for that class and are accessible to read or set from other classes</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">MyClass</span><span class="p">.</span><span class="n">someFunction</span><span class="p">(</span><span class="n">arg1</span><span class="p">,</span><span class="n">arg2</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p><code>objc
-MyClass.someFunction(arg1,arg2)
-</code>
-* Init functions are a special case: Instead of calling
+<ul>
+<li><p>Calling functions from another class: You call a function from another class by writing the class name followed by a dot then the function name with its arguments, eg: <code>MyClass.someFunction(arg1,arg2)</code></p></li>
+<li><p>Init functions are a special case: Instead of calling <code>MyClass.init(arg1,arg2)</code> like you would for any other function, just calling <code>MyClass(arg1,arg2)</code>
+is how you can init an instance of a class.</p></li>
+<li><p>Convenience init: If your init function requires arguments to create a class instance, you can create a second init method for convenience that creates an instance with default values.
 <code>objc
-MyClass.init(arg1,arg2)
-</code>
-like you would for any other function, just calling
-<code>objc
-MyClass(arg1,arg2)
-</code>
-is how you can init an instance of a class.
-* Convenience init: If your init function requires arguments to create a class instance, you can create a second init method for convenience that creates an instance with default values.
-```objc
-class SimpleMesh {</p>
-
-<pre><code>init(simpleMeshAppID: String) {
-    self.simpleMeshAppID = simpleMeshAppID
-    self.myItemIDs = ["first", "second", "third", "fourth", "fifth"]
+class SimpleMesh {
+  init(simpleMeshAppID: String) {
+      self.simpleMeshAppID = simpleMeshAppID
+      self.myItemIDs = ["first", "second", "third", "fourth", "fifth"]
+  }
+  convenience init() {
+      self.init(simpleMeshAppID: "[NO ID]")
+  }
 }
-convenience init() {
-    self.init(simpleMeshAppID: "[NO ID]")
-}
-</code></pre>
+</code></p></li>
+</ul>
 
-<p>}
-```</p>
 
 <p>In the afternoon, I made a plan with Jorge and Kyle to work on a mesh networking inspector to figure out the limitations of Multipeer Connectivity so that we can build a stable mesh networking messaging app. We decided to move forward on the project in Objective-C while continuing to learn Swift on the side so we can finish more quickly.</p>
 ]]></content>
@@ -92,8 +78,33 @@ convenience init() {
 <p>Later in the afternoon I worked on copying some simple demo apps I&rsquo;d written previously in Obj-C into Swift so I could get more comfortable with the new syntax. Translating the very basic apps was relatively straightforward.</p>
 
 <p>Coolest thing from Day 0:
-Emoji as variable and function names in Swift! Cutest language ever?
-<img src="https://pbs.twimg.com/media/BpuK07CCAAAzcDX.jpg" title="Swift Emoji" alt="swift emoji" /></p>
+Emoji as variable and function names in Swift! Cutest language ever?</p>
+
+<p>```objc
+import UIKit</p>
+
+<p>class MyViewController: UIViewController {</p>
+
+<pre><code>@IBOutlet var 🐶: UILabel
+var 😻 = "🐶🐷🐹🐰🐱"
+
+@IBOutlet var 🐹: UIButton
+
+override func viewDidLoad() {
+    super.viewDidLoad()
+
+    🐶.text = 😻
+
+}
+
+@IBAction func 🐭() {
+    🐶.text = "🐰🐯🐵🐮🐨"
+}
+</code></pre>
+
+<p>}</p>
+
+<p>```</p>
 ]]></content>
   </entry>
   

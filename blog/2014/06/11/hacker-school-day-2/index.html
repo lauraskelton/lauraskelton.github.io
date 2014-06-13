@@ -3,108 +3,201 @@
 <!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
 <!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
-
 <head>
+  <meta charset="utf-8">
+  <title>Hacker School Day 2 - Hacker School Daily Log</title>
+  <meta name="author" content="Laura Skelton">
 
+  
+  <meta name="description" content="I had such a fun day! In the morning I learned how to use Arduino to control Neopixel RGB LED lights from Adafruit. It was so fast to get going with &hellip;">
+  
 
-<meta charset="utf-8">
-<meta http-equiv="cleartype" content="on">
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Hacker School Day 2 - Hacker School Blog</title>
-<meta name="author" content="Laura Skelton">
+  
+  <link rel="canonical" href="http://lauraskelton.github.io/blog/2014/06/11/hacker-school-day-2">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Hacker School Daily Log" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Poller+One' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Germania+One' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fontdiner+Swanky' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Cardo' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Sorts+Mill+Goudy' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=EB+Garamond' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Della+Respira' rel='stylesheet' type='text/css'>
 
-
-
-
-<meta name="description" content="I had such a fun day! In the morning I learned how to use Arduino to control Neopixel RGB LED lights from Adafruit. It was so fast to get going with &hellip;">
-
-<meta name="keywords" content="Bluetooth-LE Hardware Mesh-Networking Neopixels Objective-C ">
-
-
-<!-- http://t.co/dKP3o1e -->
-<meta name="HandheldFriendly" content="True">
-<meta name="MobileOptimized" content="320">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<!-- Twitter Cards -->
-
-
-<!-- Open Graph -->
-<meta property="og:local" content="en_US">
-<meta property="og:type" content="article">
-<meta property="og:url" content="http://lauraskelton.github.io/blog/2014/06/11/hacker-school-day-2">
-<meta property="og:title" content="Hacker School Day 2">
-<meta property="og:description" content="I had such a fun day! In the morning I learned how to use Arduino to control Neopixel RGB LED lights from Adafruit. It was so fast to get going with &hellip;">
-
-  <meta property="og:image" content="">
-
-<meta property="og:site_name" content="Hacker School Blog">
-
-<link rel="canonical" href="http://lauraskelton.github.io/blog/2014/06/11/hacker-school-day-2">
-<link href="/favicon.png" rel="icon">
-<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-<link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-<link href="/atom.xml" rel="alternate" title="Hacker School Blog" type="application/atom+xml">
-
-<script src="/javascripts/vendor/modernizr-2.6.2.custom.min.js"></script>
-
-
-
-<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-
+  
 
 </head>
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<logo>
 
-<body id="post" >
-
-<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
-<nav id="dl-menu" class="dl-menuwrapper" role="navigation">
-	<button class="dl-trigger">Open Menu</button>
-	<ul class="dl-menu">
-		<li><a href="/">Home</a></li>
-		<li>
-			<a href="#">About</a>
-			<ul class="dl-submenu">
-				<li>
-					<img src="" alt="Laura Skelton photo" class="author-photo">
-					<h4>Laura Skelton</h4>
-					<p></p>
-				</li>
-				<li><a href="//www.zimmerman.io">Learn More</a></li>
-				
-				
-				
-				
-			</ul><!-- /.dl-submenu -->
-		</li>
-		<li>
-			<a href="#">Posts</a>
-			<ul class="dl-submenu">
-				<li><a href="/posts/">All Posts</a></li>
-				<li><a href="/categories/">All Categories</a></li>
-			</ul>
-		</li>
-		
-	</ul><!-- /.dl-menu -->
-</nav><!-- /.dl-menuwrapper -->
+<img src="/logo.png" alt="Website Logo. Upload to /source/logo.png ; disable in /source/_includes/logo.html" height="32px" width="32px">
+</logo>
 
 
 
+<body >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Hacker School Daily Log</a></h1>
+  
+    <h2>Laura Skelton | Summer 2014 Batch</h2>
+  
+</hgroup>
 
-<div id="main" role="main">
-  <article class="hentry">
-    <header class="header-title">
-      <div class="header-title-wrap">
+</header>
+  <nav role="navigation"><ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+<br>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:lauraskelton.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<!--
+<ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+-->
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Hacker School Day 2</h1>
+    
+    
+      <p class="meta">
         
-          <h1 class="entry-title"><a href="/blog/2014/06/11/hacker-school-day-2/" rel="bookmark" title="Hacker School Day 2">Hacker School Day 2</a></h1>
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-11T20:44:53-04:00" pubdate data-updated="true">Jun 11<span>th</span>, 2014</time>
         
-        <h2>June 11, 2014</h2>
-      </div><!-- /.header-title-wrap -->
-    </header>
-    <div class="entry-content">
-      <p>I had such a fun day! In the morning I learned how to use Arduino to control Neopixel RGB LED lights from Adafruit. It was so fast to get going with this, and the code was easy to tweak to change the patterns the lights would display.</p>
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I had such a fun day! In the morning I learned how to use Arduino to control Neopixel RGB LED lights from Adafruit. It was so fast to get going with this, and the code was easy to tweak to change the patterns the lights would display.</p>
+
+<p><img class="center" src="/images/posts/adapixels.jpg" title="adafruit neopixels" alt="adafruit neopixels"></p>
+
+<p>We wrote some code a little later that cycled through a rainbow with alternating pixels flashing opposite colors off and on.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kt">void</span> <span class="nf">rainbow</span><span class="o">(</span><span class="n">uint8_t</span> <span class="n">wait</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>  <span class="n">uint16_t</span> <span class="n">i</span><span class="o">,</span> <span class="n">j</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">for</span><span class="o">(</span><span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span> <span class="n">j</span><span class="o">&lt;</span><span class="mi">256</span><span class="o">;</span> <span class="n">j</span><span class="o">++)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">for</span><span class="o">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">strip</span><span class="o">.</span><span class="na">numPixels</span><span class="o">();</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span><span class='line'>      <span class="k">if</span> <span class="o">(</span><span class="n">i</span><span class="o">%</span><span class="mi">2</span><span class="o">==</span><span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>          <span class="k">if</span> <span class="o">((</span><span class="n">j</span><span class="o">/</span><span class="mi">10</span><span class="o">)</span> <span class="o">%</span><span class="mi">2</span><span class="o">==</span><span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">strip</span><span class="o">.</span><span class="na">setPixelColor</span><span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="n">Wheel</span><span class="o">((</span><span class="mi">255</span><span class="o">-</span><span class="n">i</span><span class="o">-</span><span class="n">j</span><span class="o">)</span> <span class="o">&amp;</span> <span class="mi">255</span><span class="o">));</span>
+</span><span class='line'>          <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">strip</span><span class="o">.</span><span class="na">setPixelColor</span><span class="o">(</span><span class="n">i</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">);</span>
+</span><span class='line'>          <span class="o">}</span>
+</span><span class='line'>      <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="o">((</span><span class="n">j</span><span class="o">/</span><span class="mi">10</span><span class="o">)</span> <span class="o">%</span><span class="mi">2</span><span class="o">!=</span><span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>             <span class="n">strip</span><span class="o">.</span><span class="na">setPixelColor</span><span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="n">Wheel</span><span class="o">((</span><span class="n">i</span><span class="o">+</span><span class="n">j</span><span class="o">)</span> <span class="o">&amp;</span> <span class="mi">255</span><span class="o">));</span>
+</span><span class='line'>          <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">strip</span><span class="o">.</span><span class="na">setPixelColor</span><span class="o">(</span><span class="n">i</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">);</span>
+</span><span class='line'>          <span class="o">}</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="n">strip</span><span class="o">.</span><span class="na">show</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">delay</span><span class="o">(</span><span class="n">wait</span><span class="o">);</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>Wheel</code> is a neat little function in the Adafruit Neopixel code that converts a value from 0 to 255 to an RGB color value.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="c1">// Input a value 0 to 255 to get a color value.</span>
+</span><span class='line'><span class="c1">// The colours are a transition r - g - b - back to r.</span>
+</span><span class='line'><span class="n">uint32_t</span> <span class="nf">Wheel</span><span class="o">(</span><span class="kt">byte</span> <span class="n">WheelPos</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">if</span><span class="o">(</span><span class="n">WheelPos</span> <span class="o">&lt;</span> <span class="mi">85</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>   <span class="k">return</span> <span class="n">strip</span><span class="o">.</span><span class="na">Color</span><span class="o">(</span><span class="n">WheelPos</span> <span class="o">*</span> <span class="mi">3</span><span class="o">,</span> <span class="mi">255</span> <span class="o">-</span> <span class="n">WheelPos</span> <span class="o">*</span> <span class="mi">3</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span>
+</span><span class='line'>  <span class="o">}</span> <span class="k">else</span> <span class="k">if</span><span class="o">(</span><span class="n">WheelPos</span> <span class="o">&lt;</span> <span class="mi">170</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>   <span class="n">WheelPos</span> <span class="o">-=</span> <span class="mi">85</span><span class="o">;</span>
+</span><span class='line'>   <span class="k">return</span> <span class="n">strip</span><span class="o">.</span><span class="na">Color</span><span class="o">(</span><span class="mi">255</span> <span class="o">-</span> <span class="n">WheelPos</span> <span class="o">*</span> <span class="mi">3</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">WheelPos</span> <span class="o">*</span> <span class="mi">3</span><span class="o">);</span>
+</span><span class='line'>  <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+</span><span class='line'>   <span class="n">WheelPos</span> <span class="o">-=</span> <span class="mi">170</span><span class="o">;</span>
+</span><span class='line'>   <span class="k">return</span> <span class="n">strip</span><span class="o">.</span><span class="na">Color</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="n">WheelPos</span> <span class="o">*</span> <span class="mi">3</span><span class="o">,</span> <span class="mi">255</span> <span class="o">-</span> <span class="n">WheelPos</span> <span class="o">*</span> <span class="mi">3</span><span class="o">);</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>I&rsquo;m so excited to learn more about hardware and connecting apps to display patterns with the lights.</p>
 
@@ -113,66 +206,81 @@
 <p>We&rsquo;re planning to link the mesh network up with a hardware project using the programmable RGB LED lights from Adafruit to represent the users of the network. I thought it would be cool to make a sort of giant firefly jar with light-dots flying around inside, with one dot representing each user-node of the mesh network. The ObjC iOS app would allow users to join the network and then set their dot&rsquo;s color, which would be reflected in the physical firefly jar.</p>
 
 <p>We found a source for an affordable Bluetooth LE adapter for the Arduino and mapped out a plan for how to design the network on the whiteboard. Excited to give it a go tomorrow!</p>
+</div>
 
-      <footer class="entry-meta">
-        <span class="entry-tags"><a href="/tags/#Bluetooth-LE" title="Pages tagged Bluetooth-LE" class="tag">Bluetooth-LE</a><a href="/tags/#Hardware" title="Pages tagged Hardware" class="tag">Hardware</a><a href="/tags/#Mesh-Networking" title="Pages tagged Mesh-Networking" class="tag">Mesh-Networking</a><a href="/tags/#Neopixels" title="Pages tagged Neopixels" class="tag">Neopixels</a><a href="/tags/#Objective-C" title="Pages tagged Objective-C" class="tag">Objective-C</a></span>
-        <span><a href="/blog/2014/06/11/hacker-school-day-2/" rel="bookmark" title="Hacker School Day 2">Hacker School Day 2</a> was published on <span class="entry-date date published updated"><time datetime="2014-06-11T20:44:53-04:00">June 11, 2014</time></span></span>
-        
-        <span class="author vcard"><span class="fn"><a href="" title="About Laura Skelton">Laura Skelton</a></span></span>
-        
-      </footer>
-    </div><!-- /.entry-content -->
-    
-      <div class="read-more">
-        
-          <div class="read-more-header">
-            <a href="/blog/2014/06/12/hacker-school-day-3/" class="btn">Read More</a>
-          </div><!-- /.read-more-header -->
-          <div class="read-more-content">
-            <h3><a href="/blog/2014/06/12/hacker-school-day-3/" title="Hacker School Day 3">Hacker School Day 3</a></h3>
-            <p>I started working on fixing some of the bugginess of the Multipeer Connectivity framework in ObjC in the morning. I tried to hack it so &hellip;&hellip; <a href="/blog/2014/06/12/hacker-school-day-3/"> Continue reading</a></p>
-          </div><!-- /.read-more-content -->
-        
-        <div class="read-more-list">
-          
-            <div class="list-item">
-              <h4><a href="/blog/2014/06/11/hacker-school-day-1/" title="Hacker School Day 1">Hacker School Day 1</a></h4>
-              <span>Published on June 11, 2014</span>
-            </div><!-- /.list-item -->
-          
-            <div class="list-item">
-              <h4><a href="/blog/2014/06/10/hacker-school-day-0/" title="Hacker School Day 0">Hacker School Day 0</a></h4>
-              <span>Published on June 10, 2014</span>
-            </div><!-- /.list-item -->
-          
-        </div><!-- /.read-more-list -->
-      </div><!-- /.read-more -->
-    
-    
-  </article>
-</div><!-- /#main -->
 
-<div class="footer-wrapper">
-  <footer role="contentinfo">
-    <span>&copy; 2014 Laura Skelton. Powered by <a href="http://octopress.org">Octopress</a> using the <a href="https://github.com/Z1MM32M4N/hpstr-theme/">HPSTR Theme for Octopress</a>.</span>
+  <footer>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://lauraskelton.github.io/blog/2014/06/11/hacker-school-day-2/" data-via="" data-counturl="http://lauraskelton.github.io/blog/2014/06/11/hacker-school-day-2/" >Tweet</a>
+  
+  
+  
+</div>
 
+    
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Text authored by <span class="fn">Laura Skelton</span></span>
+
+
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/bluetooth-le/'>Bluetooth-LE</a>, <a class='category' href='/blog/categories/hardware/'>Hardware</a>, <a class='category' href='/blog/categories/mesh-networking/'>Mesh-Networking</a>, <a class='category' href='/blog/categories/neopixels/'>Neopixels</a>, <a class='category' href='/blog/categories/objective-c/'>Objective-C</a>
+  
+</span>
+
+
+    </p>
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/06/11/hacker-school-day-1/" 
+           title="Previous Post: Hacker School Day 1">&laquo; Hacker School Day 1</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2014/06/12/hacker-school-day-3/" 
+           title="Next Post: Hacker School Day 3">Hacker School Day 3 &raquo;</a>
+      
+    </p>
   </footer>
-</div><!-- /.footer-wrapper -->
+</article>
+
+</div>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Website copyright &copy; 2014 - Laura Skelton |
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> | Themed with <a href="https://github.com/TheChymera/Koenigspress">Königspress</a></span>.
+</p>
+
+</footer>
+  
 
 
-	        
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="/javascripts/vendor/jquery-1.9.1.min.js"><\/script>')</script>
-<!--
-<script src="/javascripts/octopress.js" type="text/javascript"></script>
--->
-<script src="/javascripts/scripts.min.js"></script>
 
 
 
 
 
-	        
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
 
 </body>
 </html>
