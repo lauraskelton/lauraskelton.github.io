@@ -1,0 +1,217 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Hacker School Day 5 - Hacker School Daily Log</title>
+  <meta name="author" content="Laura Skelton">
+
+  
+  <meta name="description" content="I continued working through the Neural Networks book. A lot of the rusty math started finally coming back to me in sudden bursts of insight, and the &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://lauraskelton.github.io/blog/2014/06/16/hacker-school-day-5">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Hacker School Daily Log" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Poller+One' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Germania+One' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fontdiner+Swanky' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Cardo' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Sorts+Mill+Goudy' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=EB+Garamond' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Della+Respira' rel='stylesheet' type='text/css'>
+
+  
+
+</head>
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<logo>
+
+<img src="/logo.png" alt="Website Logo. Upload to /source/logo.png ; disable in /source/_includes/logo.html" height="32px" width="32px">
+</logo>
+
+
+
+<body >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Hacker School Daily Log</a></h1>
+  
+    <h2>Laura Skelton | Summer 2014 Batch</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+<br>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:lauraskelton.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<!--
+<ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+-->
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Hacker School Day 5</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-16T21:04:29-04:00" pubdate data-updated="true">Jun 16<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I continued working through the <a href="http://neuralnetworksanddeeplearning.com">Neural Networks book</a>. A lot of the rusty math started finally coming back to me in sudden bursts of insight, and the book broke the main formulas down enough that I was able to really follow what was going on and how the pieces were working together on a conceptual and mathematical level.</p>
+
+<p>I got some Python code running in the terminal to create and backpropagate a neural network for classifying handwritten digits, using the MNIST dataset, following along with the exercises in the book. It&rsquo;s pretty exciting how quickly the error decreases with the stochastic gradient descent optimization on the weights and biases of the neural network nodes. It seems to learn very quickly!</p>
+
+<p><img class="center" src="/images/posts/5digits.png" title="'handwritten digits'" ></p>
+
+<p>I was bummed to learn that deep neural networks, which have multiple hidden layers between the input and output nodes, are apparently much harder to train than these &ldquo;shallow&rdquo; neural networks with just one hidden layer. Deeper networks are awesome because they can make much smarter decisions and much more complicated distinctions and abstractions between things by looking at patterns in a more complicated way. There is apparently some very recent math (from 2006!) that enables more efficient learning in deeper neural nets, that can train networks with 5 to 10 hidden layers. I&rsquo;m looking forward to learning how to implement these deeper networks, but will have to find a new source of learning materials as this book is currently unfinished and stops after explaining the mathematical proof and conceptual model behind back propagation.</p>
+
+<p>What is cool about the limitations of training deep neural networks is that one of my early ideas for a Hacker School project now seems like it would actually be useful, more than when I mistakenly believed that many-layered neural networks were easy to set up and train. I wanted to make a modular neural network for image classification, with input layers that took particular sets of images and output them into different categories. For example, networks that detect lines, or shapes, or an eye, or sort by color, etc. The neural networks could be set up in such a way that they are trained individually, but they could be linked to feed information from one to the next in order to do more complicated classifications. Training neural networks takes some processing power, but once they are well-trained, they can process and classify new data very quickly, even running in the browser. I think it would be a really cool open-source project if I could set up a modular framework that people could add different types of pre-trained visual image processing neural networks that could then be linked up in a custom way for anyone who needed to do image classification quickly.</p>
+
+<p>I discovered <a href="http://evolvingstuff.blogspot.com/2012/12/learning-mnist-with-shallow-neural.html">another article about shallow neural networks and handwritten digit classification</a> that was very exciting! I hadn&rsquo;t realized until I read it that once the neural network is trained, you could display the relative weights of the inputs to each hidden neuron as a representation of what that hidden neuron was looking for. This is a very similar concept to the discovery of independent features in Non-Negative Matrix Factorization that I learned about last week. The &ldquo;features&rdquo;, or the features the hidden nodes represent, can be represented and described purely by the relative weights of the data inputs they represent. For the articles and topic themes in the Non-Negative Matrix Factorization exercise, that would be the words that describe the theme. For handwritten digit classification, that turns out to be the intensity of the weight of each pixel input for that node, which can be represented visually.</p>
+
+<p><img class="center" src="/images/posts/5input1.jpg" title="'handwritten digit feature'" ></p>
+
+<p><img class="center" src="/images/posts/5input2.jpg" title="'handwritten digit feature'" ></p>
+
+<p><img class="center" src="/images/posts/5input3.jpg" title="'handwritten digit feature'" ></p>
+
+<p><img class="center" src="/images/posts/5input4.jpg" title="'handwritten digit feature'" ></p>
+
+<p><img class="center" src="/images/posts/5input5.jpg" title="'handwritten digit feature'" ></p>
+
+<p>You can actually see what visual features of the image a particular hidden node of the digit classifier neural network is looking for, and it&rsquo;s easy to imagine that if two hidden nodes were highly active, it could represent for example a top curve and a bottom curve that would indicate the number zero. This visualization of the input weights helped a lot with my conceptual understanding of what the hidden nodes represent and how they might be working together.</p>
+
+<p>This got me very excited about the idea of applying a neural network classifier to my beer ratings dataset of 200,000 beer ratings from a few thousand users of a couple thousand beers. I realized that not only can I use a neural network to recommend beers to users very quickly once the network is trained, but I realized that for beers, the hidden nodes would represent groupings of beers into a sort of taste profile. I&rsquo;m imagining a node each for hoppy-bitter beers, boozy belgians, roasty stouts, and sweeter lighter beers, with each individual user&rsquo;s preferences being some combination of those flavor types, represented in the program by different activations of those hidden nodes. This is very exciting!</p>
+
+<p>I got my beer data into an appropriate format and trained a neural network with 10 hidden nodes (which to my understanding represents 10 beer-taste-profiles), and tomorrow I&rsquo;m going to work on a representation showing which of the top 100 beers activate each node, representing independent features (meaningful beer groupings) of the dataset.</p>
+</div>
+
+
+  <footer>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://lauraskelton.github.io/blog/2014/06/16/hacker-school-day-5/" data-via="" data-counturl="http://lauraskelton.github.io/blog/2014/06/16/hacker-school-day-5/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Text authored by <span class="fn">Laura Skelton</span></span>
+
+
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/machine-learning/'>Machine-Learning</a>, <a class='category' href='/blog/categories/neural-networks/'>Neural-Networks</a>, <a class='category' href='/blog/categories/objective-c/'>Objective-C</a>
+  
+</span>
+
+
+    </p>
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/06/13/hacker-school-day-4/" 
+           title="Previous Post: Hacker School Day 4">&laquo; Hacker School Day 4</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Website copyright &copy; 2014 - Laura Skelton |
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> | Themed with <a href="https://github.com/TheChymera/Koenigspress">Königspress</a></span>.
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
