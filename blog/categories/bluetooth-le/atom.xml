@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Bluetooth-LE | Hacker School Daily Log]]></title>
   <link href="http://lauraskelton.github.io/blog/categories/bluetooth-le/atom.xml" rel="self"/>
   <link href="http://lauraskelton.github.io/"/>
-  <updated>2014-06-18T11:34:56-04:00</updated>
+  <updated>2014-06-19T09:24:08-04:00</updated>
   <id>http://lauraskelton.github.io/</id>
   <author>
     <name><![CDATA[Laura Skelton]]></name>
@@ -12,6 +12,41 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Hacker School Day 7]]></title>
+    <link href="http://lauraskelton.github.io/blog/2014/06/18/hacker-school-day-7/"/>
+    <updated>2014-06-18T08:15:31-04:00</updated>
+    <id>http://lauraskelton.github.io/blog/2014/06/18/hacker-school-day-7</id>
+    <content type="html"><![CDATA[<p>I started off working on my beer neural network a bit more. I figured out part of the problem that was giving me data that didn&rsquo;t feel right, which had to do with changing the inputs to give an incomplete picture of the outputs to force the neural network to draw more meaningful connections between the missing beer ratings and the existing beer ratings. Basically, I erased half of the beer ratings from each user from the &ldquo;input&rdquo; dataset, and left the &ldquo;output&rdquo; dataset the same, so the network would have to actually predict and couldn&rsquo;t cheat by just figuring out how to compress the ratings down to 10 nodes and then decompress them back to 900 nodes using tricky math.</p>
+
+<p><img class="center" src="/images/posts/7neuralnetwork.png" title="&lsquo;neural network&rsquo;" ></p>
+
+<p>Now that the neural network is actually learning, I can&rsquo;t seem to get my error rate down to a level I&rsquo;m happy with. I&rsquo;m going to keep working on tweaking the parameters of the neural network to see if I can get it to output something cool that I can share.</p>
+
+<p>While my computer was crunching away at reducing the neural network&rsquo;s error, I took a coffee break down the street with a few friends, which led to a fascinating conversation that lasted a couple of hours, mainly about Mesh Networking and Cryptocurrencies. I learned a lot about how different cryptocurrencies work, including Namecoin, which is linked to your domain name and can validate you, and another cryptocurrency that includes its own programming language that can have actually have contracts embedded in code within a transaction.</p>
+
+<p><img class="center" src="/images/posts/7dogecoin.png" title="&lsquo;dogecoin&rsquo;" ></p>
+
+<p>We went down a pretty complicated rabbit hole of trying to figure out if there was a way to solve some problems in Mesh Networking by linking it with a cryptocurrency, either to validate the identity of nodes to allow secure communication without a centralized server (replacing SSL), or to pay central nodes for traffic they routed in order to reward mesh network users to be good citizens and stay connected to the mesh routing messages between other nodes even when they weren&rsquo;t personally using it.</p>
+
+<p><img class="center" src="/images/posts/7torcoin.jpg" title="&lsquo;torcoin&rsquo;" ></p>
+
+<p>We ended up talking about an idea to combine a social network with mesh network routing or  secure direct connections by using an app with Bluetooth LE to confirm in person that each person in my inner circle is who they say they are. Each of those people could do the same thing for their trusted friends, and then we would have a network of nodes each with a certain degree of social separation and therefore degree of trustedness which we could use to priorities routing of messages.</p>
+
+<p><img class="center" src="/images/posts/7weboftrust.png" title="&lsquo;web of trust&rsquo;" ></p>
+
+<p>We left with some interesting ideas and a bunch of reading to do on Mesh Networking. It turns out that the idea of compensating for node bandwidth was discussed in <a href="http://dedis.cs.yale.edu/dissent/papers/hotpets14-torpath.pdf">a recent paper about TorCoin</a>, which would be &ldquo;mined&rdquo; by routing traffic over the Tor network, and then could be sold in altcoin exchanges, encouraging good behavior on the network. We also decided to read through <a href="https://en.wikipedia.org/wiki/Wireless_mesh_network#Routing_protocols">an overview of the many previously attempted mesh network routing protocols</a> to get a clearer picture of benefits and pitfalls of different approaches. There is also <a href="http://www.amazon.com/Linked-The-New-Science-Networks/dp/0738206679">a book that discusses the inherent properties of many types of networks</a> that sounds like an interesting read.</p>
+
+<p><img class="center" src="/images/posts/7meshnetwork.jpg" title="&lsquo;mesh network&rsquo;" ></p>
+
+<p>I was totally re-energized by this discussion, and decided to figure out iBeacons so I can make a fun Objective-C app for Hacker School. When I went to the Swift meetup at Etsy, almost everyone I met was excited about Hacker School, and I instantly had something to talk about with the new people I was meeting. On top of that, a few Hacker School alumni came out to the bar in Dumbo after the meetup, which was very cool. The app idea was inspired by a comment someone made that night that Hacker School was like the new Freemasons.</p>
+
+<p><img class="center" src="/images/posts/7ibeacon.jpg" title="&lsquo;ibeacons&rsquo;" ></p>
+
+<p>I finished up the nitty gritty late into the evening, and should have a fully working app ready for testing tomorrow!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Hacker School Day 2]]></title>
