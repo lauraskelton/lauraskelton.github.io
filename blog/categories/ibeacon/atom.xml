@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: iBeacon | Hacker School Daily Log]]></title>
+  <link href="http://lauraskelton.github.io/blog/categories/ibeacon/atom.xml" rel="self"/>
+  <link href="http://lauraskelton.github.io/"/>
+  <updated>2014-06-20T11:12:13-04:00</updated>
+  <id>http://lauraskelton.github.io/</id>
+  <author>
+    <name><![CDATA[Laura Skelton]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Hacker School Day 8]]></title>
+    <link href="http://lauraskelton.github.io/blog/2014/06/19/hacker-school-day-8/"/>
+    <updated>2014-06-19T20:53:29-04:00</updated>
+    <id>http://lauraskelton.github.io/blog/2014/06/19/hacker-school-day-8</id>
+    <content type="html"><![CDATA[<p>I finished a new iPhone app today!! It was inspired by someone at the Swift meetup saying that Hacker School was like the new Freemasons &ndash; some kind of secret society that instantly connected you with other people. I had such a good time talking to some Hacker School alums I hadn&rsquo;t met before, that I thought it would be good to have an app that would let me know at future meetups whether there were any other Hacker Schoolers in the room.</p>
+
+<p>In iOS 7, Apple introduce iBeacons, a proximity beacon built on top of Bluetooth LE. IPhones can scan for iBeacon signals, and display special hyperlocal information when they come within range of one, such as at a store display or at a particular museum exhibit. The iBeacon signal can even wake up an iPhone that is inactive with an alert and a notification banner.</p>
+
+<p><img class="center" src="/images/posts/8ibeacon.jpg" title="&lsquo;ibeacon&rsquo;" ></p>
+
+<p>The really exciting thing is that iPhones can also act as iBeacon emitters as well as receivers. You can send out an iBeacon signal from your phone while also scanning for similar signals from other people&rsquo;s phones.</p>
+
+<p>```objc
+&ndash; (void)initBeacon {</p>
+
+<pre><code>self.beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:uuid
+                                                            major:1
+                                                            minor:userID
+                                                       identifier:@"someregion"];
+</code></pre>
+
+<p>}</p>
+
+<ul>
+<li>(void)transmitBeacon
+{
+      self.beaconPeripheralData = [self.beaconRegion peripheralDataWithMeasuredPower:nil];
+      self.peripheralManager = [[CBPeripheralManager alloc] initWithDelegate:self
+                                                                       queue:nil
+                                                                     options:nil];
+}
+```</li>
+</ul>
+
+
+<p>I set up my app so that each user&rsquo;s phone emits an iBeacon signal that includes their userID. Each phone also scans for other signals, and if it finds that of another Hacker Schooler&rsquo;s phone, it sends an alert to the scanner&rsquo;s phone and downloads a profile photo, name, and batch of the nearby person. That way, you could make sure to stop by and chat with that person at a conference or meetup.</p>
+
+<p>So far it seems to be working well, but I definitely need beta testing help from some other Hacker School folks who wouldn&rsquo;t mind giving some feedback. I have it up on TestFlight if you have an iPhone and time to test it out! <a href="http://tflig.ht/1stcVLG">http://tflig.ht/1stcVLG</a></p>
+]]></content>
+  </entry>
+  
+</feed>
