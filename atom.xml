@@ -4,7 +4,7 @@
   <title><![CDATA[Hacker School Daily Log]]></title>
   <link href="http://lauraskelton.github.io/atom.xml" rel="self"/>
   <link href="http://lauraskelton.github.io/"/>
-  <updated>2014-06-21T17:44:46-04:00</updated>
+  <updated>2014-06-24T11:53:08-04:00</updated>
   <id>http://lauraskelton.github.io/</id>
   <author>
     <name><![CDATA[Laura Skelton]]></name>
@@ -12,6 +12,389 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Hacker School Day 10]]></title>
+    <link href="http://lauraskelton.github.io/blog/2014/06/23/hacker-school-day-10/"/>
+    <updated>2014-06-23T20:56:24-04:00</updated>
+    <id>http://lauraskelton.github.io/blog/2014/06/23/hacker-school-day-10</id>
+    <content type="html"><![CDATA[<p>I put a ton of time in on the Secret Handshake iOS app in perfecting the OAuth login procedure. Originally, I was using an OAuth library from Google to open the Hacker School login page in a webview within the app. The problem with this was that it couldn&rsquo;t take advantage of Safari&rsquo;s auto fill password functionality, or if you were already logged in on the browser.</p>
+
+<p>I first tried to use the iOS library to post the authentication code request to the Hacker School website on Safari. Unfortunately, an iOS app is unable to do a <code>POST</code> request to another app. I ended up writing a simple PHP file on my server that I redirect the user to from the Secret Handshake app. The PHP file handles sending the user to the Hacker School login page and then sending a <code>POST</code> request to get an access token from Hacker School. It then sends the returned token back to the Secret Handshake app via a custom URL scheme <code>secrethandshake://oauth</code> and an attached query string containing the token.</p>
+
+<p><img class="center" src="http://lauraskelton.github.io/images/posts/10oauthflow.png" title="'OAuth 2.0 Process'" ></p>
+
+<p>In the end, after struggling to find any examples of what a successful OAuth request should look like, and to find a working library I could use to get things up and running, I am not using any 3rd party libraries at all with my OAuth implementation, the code handling the OAuth requests is relatively brief, and I even managed to get token refreshing up and running to avoid repeated logins.</p>
+
+<p>This is the PHP OAuth manager file in its entirety.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * Server OAuth Handler for iOS App</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * iOS App launches Safari to this page on SecretHandshake server</span>
+</span><span class='line'><span class="sd">     * This page sends the user to the Hacker School login page to get authorization code</span>
+</span><span class='line'><span class="sd">     * It takes the auth code and sends it back to the server to get an access token</span>
+</span><span class='line'><span class="sd">     * It redirects the user back to the app via a custom URL scheme</span>
+</span><span class='line'><span class="sd">     * and sends the access and refresh tokens as query parameters to the app</span>
+</span><span class='line'><span class="sd">     * which stores them for future use.</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">function</span> <span class="nf">getAuthenticationUrl</span><span class="p">(</span><span class="nv">$auth_endpoint</span><span class="p">,</span> <span class="nv">$client_id</span><span class="p">,</span> <span class="nv">$redirect_uri</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$parameters</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+</span><span class='line'>                                        <span class="s1">&#39;response_type&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;code&#39;</span><span class="p">,</span>
+</span><span class='line'>                                        <span class="s1">&#39;client_id&#39;</span>     <span class="o">=&gt;</span> <span class="nv">$client_id</span><span class="p">,</span>
+</span><span class='line'>                                        <span class="s1">&#39;redirect_uri&#39;</span>  <span class="o">=&gt;</span> <span class="nv">$redirect_uri</span>
+</span><span class='line'>                                        <span class="p">);</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$auth_endpoint</span> <span class="o">.</span> <span class="s1">&#39;?&#39;</span> <span class="o">.</span> <span class="nb">http_build_query</span><span class="p">(</span><span class="nv">$parameters</span><span class="p">,</span> <span class="k">null</span><span class="p">,</span> <span class="s1">&#39;&amp;&#39;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">function</span> <span class="nf">getAccessToken</span><span class="p">(</span><span class="nv">$token_endpoint</span><span class="p">,</span> <span class="nv">$grant_type</span><span class="p">,</span> <span class="k">array</span> <span class="nv">$parameters</span><span class="p">,</span> <span class="nv">$client_id</span><span class="p">,</span> <span class="nv">$client_secret</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$parameters</span><span class="p">[</span><span class="s1">&#39;grant_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$grant_type</span><span class="p">;</span>
+</span><span class='line'>        <span class="nv">$parameters</span><span class="p">[</span><span class="s1">&#39;client_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$client_id</span><span class="p">;</span>
+</span><span class='line'>        <span class="nv">$parameters</span><span class="p">[</span><span class="s1">&#39;client_secret&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$client_secret</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nv">$http_headers</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="nx">executeRequest</span><span class="p">(</span><span class="nv">$token_endpoint</span><span class="p">,</span> <span class="nv">$parameters</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="nv">$http_headers</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">function</span> <span class="nf">executeRequest</span><span class="p">(</span><span class="nv">$url</span><span class="p">,</span> <span class="nv">$parameters</span> <span class="o">=</span> <span class="k">array</span><span class="p">(),</span> <span class="nv">$http_method</span> <span class="o">=</span> <span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="k">array</span> <span class="nv">$http_headers</span> <span class="o">=</span> <span class="k">null</span><span class="p">,</span> <span class="nv">$form_content_type</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nv">$postBody</span> <span class="o">=</span> <span class="nb">http_build_query</span><span class="p">(</span><span class="nv">$parameters</span><span class="p">);</span>
+</span><span class='line'>        <span class="nv">$requestHttpContext</span><span class="p">[</span><span class="s2">&quot;content&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$postBody</span><span class="p">;</span>
+</span><span class='line'>        <span class="nv">$requestHttpContext</span><span class="p">[</span><span class="s2">&quot;method&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;POST&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nv">$options</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span> <span class="s1">&#39;http&#39;</span> <span class="o">=&gt;</span> <span class="nv">$requestHttpContext</span> <span class="p">);</span>
+</span><span class='line'>        <span class="nv">$context</span> <span class="o">=</span> <span class="nb">stream_context_create</span><span class="p">(</span> <span class="nv">$options</span> <span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nv">$response</span> <span class="o">=</span> <span class="nb">file_get_contents</span><span class="p">(</span><span class="nv">$url</span><span class="p">,</span> <span class="k">false</span><span class="p">,</span> <span class="nv">$context</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$response</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nv">$client_id</span> <span class="o">=</span> <span class="s1">&#39;my-client-id&#39;</span><span class="p">;</span>
+</span><span class='line'>    <span class="nv">$client_secret</span> <span class="o">=</span> <span class="s1">&#39;my-client-secret&#39;</span><span class="p">;</span>
+</span><span class='line'>    <span class="nv">$authorization_endpoint</span> <span class="o">=</span> <span class="s1">&#39;my-authorization-endpoint&#39;</span><span class="p">;</span>
+</span><span class='line'>    <span class="nv">$redirect_uri</span> <span class="o">=</span> <span class="s1">&#39;my-redirect-uri&#39;</span><span class="p">;</span>
+</span><span class='line'>    <span class="nv">$token_endpoint</span> <span class="o">=</span> <span class="s1">&#39;my-token-endpoint&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;code&#39;</span><span class="p">]))</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$auth_url</span> <span class="o">=</span> <span class="nx">getAuthenticationUrl</span><span class="p">(</span><span class="nv">$authorization_endpoint</span><span class="p">,</span> <span class="nv">$client_id</span><span class="p">,</span> <span class="nv">$redirect_uri</span><span class="p">);</span>
+</span><span class='line'>        <span class="nx">header</span><span class="p">(</span><span class="s1">&#39;Location: &#39;</span> <span class="o">.</span> <span class="nv">$auth_url</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">die</span><span class="p">(</span><span class="s1">&#39;Redirect&#39;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$params</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+</span><span class='line'>                        <span class="s1">&#39;code&#39;</span> <span class="o">=&gt;</span> <span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;code&#39;</span><span class="p">],</span>
+</span><span class='line'>                        <span class="s1">&#39;redirect_uri&#39;</span> <span class="o">=&gt;</span> <span class="nv">$redirect_uri</span>
+</span><span class='line'>                        <span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nv">$response</span> <span class="o">=</span> <span class="nx">getAccessToken</span><span class="p">(</span><span class="nv">$token_endpoint</span><span class="p">,</span> <span class="s1">&#39;authorization_code&#39;</span><span class="p">,</span> <span class="nv">$params</span><span class="p">,</span> <span class="nv">$client_id</span><span class="p">,</span> <span class="nv">$client_secret</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nv">$info</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$response</span><span class="p">,</span> <span class="k">true</span><span class="p">);</span>
+</span><span class='line'>        <span class="nv">$querystring</span> <span class="o">=</span> <span class="nb">http_build_query</span><span class="p">(</span><span class="nv">$info</span><span class="p">);</span>
+</span><span class='line'>        <span class="nv">$appurl</span> <span class="o">=</span> <span class="s1">&#39;secrethandshake://oauth&#39;</span> <span class="o">.</span> <span class="s1">&#39;?&#39;</span> <span class="o">.</span> <span class="nv">$querystring</span><span class="p">;</span>
+</span><span class='line'>        <span class="nx">header</span><span class="p">(</span><span class="s1">&#39;Location: &#39;</span> <span class="o">.</span> <span class="nv">$appurl</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">die</span><span class="p">(</span><span class="s1">&#39;Redirect&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On the iPhone, I capture the custom URL query string in the App Delegate.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">application:</span><span class="p">(</span><span class="n">UIApplication</span> <span class="o">*</span><span class="p">)</span><span class="nv">application</span> <span class="nf">openURL:</span><span class="p">(</span><span class="n">NSURL</span> <span class="o">*</span><span class="p">)</span><span class="nv">url</span> <span class="nf">sourceApplication:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">sourceApplication</span> <span class="nf">annotation:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">annotation</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="c1">// secrethandshake://oauth?access_token=324235253442</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="p">([[</span><span class="n">url</span> <span class="n">host</span><span class="p">]</span> <span class="nl">isEqualToString:</span><span class="s">@&quot;oauth&quot;</span><span class="p">])</span> <span class="p">{</span>
+</span><span class='line'>        <span class="c1">// parse the authentication code query</span>
+</span><span class='line'>        <span class="p">[</span><span class="n">self</span> <span class="nl">authorizeFromExternalURL:</span><span class="n">url</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="n">YES</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">authorizeFromExternalURL:</span><span class="p">(</span><span class="n">NSURL</span> <span class="o">*</span><span class="p">)</span><span class="nv">url</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="p">[[</span><span class="n">OAuthHandler</span> <span class="n">sharedHandler</span><span class="p">]</span> <span class="nl">handleAuthTokenURL:</span><span class="n">url</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then I parse the query string in my OAuth Handler and store the access token and the refresh token in my user defaults.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">handleAuthTokenURL:</span><span class="p">(</span><span class="n">NSURL</span> <span class="o">*</span><span class="p">)</span><span class="nv">url</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="c1">// handle query here</span>
+</span><span class='line'>    <span class="n">NSDictionary</span> <span class="o">*</span><span class="n">dict</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span> <span class="nl">parseQueryString:</span><span class="p">[</span><span class="n">url</span> <span class="n">query</span><span class="p">]];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="p">([</span><span class="n">dict</span> <span class="nl">objectForKey:</span><span class="s">@&quot;error&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">delegate</span> <span class="nl">oauthHandlerDidFailWithError:</span><span class="p">[</span><span class="n">dict</span> <span class="nl">objectForKey:</span><span class="s">@&quot;error&quot;</span><span class="p">]];</span>
+</span><span class='line'>    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">([</span><span class="n">dict</span> <span class="nl">objectForKey:</span><span class="s">@&quot;access_token&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="nb">nil</span> <span class="o">&amp;&amp;</span> <span class="p">[</span><span class="n">dict</span> <span class="nl">objectForKey:</span><span class="s">@&quot;refresh_token&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="c1">// Save the access token and refresh token</span>
+</span><span class='line'>        <span class="p">[[</span><span class="n">NSUserDefaults</span> <span class="n">standardUserDefaults</span><span class="p">]</span> <span class="nl">setObject:</span><span class="p">[</span><span class="n">dict</span> <span class="nl">objectForKey:</span><span class="s">@&quot;access_token&quot;</span><span class="p">]</span> <span class="nl">forKey:</span><span class="n">kSHAccessTokenKey</span><span class="p">];</span>
+</span><span class='line'>        <span class="p">[[</span><span class="n">NSUserDefaults</span> <span class="n">standardUserDefaults</span><span class="p">]</span> <span class="nl">setObject:</span><span class="p">[</span><span class="n">dict</span> <span class="nl">objectForKey:</span><span class="s">@&quot;refresh_token&quot;</span><span class="p">]</span> <span class="nl">forKey:</span><span class="n">kSHRefreshTokenKey</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">delegate</span> <span class="n">oauthHandlerDidAuthorize</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>        <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">delegate</span> <span class="nl">oauthHandlerDidFailWithError:</span><span class="s">@&quot;Access token not found. Failed to log in to Hacker School.&quot;</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSDictionary</span> <span class="o">*</span><span class="p">)</span><span class="nf">parseQueryString:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">query</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">NSMutableDictionary</span> <span class="o">*</span><span class="n">dict</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSMutableDictionary</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithCapacity:</span><span class="mi">6</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">NSArray</span> <span class="o">*</span><span class="n">pairs</span> <span class="o">=</span> <span class="p">[</span><span class="n">query</span> <span class="nl">componentsSeparatedByString:</span><span class="s">@&quot;&amp;&quot;</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="n">pair</span> <span class="k">in</span> <span class="n">pairs</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">NSArray</span> <span class="o">*</span><span class="n">elements</span> <span class="o">=</span> <span class="p">[</span><span class="n">pair</span> <span class="nl">componentsSeparatedByString:</span><span class="s">@&quot;=&quot;</span><span class="p">];</span>
+</span><span class='line'>        <span class="n">NSString</span> <span class="o">*</span><span class="n">key</span> <span class="o">=</span> <span class="p">[[</span><span class="n">elements</span> <span class="nl">objectAtIndex:</span><span class="mi">0</span><span class="p">]</span> <span class="nl">stringByReplacingPercentEscapesUsingEncoding:</span><span class="n">NSUTF8StringEncoding</span><span class="p">];</span>
+</span><span class='line'>        <span class="n">NSString</span> <span class="o">*</span><span class="n">val</span> <span class="o">=</span> <span class="p">[[</span><span class="n">elements</span> <span class="nl">objectAtIndex:</span><span class="mi">1</span><span class="p">]</span> <span class="nl">stringByReplacingPercentEscapesUsingEncoding:</span><span class="n">NSUTF8StringEncoding</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="p">[</span><span class="n">dict</span> <span class="nl">setObject:</span><span class="n">val</span> <span class="nl">forKey:</span><span class="n">key</span><span class="p">];</span>
+</span><span class='line'>        <span class="n">elements</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+</span><span class='line'>        <span class="n">key</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+</span><span class='line'>        <span class="n">val</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="n">pairs</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">dict</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To refresh the token, I just post to Hacker School&rsquo;s <code>/oauth/token</code> page with the query string <code>grant_type=refresh_token&amp;refresh_token=my_refresh_token</code> along with my client id and client secret, and store the new access token to sign my queries.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">refreshToken:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">NSURL</span> <span class="o">*</span><span class="n">tokenURL</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSURL</span> <span class="nl">URLWithString:</span><span class="s">@&quot;https://www.hackerschool.com/oauth/token&quot;</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">NSMutableURLRequest</span> <span class="o">*</span><span class="n">request</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSMutableURLRequest</span> <span class="nl">requestWithURL:</span><span class="n">tokenURL</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">[</span><span class="n">request</span> <span class="nl">setHTTPMethod:</span><span class="s">@&quot;POST&quot;</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">NSString</span> <span class="o">*</span><span class="n">postString</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSString</span> <span class="nl">stringWithFormat:</span><span class="s">@&quot;grant_type=refresh_token&amp;client_id=%@&amp;client_secret=%@&amp;refresh_token=%@&quot;</span><span class="p">,</span> <span class="n">kMyClientID</span><span class="p">,</span> <span class="n">kMyClientSecret</span><span class="p">,</span> <span class="p">[[</span><span class="n">NSUserDefaults</span> <span class="n">standardUserDefaults</span><span class="p">]</span> <span class="nl">objectForKey:</span><span class="n">kSHRefreshTokenKey</span><span class="p">]];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">request</span> <span class="nl">setHTTPBody:</span><span class="p">[</span><span class="n">postString</span> <span class="nl">dataUsingEncoding:</span><span class="n">NSUTF8StringEncoding</span><span class="p">]];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">[</span><span class="n">NSURLConnection</span> <span class="nl">sendAsynchronousRequest:</span><span class="n">request</span>
+</span><span class='line'>                                       <span class="nl">queue:</span><span class="p">[</span><span class="n">NSOperationQueue</span> <span class="n">mainQueue</span><span class="p">]</span>
+</span><span class='line'>                           <span class="nl">completionHandler:</span><span class="o">^</span><span class="p">(</span><span class="n">NSURLResponse</span> <span class="o">*</span><span class="n">response</span><span class="p">,</span> <span class="n">NSData</span> <span class="o">*</span><span class="n">data</span><span class="p">,</span> <span class="n">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>                               <span class="n">NSString</span> <span class="o">*</span><span class="n">responseBody</span> <span class="o">=</span> <span class="p">[</span> <span class="p">[</span><span class="n">NSString</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithData:</span><span class="n">data</span> <span class="nl">encoding:</span><span class="n">NSUTF8StringEncoding</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>                               <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;response: %@&quot;</span><span class="p">,</span> <span class="n">responseBody</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>                               <span class="n">NSData</span> <span class="o">*</span><span class="n">jsonData</span> <span class="o">=</span> <span class="p">[</span><span class="n">responseBody</span> <span class="nl">dataUsingEncoding:</span><span class="n">NSUTF8StringEncoding</span><span class="p">];</span>
+</span><span class='line'>                               <span class="n">NSError</span> <span class="o">*</span><span class="n">e</span><span class="p">;</span>
+</span><span class='line'>                               <span class="n">NSDictionary</span> <span class="o">*</span><span class="n">jsonDict</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSJSONSerialization</span> <span class="nl">JSONObjectWithData:</span><span class="n">jsonData</span> <span class="nl">options:</span><span class="n">NSJSONReadingAllowFragments</span> <span class="nl">error:</span><span class="o">&amp;</span><span class="n">e</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>                               <span class="k">if</span> <span class="p">(</span><span class="n">e</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>                                   <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;error: %@&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">);</span>
+</span><span class='line'>                                   <span class="p">[</span><span class="n">self</span> <span class="nl">launchExternalSignIn:</span><span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'>                               <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">([</span><span class="n">jsonDict</span> <span class="nl">objectForKey:</span><span class="s">@&quot;error&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">){</span>
+</span><span class='line'>                                   <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;error refreshing token: %@&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">jsonDict</span> <span class="nl">objectForKey:</span><span class="s">@&quot;error&quot;</span><span class="p">]);</span>
+</span><span class='line'>                                   <span class="p">[</span><span class="n">self</span> <span class="nl">launchExternalSignIn:</span><span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'>                               <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>                                   <span class="p">[[</span><span class="n">NSUserDefaults</span> <span class="n">standardUserDefaults</span><span class="p">]</span> <span class="nl">setObject:</span><span class="p">[</span><span class="n">jsonDict</span> <span class="nl">objectForKey:</span><span class="s">@&quot;access_token&quot;</span><span class="p">]</span> <span class="nl">forKey:</span><span class="n">kSHAccessTokenKey</span><span class="p">];</span>
+</span><span class='line'>                                   <span class="p">[[</span><span class="n">NSUserDefaults</span> <span class="n">standardUserDefaults</span><span class="p">]</span> <span class="nl">setObject:</span><span class="p">[</span><span class="n">jsonDict</span> <span class="nl">objectForKey:</span><span class="s">@&quot;refresh_token&quot;</span><span class="p">]</span> <span class="nl">forKey:</span><span class="n">kSHRefreshTokenKey</span><span class="p">];</span>
+</span><span class='line'>                                   <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">delegate</span> <span class="n">oauthHandlerDidAuthorize</span><span class="p">];</span>
+</span><span class='line'>                               <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>                           <span class="p">}];</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It took a lot of time to get this up and running due to the lack of clear documentation on OAuth 2.0 requests, but I&rsquo;m happy with how it turned out and very happy to have gotten rid of all of the external libraries. Rewriting the entire thing in a concise way let me fully understand everything that was happening, which makes the debugging process so much simpler. Hopefully this will help someone else struggling with OAuth login from an app. The source code is available <a href="https://github.com/lauraskelton/secrethandshake">on GitHub</a>.</p>
+
+<p>Testing the app was exciting. Several people loaded the app onto their phones and logged in, and we were all getting alerts with each others&#8217; photos, which was pretty cool. The background notifications of nearby users were working perfectly. I&rsquo;m looking into setting up <a href="https://github.com/Instrument/Vicinity">a custom implementation of iBeacon using Bluetooth LE in background mode</a> that will allow the phones to broadcast periodically in the background as well, so that no one needs to have the app open to be notified that someone is nearby. I&rsquo;m also looking into downloading the name and photo of the nearby user in the background and including that information in the alert that gets sent.</p>
+
+<p><img class="center" src="http://lauraskelton.github.io/images/posts/10notifications.jpg" title="'SecretHandshake Notifications'" ></p>
+
+<p>I had a great conversation with <a href="https://github.com/thomasballinger">Tom</a> in the morning about what I&rsquo;ve been working on at Hacker School and what I should focus on for the coming weeks to get the most out of it. I left feeling pretty good about the various directions I&rsquo;ve taken and how much/what/how fast I&rsquo;ve been learning. I&rsquo;m happy with the balance I&rsquo;ve had between <a href="http://lauraskelton.github.io/blog/2014/06/19/hacker-school-day-8/">iOS projects</a>, totally new projects (<a href="http://lauraskelton.github.io/blog/2014/06/11/hacker-school-day-2/">Arduino</a> and cool <a href="http://lauraskelton.github.io/blog/2014/06/12/hacker-school-day-3/">machine learning</a>/<a href="http://lauraskelton.github.io/blog/2014/06/13/hacker-school-day-4/">neural network</a> stuff), learning new languages (<a href="http://lauraskelton.github.io/blog/2014/06/10/hacker-school-day-1/">Swift!</a>), and programming basics (getting familiar with the <a href="http://lauraskelton.github.io/blog/2014/06/20/hacker-school-day-9/">data structures and algorithms</a> basics that would have been covered in CS courses had I taken that path).</p>
+
+<p>I came away with some great new ideas for things that would be good and/or fun to focus on in the coming weeks and clearer goals for the rest of Hacker School. A side effect of being around so much creative energy and cool projects is that you can get overwhelmed with fear of missing out on what everyone else is doing, even if that&rsquo;s not what you came here to work on. Part of that is a fun and enriching distraction, like Arduino, and part of it just ends up being noise that confuses your focus. If a bunch of people are excited about writing compilers and learning Rust, should I be doing those things too?</p>
+
+<p>I have a few ideas for some quick iOS apps that I&rsquo;d like to try to implement in Swift, that are more of a game/drawing style of app that use more math, graphics, and touch interface than the social utility apps I&rsquo;ve written in the past, which tended to take advantage of Apple&rsquo;s great built in user interface elements more than custom graphics and animations. Looking forward to the coming weeks!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Hacker School Day 9]]></title>
@@ -316,7 +699,7 @@
     <link href="http://lauraskelton.github.io/blog/2014/06/19/hacker-school-day-8/"/>
     <updated>2014-06-19T20:53:29-04:00</updated>
     <id>http://lauraskelton.github.io/blog/2014/06/19/hacker-school-day-8</id>
-    <content type="html"><![CDATA[<p>I finished a new iPhone app today!! It was inspired by someone at the Swift meetup saying that Hacker School was like the new Freemasons &ndash; some kind of secret society that instantly connected you with other people. I had such a good time talking to some Hacker School alums I hadn&rsquo;t met before, that I thought it would be good to have an app that would let me know at future meetups whether there were any other Hacker Schoolers in the room.</p>
+    <content type="html"><![CDATA[<p>I finished a <a href="https://github.com/lauraskelton/secrethandshake">new iPhone app</a> today!! It was inspired by someone at the Swift meetup saying that Hacker School was like the new Freemasons &ndash; some kind of secret society that instantly connected you with other people. I had such a good time talking to some Hacker School alums I hadn&rsquo;t met before, that I thought it would be good to have an app that would let me know at future meetups whether there were any other Hacker Schoolers in the room.</p>
 
 <p>In iOS 7, Apple introduce iBeacons, a proximity beacon built on top of Bluetooth LE. IPhones can scan for iBeacon signals, and display special hyperlocal information when they come within range of one, such as at a store display or at a particular museum exhibit. The iBeacon signal can even wake up an iPhone that is inactive with an alert and a notification banner.</p>
 

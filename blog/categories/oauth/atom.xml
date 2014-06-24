@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: iOS | Hacker School Daily Log]]></title>
-  <link href="http://lauraskelton.github.io/blog/categories/ios/atom.xml" rel="self"/>
+  <title><![CDATA[Category: OAuth | Hacker School Daily Log]]></title>
+  <link href="http://lauraskelton.github.io/blog/categories/oauth/atom.xml" rel="self"/>
   <link href="http://lauraskelton.github.io/"/>
   <updated>2014-06-24T11:53:08-04:00</updated>
   <id>http://lauraskelton.github.io/</id>
@@ -244,83 +244,6 @@ NSString *postString = [NSString stringWithFormat:@"grant_type=refresh_token&amp
 <p>I came away with some great new ideas for things that would be good and/or fun to focus on in the coming weeks and clearer goals for the rest of Hacker School. A side effect of being around so much creative energy and cool projects is that you can get overwhelmed with fear of missing out on what everyone else is doing, even if that&rsquo;s not what you came here to work on. Part of that is a fun and enriching distraction, like Arduino, and part of it just ends up being noise that confuses your focus. If a bunch of people are excited about writing compilers and learning Rust, should I be doing those things too?</p>
 
 <p>I have a few ideas for some quick iOS apps that I&rsquo;d like to try to implement in Swift, that are more of a game/drawing style of app that use more math, graphics, and touch interface than the social utility apps I&rsquo;ve written in the past, which tended to take advantage of Apple&rsquo;s great built in user interface elements more than custom graphics and animations. Looking forward to the coming weeks!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Hacker School Day 8]]></title>
-    <link href="http://lauraskelton.github.io/blog/2014/06/19/hacker-school-day-8/"/>
-    <updated>2014-06-19T20:53:29-04:00</updated>
-    <id>http://lauraskelton.github.io/blog/2014/06/19/hacker-school-day-8</id>
-    <content type="html"><![CDATA[<p>I finished a <a href="https://github.com/lauraskelton/secrethandshake">new iPhone app</a> today!! It was inspired by someone at the Swift meetup saying that Hacker School was like the new Freemasons &ndash; some kind of secret society that instantly connected you with other people. I had such a good time talking to some Hacker School alums I hadn&rsquo;t met before, that I thought it would be good to have an app that would let me know at future meetups whether there were any other Hacker Schoolers in the room.</p>
-
-<p>In iOS 7, Apple introduce iBeacons, a proximity beacon built on top of Bluetooth LE. IPhones can scan for iBeacon signals, and display special hyperlocal information when they come within range of one, such as at a store display or at a particular museum exhibit. The iBeacon signal can even wake up an iPhone that is inactive with an alert and a notification banner.</p>
-
-<p><img class="center" src="/images/posts/8ibeacon.jpg" title="&lsquo;ibeacon&rsquo;" ></p>
-
-<p>The really exciting thing is that iPhones can also act as iBeacon emitters as well as receivers. You can send out an iBeacon signal from your phone while also scanning for similar signals from other people&rsquo;s phones.</p>
-
-<p>```objc
-&ndash; (void)initBeacon {</p>
-
-<pre><code>self.beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:uuid
-                                                            major:1
-                                                            minor:userID
-                                                       identifier:@"someregion"];
-</code></pre>
-
-<p>}</p>
-
-<ul>
-<li>(void)transmitBeacon
-{
-      self.beaconPeripheralData = [self.beaconRegion peripheralDataWithMeasuredPower:nil];
-      self.peripheralManager = [[CBPeripheralManager alloc] initWithDelegate:self
-                                                                       queue:nil
-                                                                     options:nil];
-}
-```</li>
-</ul>
-
-
-<p>I set up my app so that each user&rsquo;s phone emits an iBeacon signal that includes their userID. Each phone also scans for other signals, and if it finds that of another Hacker Schooler&rsquo;s phone, it sends an alert to the scanner&rsquo;s phone and downloads a profile photo, name, and batch of the nearby person. That way, you could make sure to stop by and chat with that person at a conference or meetup.</p>
-
-<p>So far it seems to be working well, but I definitely need beta testing help from some other Hacker School folks who wouldn&rsquo;t mind giving some feedback. I have it up on TestFlight if you have an iPhone and time to test it out! <a href="http://tflig.ht/1stcVLG">http://tflig.ht/1stcVLG</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Hacker School Day 7]]></title>
-    <link href="http://lauraskelton.github.io/blog/2014/06/18/hacker-school-day-7/"/>
-    <updated>2014-06-18T08:15:31-04:00</updated>
-    <id>http://lauraskelton.github.io/blog/2014/06/18/hacker-school-day-7</id>
-    <content type="html"><![CDATA[<p>I started off working on my beer neural network a bit more. I figured out part of the problem that was giving me data that didn&rsquo;t feel right, which had to do with changing the inputs to give an incomplete picture of the outputs to force the neural network to draw more meaningful connections between the missing beer ratings and the existing beer ratings. Basically, I erased half of the beer ratings from each user from the &ldquo;input&rdquo; dataset, and left the &ldquo;output&rdquo; dataset the same, so the network would have to actually predict and couldn&rsquo;t cheat by just figuring out how to compress the ratings down to 10 nodes and then decompress them back to 900 nodes using tricky math.</p>
-
-<p><img class="center" src="/images/posts/7neuralnetwork.png" title="&lsquo;neural network&rsquo;" ></p>
-
-<p>Now that the neural network is actually learning, I can&rsquo;t seem to get my error rate down to a level I&rsquo;m happy with. I&rsquo;m going to keep working on tweaking the parameters of the neural network to see if I can get it to output something cool that I can share.</p>
-
-<p>While my computer was crunching away at reducing the neural network&rsquo;s error, I took a coffee break down the street with a few friends, which led to a fascinating conversation that lasted a couple of hours, mainly about Mesh Networking and Cryptocurrencies. I learned a lot about how different cryptocurrencies work, including Namecoin, which is linked to your domain name and can validate you, and another cryptocurrency that includes its own programming language that can have actually have contracts embedded in code within a transaction.</p>
-
-<p><img class="center" src="/images/posts/7dogecoin.png" title="&lsquo;dogecoin&rsquo;" ></p>
-
-<p>We went down a pretty complicated rabbit hole of trying to figure out if there was a way to solve some problems in Mesh Networking by linking it with a cryptocurrency, either to validate the identity of nodes to allow secure communication without a centralized server (replacing SSL), or to pay central nodes for traffic they routed in order to reward mesh network users to be good citizens and stay connected to the mesh routing messages between other nodes even when they weren&rsquo;t personally using it.</p>
-
-<p><img class="center" src="/images/posts/7torcoin.jpg" title="&lsquo;torcoin&rsquo;" ></p>
-
-<p>We ended up talking about an idea to combine a social network with mesh network routing or  secure direct connections by using an app with Bluetooth LE to confirm in person that each person in my inner circle is who they say they are. Each of those people could do the same thing for their trusted friends, and then we would have a network of nodes each with a certain degree of social separation and therefore degree of trustedness which we could use to priorities routing of messages.</p>
-
-<p><img class="center" src="/images/posts/7weboftrust.png" title="&lsquo;web of trust&rsquo;" ></p>
-
-<p>We left with some interesting ideas and a bunch of reading to do on Mesh Networking. It turns out that the idea of compensating for node bandwidth was discussed in <a href="http://dedis.cs.yale.edu/dissent/papers/hotpets14-torpath.pdf">a recent paper about TorCoin</a>, which would be &ldquo;mined&rdquo; by routing traffic over the Tor network, and then could be sold in altcoin exchanges, encouraging good behavior on the network. We also decided to read through <a href="https://en.wikipedia.org/wiki/Wireless_mesh_network#Routing_protocols">an overview of the many previously attempted mesh network routing protocols</a> to get a clearer picture of benefits and pitfalls of different approaches. There is also <a href="http://www.amazon.com/Linked-The-New-Science-Networks/dp/0738206679">a book that discusses the inherent properties of many types of networks</a> that sounds like an interesting read.</p>
-
-<p><img class="center" src="/images/posts/7meshnetwork.jpg" title="&lsquo;mesh network&rsquo;" ></p>
-
-<p>I was totally re-energized by this discussion, and decided to figure out iBeacons so I can make a fun Objective-C app for Hacker School. When I went to the Swift meetup at Etsy, almost everyone I met was excited about Hacker School, and I instantly had something to talk about with the new people I was meeting. On top of that, a few Hacker School alumni came out to the bar in Dumbo after the meetup, which was very cool. The app idea was inspired by a comment someone made that night that Hacker School was like the new Freemasons.</p>
-
-<p><img class="center" src="/images/posts/7ibeacon.jpg" title="&lsquo;ibeacons&rsquo;" ></p>
-
-<p>I finished up the nitty gritty late into the evening, and should have a fully working app ready for testing tomorrow!</p>
 ]]></content>
   </entry>
   

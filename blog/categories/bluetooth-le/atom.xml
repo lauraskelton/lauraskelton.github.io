@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Bluetooth-LE | Hacker School Daily Log]]></title>
   <link href="http://lauraskelton.github.io/blog/categories/bluetooth-le/atom.xml" rel="self"/>
   <link href="http://lauraskelton.github.io/"/>
-  <updated>2014-06-21T17:44:46-04:00</updated>
+  <updated>2014-06-24T11:53:08-04:00</updated>
   <id>http://lauraskelton.github.io/</id>
   <author>
     <name><![CDATA[Laura Skelton]]></name>
@@ -14,11 +14,245 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Hacker School Day 10]]></title>
+    <link href="http://lauraskelton.github.io/blog/2014/06/23/hacker-school-day-10/"/>
+    <updated>2014-06-23T20:56:24-04:00</updated>
+    <id>http://lauraskelton.github.io/blog/2014/06/23/hacker-school-day-10</id>
+    <content type="html"><![CDATA[<p>I put a ton of time in on the Secret Handshake iOS app in perfecting the OAuth login procedure. Originally, I was using an OAuth library from Google to open the Hacker School login page in a webview within the app. The problem with this was that it couldn&rsquo;t take advantage of Safari&rsquo;s auto fill password functionality, or if you were already logged in on the browser.</p>
+
+<p>I first tried to use the iOS library to post the authentication code request to the Hacker School website on Safari. Unfortunately, an iOS app is unable to do a <code>POST</code> request to another app. I ended up writing a simple PHP file on my server that I redirect the user to from the Secret Handshake app. The PHP file handles sending the user to the Hacker School login page and then sending a <code>POST</code> request to get an access token from Hacker School. It then sends the returned token back to the Secret Handshake app via a custom URL scheme <code>secrethandshake://oauth</code> and an attached query string containing the token.</p>
+
+<p><img class="center" src="/images/posts/10oauthflow.png" title="&lsquo;OAuth 2.0 Process&rsquo;" ></p>
+
+<p>In the end, after struggling to find any examples of what a successful OAuth request should look like, and to find a working library I could use to get things up and running, I am not using any 3rd party libraries at all with my OAuth implementation, the code handling the OAuth requests is relatively brief, and I even managed to get token refreshing up and running to avoid repeated logins.</p>
+
+<p>This is the PHP OAuth manager file in its entirety.</p>
+
+<p>```php</p>
+
+<p>&lt;?php</p>
+
+<pre><code>/**
+ * Server OAuth Handler for iOS App
+ *
+ * iOS App launches Safari to this page on SecretHandshake server
+ * This page sends the user to the Hacker School login page to get authorization code
+ * It takes the auth code and sends it back to the server to get an access token
+ * It redirects the user back to the app via a custom URL scheme
+ * and sends the access and refresh tokens as query parameters to the app
+ * which stores them for future use.
+ */
+
+function getAuthenticationUrl($auth_endpoint, $client_id, $redirect_uri)
+{
+    $parameters = array(
+                                    'response_type' =&gt; 'code',
+                                    'client_id'     =&gt; $client_id,
+                                    'redirect_uri'  =&gt; $redirect_uri
+                                    );
+    return $auth_endpoint . '?' . http_build_query($parameters, null, '&amp;');
+}
+
+function getAccessToken($token_endpoint, $grant_type, array $parameters, $client_id, $client_secret)
+{
+    $parameters['grant_type'] = $grant_type;
+    $parameters['client_id'] = $client_id;
+    $parameters['client_secret'] = $client_secret;
+
+    $http_headers = array();
+
+    return executeRequest($token_endpoint, $parameters, 'POST', $http_headers, 0);
+}
+
+function executeRequest($url, $parameters = array(), $http_method = 'POST', array $http_headers = null, $form_content_type = 0)
+{
+
+    $postBody = http_build_query($parameters);
+    $requestHttpContext["content"] = $postBody;
+    $requestHttpContext["method"] = 'POST';
+
+    $options = array( 'http' =&gt; $requestHttpContext );
+    $context = stream_context_create( $options );
+
+    $response = file_get_contents($url, false, $context);
+
+    return $response;
+
+}
+
+$client_id = 'my-client-id';
+$client_secret = 'my-client-secret';
+$authorization_endpoint = 'my-authorization-endpoint';
+$redirect_uri = 'my-redirect-uri';
+$token_endpoint = 'my-token-endpoint';
+
+
+if (!isset($_GET['code']))
+{
+    $auth_url = getAuthenticationUrl($authorization_endpoint, $client_id, $redirect_uri);
+    header('Location: ' . $auth_url);
+    die('Redirect');
+} else {
+    $params = array(
+                    'code' =&gt; $_GET['code'],
+                    'redirect_uri' =&gt; $redirect_uri
+                    );
+
+    $response = getAccessToken($token_endpoint, 'authorization_code', $params, $client_id, $client_secret);
+
+    $info = json_decode($response, true);
+    $querystring = http_build_query($info);
+    $appurl = 'secrethandshake://oauth' . '?' . $querystring;
+    header('Location: ' . $appurl);
+    die('Redirect');
+
+}
+</code></pre>
+
+<p>?></p>
+
+<p>```</p>
+
+<p>On the iPhone, I capture the custom URL query string in the App Delegate.</p>
+
+<p>```objc
+&ndash; (BOOL)application:(UIApplication <em>)application openURL:(NSURL </em>)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{</p>
+
+<pre><code>// secrethandshake://oauth?access_token=324235253442
+
+if ([[url host] isEqualToString:@"oauth"]) {
+    // parse the authentication code query
+    [self authorizeFromExternalURL:url];
+}
+
+return YES;
+</code></pre>
+
+<p>}</p>
+
+<ul>
+<li>(void)authorizeFromExternalURL:(NSURL *)url
+{
+  [[OAuthHandler sharedHandler] handleAuthTokenURL:url];
+}
+```</li>
+</ul>
+
+
+<p>Then I parse the query string in my OAuth Handler and store the access token and the refresh token in my user defaults.</p>
+
+<p>``` objc
+&ndash;(void)handleAuthTokenURL:(NSURL *)url
+{</p>
+
+<pre><code>// handle query here
+NSDictionary *dict = [self parseQueryString:[url query]];
+
+if ([dict objectForKey:@"error"] != nil) {
+    [self.delegate oauthHandlerDidFailWithError:[dict objectForKey:@"error"]];
+} else if ([dict objectForKey:@"access_token"] != nil &amp;&amp; [dict objectForKey:@"refresh_token"] != nil) {
+    // Save the access token and refresh token
+    [[NSUserDefaults standardUserDefaults] setObject:[dict objectForKey:@"access_token"] forKey:kSHAccessTokenKey];
+    [[NSUserDefaults standardUserDefaults] setObject:[dict objectForKey:@"refresh_token"] forKey:kSHRefreshTokenKey];
+
+    [self.delegate oauthHandlerDidAuthorize];
+} else {
+    [self.delegate oauthHandlerDidFailWithError:@"Access token not found. Failed to log in to Hacker School."];
+}
+</code></pre>
+
+<p>}</p>
+
+<ul>
+<li><p>(NSDictionary <em>)parseQueryString:(NSString </em>)query
+{
+  NSMutableDictionary <em>dict = [[NSMutableDictionary alloc] initWithCapacity:6];
+  NSArray </em>pairs = [query componentsSeparatedByString:@&ldquo;&amp;&rdquo;];</p>
+
+<p>  for (NSString <em>pair in pairs) {
+      NSArray </em>elements = [pair componentsSeparatedByString:@&ldquo;=&rdquo;];
+      NSString <em>key = [[elements objectAtIndex:0] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+      NSString </em>val = [[elements objectAtIndex:1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];</p>
+
+<pre><code>  [dict setObject:val forKey:key];
+  elements = nil;
+  key = nil;
+  val = nil;
+</code></pre>
+
+<p>  }
+  pairs = nil;
+  return dict;
+}</p></li>
+</ul>
+
+
+<p>```</p>
+
+<p>To refresh the token, I just post to Hacker School&rsquo;s <code>/oauth/token</code> page with the query string <code>grant_type=refresh_token&amp;refresh_token=my_refresh_token</code> along with my client id and client secret, and store the new access token to sign my queries.</p>
+
+<p>```objc
+&ndash;(void)refreshToken:(id)sender
+{</p>
+
+<pre><code>NSURL *tokenURL = [NSURL URLWithString:@"https://www.hackerschool.com/oauth/token"];
+NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:tokenURL];
+
+[request setHTTPMethod:@"POST"];
+NSString *postString = [NSString stringWithFormat:@"grant_type=refresh_token&amp;client_id=%@&amp;client_secret=%@&amp;refresh_token=%@", kMyClientID, kMyClientSecret, [[NSUserDefaults standardUserDefaults] objectForKey:kSHRefreshTokenKey]];
+[request setHTTPBody:[postString dataUsingEncoding:NSUTF8StringEncoding]];
+
+[NSURLConnection sendAsynchronousRequest:request
+                                   queue:[NSOperationQueue mainQueue]
+                       completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+
+                           NSString *responseBody = [ [NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+
+                           NSLog(@"response: %@", responseBody);
+
+                           NSData *jsonData = [responseBody dataUsingEncoding:NSUTF8StringEncoding];
+                           NSError *e;
+                           NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingAllowFragments error:&amp;e];
+
+                           if (e != nil) {
+                               NSLog(@"error: %@", e);
+                               [self launchExternalSignIn:nil];
+                           } else if ([jsonDict objectForKey:@"error"] != nil){
+                               NSLog(@"error refreshing token: %@", [jsonDict objectForKey:@"error"]);
+                               [self launchExternalSignIn:nil];
+                           } else {
+                               [[NSUserDefaults standardUserDefaults] setObject:[jsonDict objectForKey:@"access_token"] forKey:kSHAccessTokenKey];
+                               [[NSUserDefaults standardUserDefaults] setObject:[jsonDict objectForKey:@"refresh_token"] forKey:kSHRefreshTokenKey];
+                               [self.delegate oauthHandlerDidAuthorize];
+                           }
+
+                       }];
+</code></pre>
+
+<p>}
+```</p>
+
+<p>It took a lot of time to get this up and running due to the lack of clear documentation on OAuth 2.0 requests, but I&rsquo;m happy with how it turned out and very happy to have gotten rid of all of the external libraries. Rewriting the entire thing in a concise way let me fully understand everything that was happening, which makes the debugging process so much simpler. Hopefully this will help someone else struggling with OAuth login from an app. The source code is available <a href="https://github.com/lauraskelton/secrethandshake">on GitHub</a>.</p>
+
+<p>Testing the app was exciting. Several people loaded the app onto their phones and logged in, and we were all getting alerts with each others' photos, which was pretty cool. The background notifications of nearby users were working perfectly. I&rsquo;m looking into setting up <a href="https://github.com/Instrument/Vicinity">a custom implementation of iBeacon using Bluetooth LE in background mode</a> that will allow the phones to broadcast periodically in the background as well, so that no one needs to have the app open to be notified that someone is nearby. I&rsquo;m also looking into downloading the name and photo of the nearby user in the background and including that information in the alert that gets sent.</p>
+
+<p><img class="center" src="/images/posts/10notifications.jpg" title="&lsquo;SecretHandshake Notifications&rsquo;" ></p>
+
+<p>I had a great conversation with <a href="https://github.com/thomasballinger">Tom</a> in the morning about what I&rsquo;ve been working on at Hacker School and what I should focus on for the coming weeks to get the most out of it. I left feeling pretty good about the various directions I&rsquo;ve taken and how much/what/how fast I&rsquo;ve been learning. I&rsquo;m happy with the balance I&rsquo;ve had between <a href="http://lauraskelton.github.io/blog/2014/06/19/hacker-school-day-8/">iOS projects</a>, totally new projects (<a href="http://lauraskelton.github.io/blog/2014/06/11/hacker-school-day-2/">Arduino</a> and cool <a href="http://lauraskelton.github.io/blog/2014/06/12/hacker-school-day-3/">machine learning</a>/<a href="http://lauraskelton.github.io/blog/2014/06/13/hacker-school-day-4/">neural network</a> stuff), learning new languages (<a href="http://lauraskelton.github.io/blog/2014/06/10/hacker-school-day-1/">Swift!</a>), and programming basics (getting familiar with the <a href="http://lauraskelton.github.io/blog/2014/06/20/hacker-school-day-9/">data structures and algorithms</a> basics that would have been covered in CS courses had I taken that path).</p>
+
+<p>I came away with some great new ideas for things that would be good and/or fun to focus on in the coming weeks and clearer goals for the rest of Hacker School. A side effect of being around so much creative energy and cool projects is that you can get overwhelmed with fear of missing out on what everyone else is doing, even if that&rsquo;s not what you came here to work on. Part of that is a fun and enriching distraction, like Arduino, and part of it just ends up being noise that confuses your focus. If a bunch of people are excited about writing compilers and learning Rust, should I be doing those things too?</p>
+
+<p>I have a few ideas for some quick iOS apps that I&rsquo;d like to try to implement in Swift, that are more of a game/drawing style of app that use more math, graphics, and touch interface than the social utility apps I&rsquo;ve written in the past, which tended to take advantage of Apple&rsquo;s great built in user interface elements more than custom graphics and animations. Looking forward to the coming weeks!</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Hacker School Day 8]]></title>
     <link href="http://lauraskelton.github.io/blog/2014/06/19/hacker-school-day-8/"/>
     <updated>2014-06-19T20:53:29-04:00</updated>
     <id>http://lauraskelton.github.io/blog/2014/06/19/hacker-school-day-8</id>
-    <content type="html"><![CDATA[<p>I finished a new iPhone app today!! It was inspired by someone at the Swift meetup saying that Hacker School was like the new Freemasons &ndash; some kind of secret society that instantly connected you with other people. I had such a good time talking to some Hacker School alums I hadn&rsquo;t met before, that I thought it would be good to have an app that would let me know at future meetups whether there were any other Hacker Schoolers in the room.</p>
+    <content type="html"><![CDATA[<p>I finished a <a href="https://github.com/lauraskelton/secrethandshake">new iPhone app</a> today!! It was inspired by someone at the Swift meetup saying that Hacker School was like the new Freemasons &ndash; some kind of secret society that instantly connected you with other people. I had such a good time talking to some Hacker School alums I hadn&rsquo;t met before, that I thought it would be good to have an app that would let me know at future meetups whether there were any other Hacker Schoolers in the room.</p>
 
 <p>In iOS 7, Apple introduce iBeacons, a proximity beacon built on top of Bluetooth LE. IPhones can scan for iBeacon signals, and display special hyperlocal information when they come within range of one, such as at a store display or at a particular museum exhibit. The iBeacon signal can even wake up an iPhone that is inactive with an alert and a notification banner.</p>
 
