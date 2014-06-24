@@ -113,7 +113,7 @@
   </header>
 
 
-<div class="entry-content"><p>I put a ton of time in on the Secret Handshake iOS app in perfecting the OAuth login procedure. Originally, I was using an OAuth library from Google to open the Hacker School login page in a webview within the app. The problem with this was that it couldn&rsquo;t take advantage of Safari&rsquo;s auto fill password functionality, or if you were already logged in on the browser.</p>
+<div class="entry-content"><p>I put a ton of time in on the <a href="https://github.com/lauraskelton/secrethandshake">Secret Handshake iOS app</a> in perfecting the OAuth login procedure. Originally, I was using an OAuth library from Google to open the Hacker School login page in a webview within the app. The problem with this was that it couldn&rsquo;t take advantage of Safari&rsquo;s auto fill password functionality, or if you were already logged in on the browser.</p>
 
 <p>I first tried to use the iOS library to post the authentication code request to the Hacker School website on Safari. Unfortunately, an iOS app is unable to do a <code>POST</code> request to another app. I ended up writing a simple PHP file on my server that I redirect the user to from the Secret Handshake app. The PHP file handles sending the user to the Hacker School login page and then sending a <code>POST</code> request to get an access token from Hacker School. It then sends the returned token back to the Secret Handshake app via a custom URL scheme <code>secrethandshake://oauth</code> and an attached query string containing the token.</p>
 
