@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Swift | Hacker School Daily Log]]></title>
   <link href="http://lauraskelton.github.io/blog/categories/swift/atom.xml" rel="self"/>
   <link href="http://lauraskelton.github.io/"/>
-  <updated>2014-06-24T12:11:29-04:00</updated>
+  <updated>2014-06-25T11:52:21-04:00</updated>
   <id>http://lauraskelton.github.io/</id>
   <author>
     <name><![CDATA[Laura Skelton]]></name>
@@ -12,6 +12,81 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Hacker School Day 11]]></title>
+    <link href="http://lauraskelton.github.io/blog/2014/06/24/hacker-school-day-11/"/>
+    <updated>2014-06-24T20:54:18-04:00</updated>
+    <id>http://lauraskelton.github.io/blog/2014/06/24/hacker-school-day-11</id>
+    <content type="html"><![CDATA[<p>I decided Hacker School would be a great opportunity to learn some iOS frameworks I&rsquo;ve never worked with before, since I have time for something with a bit of a steeper learning curve right now than I do when I need to finish a product quickly.</p>
+
+<p>I had an idea for a game/drawing app that would be a simple way to learn some of the animations and custom touch controls that are possible in iOS, so after learning about the different game frameworks available in iOS 8, I decided to start working through <a href="http://www.raywenderlich.com/42699/spritekit-tutorial-for-beginners">a SpriteKit tutorial</a> to get the hang of how to write games.</p>
+
+<p><img class="center" src="/images/posts/11spritekittutorial.png" title="&lsquo;Sprite Kit Tutorial&rsquo;" ></p>
+
+<p>Since I&rsquo;m working in Swift, it was much trickier to get the tutorial code up and running as everything needed to be shifted over to the Swift way of thinking before I could test it out. I got a basic app up and running, but was running into some nightmarish problems with a CGPoint init method when I was doing some vector math. The problem had to do with numerical types, and I finally realized that I was mixing CGFloats with Floats, which in Swift are completely different types.</p>
+
+<p>This is what I finally got to compile:</p>
+
+<p>```objc
+func rwNormalize(a: CGPoint) &ndash;> CGPoint {</p>
+
+<pre><code>    let length = CGFloat(rwLength(a))
+
+    return CGPoint(x: a.x/length, y: a.y/length)
+}
+</code></pre>
+
+<p>```</p>
+
+<p>Because I was sending Floats to CGPoint&rsquo;s init instead of CGFloats, the following caused the compiler error &ldquo;Could not find an overload for &lsquo;init&rsquo; that accepts the supplied arguments&rdquo;.</p>
+
+<p>```objc
+func rwNormalize(a: CGPoint) &ndash;> CGPoint {</p>
+
+<pre><code>    let length: Float = rwLength(a)
+
+    return CGPoint(x: Float(a.x/length), y: Float(a.y/length))
+}
+</code></pre>
+
+<p>```</p>
+
+<p>The following function resulted in the compiler error &ldquo;Could not find an overload for &lsquo;/&rsquo; that accepts the supplied arguments&rdquo;, because I was dividing a CGFloat by a Float, which is not allowed in Swift without first converting one of the arguments to be the same type as the other, since otherwise Swift doesn&rsquo;t know what type the output should be.</p>
+
+<p>```objc
+func rwNormalize(a: CGPoint) &ndash;> CGPoint {</p>
+
+<pre><code>    let length: Float = rwLength(a)
+
+    return CGPoint(x: a.x/length, y: a.y/length)
+}
+</code></pre>
+
+<p>```</p>
+
+<p>The debugging process was pretty frustrating, but after finally figuring out what the problem was with the types I had learned a lot about how Swift works and had a stronger sense of being explicit about the types I was inputting and expecting for each function.</p>
+
+<p>I learned about creating a game scene and adding &ldquo;nodes&rdquo; to the scene that can be anything from a label, a player, an enemy, or a projectile, and manipulating them with simple actions like move or rotate. Once I had a sense of the structure of the game, it was a lot clearer how to set up something simple. I&rsquo;m looking forward to learning more about physics and reacting to different events tomorrow.</p>
+
+<p><img class="center" src="/images/posts/11spritekitorganization.png" title="&lsquo;Sprite Kit Organization&rsquo;" ></p>
+
+<p>In the afternoon, Mary <a href="https://github.com/maryrosecook/spaceinvaders">live-coded a Space Invaders game in Javascript</a> in under an hour. That was pretty cool to watch, and it amazes me how simple she makes the code seem. Watching her quickly create a minimum functional mock-up of the game was very helpful for me as a reminder not to get bogged down in, for example, how the Space Invaders look in version one of a game where your focus is on the functionality of the game and getting that to work. She kept this version simple by using rectangles for the player, bullets, and invaders, and that meant that she could get a basic game laid out very quickly. I like her process of development because all of the functions were laid out in a simple way, and it would be straightforward to move forward and edit some of them to add more complex game play and graphics since the basic functionality is already there.</p>
+
+<p><img class="center" src="/images/posts/11spaceinvaders.png" title="&lsquo;Simple Space Invaders&rsquo;" ></p>
+
+<p>Moving forward, once I finish with the SpriteKit tutorial game, I&rsquo;m going to try making a similarly simple version of Space Invaders for iOS using SpriteKit and Swift.</p>
+
+<p><img class="center" src="/images/posts/11spaceinvaderscomplex.png" title="&lsquo;Complex Space Invaders&rsquo;" ></p>
+
+<p>In other news, this is the coolest thing about the Q train!</p>
+
+<iframe src="//player.vimeo.com/video/99153550" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+
+
+<p>It&rsquo;s a series of lit, painted panels on the wall of the subway tunnel between DeKalb and Canal, that&rsquo;s visible through a series of narrow slits in the tunnel wall. When the train is stopped, it just looks like bright slits, but as soon as the train starts moving, it starts animating flipbook-style. It&rsquo;s <a href="https://signalvnoise.com/posts/2508-bill-brands-masstransiscope-subway-art">an installation that was put there in the 80s called Masstransiscope</a>, inspired by the Zoetrope of the 1800s. Bill Brand, the artist, had the idea that &ldquo;Instead of having the film go through the projector, you could move the audience past the film.&rdquo;</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Hacker School Day 9]]></title>
