@@ -1,0 +1,209 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Hacker School Day 12 - Hacker School Daily Log</title>
+  <meta name="author" content="Laura Skelton">
+
+  
+  <meta name="description" content="I grabbed coffee in the morning with Amy who does iOS development at Etsy, and she gave me some incredibly helpful advice on things to be sure to &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://lauraskelton.github.io/blog/2014/06/25/hacker-school-day-12">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Hacker School Daily Log" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Poller+One' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Germania+One' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fontdiner+Swanky' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Cardo' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Sorts+Mill+Goudy' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=EB+Garamond' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Della+Respira' rel='stylesheet' type='text/css'>
+
+  
+
+</head>
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<logo>
+
+<img src="/logo.png" alt="Website Logo. Upload to /source/logo.png ; disable in /source/_includes/logo.html" height="32px" width="32px">
+</logo>
+
+
+
+<body >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Hacker School Daily Log</a></h1>
+  
+    <h2>Laura Skelton | Summer 2014 Batch</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+<br>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:lauraskelton.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<!--
+<ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+-->
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Hacker School Day 12</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-25T19:37:54-04:00" pubdate data-updated="true">Jun 25<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I grabbed coffee in the morning with <a href="https://github.com/oxling">Amy</a> who does iOS development at Etsy, and she gave me some incredibly helpful advice on things to be sure to focus on while I&rsquo;m at Hacker School. I left feeling excited about an idea from earlier in the batch of setting up an ad-hoc mobile network using iPhones over Bluetooth LE, and am hoping to get to work on implementing version one of that project. She also recommended contributing to a larger open-source project as a good way for someone like me who&rsquo;s always worked independently on my own apps to get used to working within someone else&rsquo;s larger code framework, which would be very relevant to doing iOS at a company where many developers are contributing to one project.</p>
+
+<p>After talking through my OAuth handling in the Secret Handshake app with a couple of other Hacker Schoolers, and walking through each step in the OAuth process, I realized that I could handle the entire OAuth verification from within my iOS app, without relying on the external PHP file to request an access token from the server. I rewrote the OAuth handling in the app to use a custom URL scheme that redirects to my app as the Hacker School API redirect, and successfully got everything working. I wrote up an overview of the OAuth process on <a href="https://github.com/lauraskelton/secrethandshake">the app&rsquo;s GitHub readme page</a>, along with the exact query parameters that are required by the API at each step.</p>
+
+<p>Later I finished up with getting a handle on iOS&rsquo;s SpriteKit by implementing a Space Invaders game in Swift. I learned how to attach sound effects to actions in the game such as firing a bullet or a collision between two sprites on the screen (like an enemy and a bullet), how to keep score, and how to transition between different scenes in the game.</p>
+
+<p><img class="center" src="/images/posts/12spaceinvadersprite.jpg" title="'Space Invaders in Swift'" ></p>
+
+<p>Following the repeated advice of Hacker School alumni, I decided to move on from the Space Invaders game as soon as I felt like I was no longer learning from it. I got a general sense of setting up the game play, but I stopped before making a perfect implementation of every feature in the original game. This is a big change from how I usually work&mdash; I feel a huge push to finish and perfect the work that I start, and it feels very strange and pretty luxurious to stop a project when it&rsquo;s stopped being educational for me, but after refocusing on my goals a bit yesterday I&rsquo;m impatient to learn new things.</p>
+
+<p>I&rsquo;ve been having trouble balancing two different ways of taking full advantage of my time at Hacker School. One is that I love being around so many smart, energetic peers who I can learn from and work with, and I have such a short period of time here to have access to that. I love the energy I get from talking to other Hacker Schoolers about code and projects, and there is so much that I&rsquo;ve learned so quickly from other people here both through casual conversation over coffee and in a more formal study-group setting. I feel a lot of pressure to break out of my slightly more comfortable/habitual zone of coding alone to pair with and talk with other people at Hacker School, and to be involved in group projects that are happening around me.</p>
+
+<p>This, combined with an impulse to grab hold of any kind of formalized workshop-style learning that&rsquo;s happening around me due to the reassurance it gives that I&rsquo;m for sure learning/accomplishing something if I participate in those, keeps leading me to participate in more formal talks/workshops that are happening in the space. It seems to reinforce my fear of missing out on learning whenever I see a group of Hacker Schoolers working through something in Hopper (the large group-work room) and I&rsquo;m not participating. It feels like skipping class.</p>
+
+<p><img class="center" src="/images/posts/12hopper.jpg" title="'Hopper'" ></p>
+
+<p>Then I go to a bunch of workshops, and sometimes they&rsquo;re amazingly helpful and right in line with what my learning goals are here. And I think, I should go to more of these! But, other times, I realize a few minutes in that the workshop&rsquo;s focus is not furthering my goals, and I get frustrated at missing out on what could have been coding time, which feels so limited already as my time at Hacker School is flying by.</p>
+
+<p>So, I think I need to just be more aware of the pitfalls of participating in something just because I feel like I &ldquo;should&rdquo;, and do a check with myself before I sign up for things during Hacker School hours to make sure they line up well with what I&rsquo;m already working on and interested in here.</p>
+</div>
+
+
+  <footer>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://lauraskelton.github.io/blog/2014/06/25/hacker-school-day-12/" data-via="" data-counturl="http://lauraskelton.github.io/blog/2014/06/25/hacker-school-day-12/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Text authored by <span class="fn">Laura Skelton</span></span>
+
+
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/oauth/'>OAuth</a>, <a class='category' href='/blog/categories/space-invaders/'>Space-Invaders</a>, <a class='category' href='/blog/categories/spritekit/'>SpriteKit</a>, <a class='category' href='/blog/categories/swift/'>Swift</a>, <a class='category' href='/blog/categories/ios/'>iOS</a>
+  
+</span>
+
+
+    </p>
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/06/24/hacker-school-day-11/" 
+           title="Previous Post: Hacker School Day 11">&laquo; Hacker School Day 11</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Website copyright &copy; 2014 - Laura Skelton |
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> | Themed with <a href="https://github.com/TheChymera/Koenigspress">Königspress</a></span>.
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

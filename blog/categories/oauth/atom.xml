@@ -4,7 +4,7 @@
   <title><![CDATA[Category: OAuth | Hacker School Daily Log]]></title>
   <link href="http://lauraskelton.github.io/blog/categories/oauth/atom.xml" rel="self"/>
   <link href="http://lauraskelton.github.io/"/>
-  <updated>2014-06-25T12:11:55-04:00</updated>
+  <updated>2014-06-26T10:42:14-04:00</updated>
   <id>http://lauraskelton.github.io/</id>
   <author>
     <name><![CDATA[Laura Skelton]]></name>
@@ -12,6 +12,33 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Hacker School Day 12]]></title>
+    <link href="http://lauraskelton.github.io/blog/2014/06/25/hacker-school-day-12/"/>
+    <updated>2014-06-25T19:37:54-04:00</updated>
+    <id>http://lauraskelton.github.io/blog/2014/06/25/hacker-school-day-12</id>
+    <content type="html"><![CDATA[<p>I grabbed coffee in the morning with <a href="https://github.com/oxling">Amy</a> who does iOS development at Etsy, and she gave me some incredibly helpful advice on things to be sure to focus on while I&rsquo;m at Hacker School. I left feeling excited about an idea from earlier in the batch of setting up an ad-hoc mobile network using iPhones over Bluetooth LE, and am hoping to get to work on implementing version one of that project. She also recommended contributing to a larger open-source project as a good way for someone like me who&rsquo;s always worked independently on my own apps to get used to working within someone else&rsquo;s larger code framework, which would be very relevant to doing iOS at a company where many developers are contributing to one project.</p>
+
+<p>After talking through my OAuth handling in the Secret Handshake app with a couple of other Hacker Schoolers, and walking through each step in the OAuth process, I realized that I could handle the entire OAuth verification from within my iOS app, without relying on the external PHP file to request an access token from the server. I rewrote the OAuth handling in the app to use a custom URL scheme that redirects to my app as the Hacker School API redirect, and successfully got everything working. I wrote up an overview of the OAuth process on <a href="https://github.com/lauraskelton/secrethandshake">the app&rsquo;s GitHub readme page</a>, along with the exact query parameters that are required by the API at each step.</p>
+
+<p>Later I finished up with getting a handle on iOS&rsquo;s SpriteKit by implementing a Space Invaders game in Swift. I learned how to attach sound effects to actions in the game such as firing a bullet or a collision between two sprites on the screen (like an enemy and a bullet), how to keep score, and how to transition between different scenes in the game.</p>
+
+<p><img class="center" src="/images/posts/12spaceinvadersprite.jpg" title="&lsquo;Space Invaders in Swift&rsquo;" ></p>
+
+<p>Following the repeated advice of Hacker School alumni, I decided to move on from the Space Invaders game as soon as I felt like I was no longer learning from it. I got a general sense of setting up the game play, but I stopped before making a perfect implementation of every feature in the original game. This is a big change from how I usually work&mdash; I feel a huge push to finish and perfect the work that I start, and it feels very strange and pretty luxurious to stop a project when it&rsquo;s stopped being educational for me, but after refocusing on my goals a bit yesterday I&rsquo;m impatient to learn new things.</p>
+
+<p>I&rsquo;ve been having trouble balancing two different ways of taking full advantage of my time at Hacker School. One is that I love being around so many smart, energetic peers who I can learn from and work with, and I have such a short period of time here to have access to that. I love the energy I get from talking to other Hacker Schoolers about code and projects, and there is so much that I&rsquo;ve learned so quickly from other people here both through casual conversation over coffee and in a more formal study-group setting. I feel a lot of pressure to break out of my slightly more comfortable/habitual zone of coding alone to pair with and talk with other people at Hacker School, and to be involved in group projects that are happening around me.</p>
+
+<p>This, combined with an impulse to grab hold of any kind of formalized workshop-style learning that&rsquo;s happening around me due to the reassurance it gives that I&rsquo;m for sure learning/accomplishing something if I participate in those, keeps leading me to participate in more formal talks/workshops that are happening in the space. It seems to reinforce my fear of missing out on learning whenever I see a group of Hacker Schoolers working through something in Hopper (the large group-work room) and I&rsquo;m not participating. It feels like skipping class.</p>
+
+<p><img class="center" src="/images/posts/12hopper.jpg" title="&lsquo;Hopper&rsquo;" ></p>
+
+<p>Then I go to a bunch of workshops, and sometimes they&rsquo;re amazingly helpful and right in line with what my learning goals are here. And I think, I should go to more of these! But, other times, I realize a few minutes in that the workshop&rsquo;s focus is not furthering my goals, and I get frustrated at missing out on what could have been coding time, which feels so limited already as my time at Hacker School is flying by.</p>
+
+<p>So, I think I need to just be more aware of the pitfalls of participating in something just because I feel like I &ldquo;should&rdquo;, and do a check with myself before I sign up for things during Hacker School hours to make sure they line up well with what I&rsquo;m already working on and interested in here.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Hacker School Day 10]]></title>

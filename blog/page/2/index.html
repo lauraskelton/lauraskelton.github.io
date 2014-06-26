@@ -9,7 +9,7 @@
   <meta name="author" content="Laura Skelton">
 
   
-  <meta name="description" content="Things got much more tricky when I started trying to implement SimpleShare, my Bluetooth LE (CoreBluetooth) mesh network sharing app, in Swift, using &hellip;">
+  <meta name="description" content="I had such a fun day! In the morning I learned how to use Arduino to control Neopixel RGB LED lights from Adafruit. It was so fast to get going with &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -87,6 +87,134 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/06/11/hacker-school-day-2/">Hacker School Day 2</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-11T20:44:53-04:00" pubdate data-updated="true">Jun 11<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I had such a fun day! In the morning I learned how to use Arduino to control Neopixel RGB LED lights from Adafruit. It was so fast to get going with this, and the code was easy to tweak to change the patterns the lights would display.</p>
+
+<p><img class="center" src="/images/posts/adapixels.jpg" title="adafruit neopixels" alt="adafruit neopixels"></p>
+
+<p>We wrote some code a little later that cycled through a rainbow with alternating pixels flashing opposite colors off and on.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kt">void</span> <span class="nf">rainbow</span><span class="o">(</span><span class="n">uint8_t</span> <span class="n">wait</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>  <span class="n">uint16_t</span> <span class="n">i</span><span class="o">,</span> <span class="n">j</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">for</span><span class="o">(</span><span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span> <span class="n">j</span><span class="o">&lt;</span><span class="mi">256</span><span class="o">;</span> <span class="n">j</span><span class="o">++)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">for</span><span class="o">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">strip</span><span class="o">.</span><span class="na">numPixels</span><span class="o">();</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span><span class='line'>      <span class="k">if</span> <span class="o">(</span><span class="n">i</span><span class="o">%</span><span class="mi">2</span><span class="o">==</span><span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>          <span class="k">if</span> <span class="o">((</span><span class="n">j</span><span class="o">/</span><span class="mi">10</span><span class="o">)</span> <span class="o">%</span><span class="mi">2</span><span class="o">==</span><span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">strip</span><span class="o">.</span><span class="na">setPixelColor</span><span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="n">Wheel</span><span class="o">((</span><span class="mi">255</span><span class="o">-</span><span class="n">i</span><span class="o">-</span><span class="n">j</span><span class="o">)</span> <span class="o">&amp;</span> <span class="mi">255</span><span class="o">));</span>
+</span><span class='line'>          <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">strip</span><span class="o">.</span><span class="na">setPixelColor</span><span class="o">(</span><span class="n">i</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">);</span>
+</span><span class='line'>          <span class="o">}</span>
+</span><span class='line'>      <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="o">((</span><span class="n">j</span><span class="o">/</span><span class="mi">10</span><span class="o">)</span> <span class="o">%</span><span class="mi">2</span><span class="o">!=</span><span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>             <span class="n">strip</span><span class="o">.</span><span class="na">setPixelColor</span><span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="n">Wheel</span><span class="o">((</span><span class="n">i</span><span class="o">+</span><span class="n">j</span><span class="o">)</span> <span class="o">&amp;</span> <span class="mi">255</span><span class="o">));</span>
+</span><span class='line'>          <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">strip</span><span class="o">.</span><span class="na">setPixelColor</span><span class="o">(</span><span class="n">i</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">);</span>
+</span><span class='line'>          <span class="o">}</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="n">strip</span><span class="o">.</span><span class="na">show</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">delay</span><span class="o">(</span><span class="n">wait</span><span class="o">);</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>Wheel</code> is a neat little function in the Adafruit Neopixel code that converts a value from 0 to 255 to an RGB color value.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="c1">// Input a value 0 to 255 to get a color value.</span>
+</span><span class='line'><span class="c1">// The colours are a transition r - g - b - back to r.</span>
+</span><span class='line'><span class="n">uint32_t</span> <span class="nf">Wheel</span><span class="o">(</span><span class="kt">byte</span> <span class="n">WheelPos</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">if</span><span class="o">(</span><span class="n">WheelPos</span> <span class="o">&lt;</span> <span class="mi">85</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>   <span class="k">return</span> <span class="n">strip</span><span class="o">.</span><span class="na">Color</span><span class="o">(</span><span class="n">WheelPos</span> <span class="o">*</span> <span class="mi">3</span><span class="o">,</span> <span class="mi">255</span> <span class="o">-</span> <span class="n">WheelPos</span> <span class="o">*</span> <span class="mi">3</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span>
+</span><span class='line'>  <span class="o">}</span> <span class="k">else</span> <span class="k">if</span><span class="o">(</span><span class="n">WheelPos</span> <span class="o">&lt;</span> <span class="mi">170</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>   <span class="n">WheelPos</span> <span class="o">-=</span> <span class="mi">85</span><span class="o">;</span>
+</span><span class='line'>   <span class="k">return</span> <span class="n">strip</span><span class="o">.</span><span class="na">Color</span><span class="o">(</span><span class="mi">255</span> <span class="o">-</span> <span class="n">WheelPos</span> <span class="o">*</span> <span class="mi">3</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">WheelPos</span> <span class="o">*</span> <span class="mi">3</span><span class="o">);</span>
+</span><span class='line'>  <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+</span><span class='line'>   <span class="n">WheelPos</span> <span class="o">-=</span> <span class="mi">170</span><span class="o">;</span>
+</span><span class='line'>   <span class="k">return</span> <span class="n">strip</span><span class="o">.</span><span class="na">Color</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="n">WheelPos</span> <span class="o">*</span> <span class="mi">3</span><span class="o">,</span> <span class="mi">255</span> <span class="o">-</span> <span class="n">WheelPos</span> <span class="o">*</span> <span class="mi">3</span><span class="o">);</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I&rsquo;m so excited to learn more about hardware and connecting apps to display patterns with the lights.</p>
+
+<p>I spent some time brainstorming about Mesh Networking with a group. We want to create our own implementation of ICMP (Internet Control Message Protocol) over Bluetooth LE, using iBeacons as a sort of push notification to alert nearby devices that messages are available, and broadcasting messages through the nodes of the network to get to the intended user.</p>
+
+<p>We&rsquo;re planning to link the mesh network up with a hardware project using the programmable RGB LED lights from Adafruit to represent the users of the network. I thought it would be cool to make a sort of giant firefly jar with light-dots flying around inside, with one dot representing each user-node of the mesh network. The ObjC iOS app would allow users to join the network and then set their dot&rsquo;s color, which would be reflected in the physical firefly jar.</p>
+
+<p>We found a source for an affordable Bluetooth LE adapter for the Arduino and mapped out a plan for how to design the network on the whiteboard. Excited to give it a go tomorrow!</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
