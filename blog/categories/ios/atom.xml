@@ -4,7 +4,7 @@
   <title><![CDATA[Category: iOS | Hacker School Daily Log]]></title>
   <link href="http://lauraskelton.github.io/blog/categories/ios/atom.xml" rel="self"/>
   <link href="http://lauraskelton.github.io/"/>
-  <updated>2014-06-26T10:42:14-04:00</updated>
+  <updated>2014-06-26T11:15:00-04:00</updated>
   <id>http://lauraskelton.github.io/</id>
   <author>
     <name><![CDATA[Laura Skelton]]></name>
@@ -41,7 +41,7 @@
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Hacker School Day 11]]></title>
+    <title type="html"><![CDATA[Hacker School Day 11: Sprites and Space Invaders]]></title>
     <link href="http://lauraskelton.github.io/blog/2014/06/24/hacker-school-day-11/"/>
     <updated>2014-06-24T20:54:18-04:00</updated>
     <id>http://lauraskelton.github.io/blog/2014/06/24/hacker-school-day-11</id>
@@ -116,7 +116,7 @@ func rwNormalize(a: CGPoint) &ndash;> CGPoint {</p>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Hacker School Day 10]]></title>
+    <title type="html"><![CDATA[Hacker School Day 10: OAuth Challenges and Setting Goals]]></title>
     <link href="http://lauraskelton.github.io/blog/2014/06/23/hacker-school-day-10/"/>
     <updated>2014-06-23T20:56:24-04:00</updated>
     <id>http://lauraskelton.github.io/blog/2014/06/23/hacker-school-day-10</id>
@@ -350,7 +350,7 @@ NSString *postString = [NSString stringWithFormat:@"grant_type=refresh_token&amp
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Hacker School Day 8]]></title>
+    <title type="html"><![CDATA[Hacker School Day 8: Secret Handshake App]]></title>
     <link href="http://lauraskelton.github.io/blog/2014/06/19/hacker-school-day-8/"/>
     <updated>2014-06-19T20:53:29-04:00</updated>
     <id>http://lauraskelton.github.io/blog/2014/06/19/hacker-school-day-8</id>
@@ -392,7 +392,7 @@ NSString *postString = [NSString stringWithFormat:@"grant_type=refresh_token&amp
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Hacker School Day 7]]></title>
+    <title type="html"><![CDATA[Hacker School Day 7: Mesh Networking, Cryptocurrencies, and iBeacons]]></title>
     <link href="http://lauraskelton.github.io/blog/2014/06/18/hacker-school-day-7/"/>
     <updated>2014-06-18T08:15:31-04:00</updated>
     <id>http://lauraskelton.github.io/blog/2014/06/18/hacker-school-day-7</id>
