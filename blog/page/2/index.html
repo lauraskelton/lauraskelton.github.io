@@ -9,7 +9,7 @@
   <meta name="author" content="Laura Skelton">
 
   
-  <meta name="description" content="I had such a fun day! In the morning I learned how to use Arduino to control Neopixel RGB LED lights from Adafruit. It was so fast to get going with &hellip;">
+  <meta name="description" content="I started working on fixing some of the bugginess of the Multipeer Connectivity framework in ObjC in the morning. I tried to hack it so that &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -87,6 +87,70 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/06/12/hacker-school-day-3/">Hacker School Day 3: Non-Negative Matrix Factorization and Beer Clustering</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-12T20:55:09-04:00" pubdate data-updated="true">Jun 12<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I started working on fixing some of the bugginess of the Multipeer Connectivity framework in ObjC in the morning. I tried to hack it so that Multipeer would continue working when the app was in background mode (not currently possible due to Apple&rsquo;s imposed limitations), so that we could have a count of how many people were connected to the network.</p>
+
+<p>I also spent some time working on a problem that seems to be coming from issues with lower-level Bluetooth LE frameworks, where there are errors when trying to reconnect to the same peer multiple times after disconnecting. The issues are linked, because there can be problems rejoining the network after the backgrounded app is opened again and tries to reconnect. I suspect it has to do with sessions not fully closing from the first session when the device attempts to start a new session.</p>
+
+<p>I got a much deeper understanding of the capabilities of Multipeer while I was walking through the code handling the sessions and peers within the network, but in the end I concluded that Multipeer is still pretty buggy. I&rsquo;m reconsidering starting with our own implementation of a mesh network in Bluetooth LE instead of using Multipeer, since it seems like Multipeer doesn&rsquo;t really allow us to avoid some of the tricky issues we were handling in CoreBluetooth, and possibly the higher-level framework gives us less power to debug and work around some of the problems. CoreBluetooth also possibly avoids some of the issues with Multipeer not working in background mode, since we can set a Bluetooth LE message to broadcast in the background, and detecting a nearby iBeacon should be able to &ldquo;wake up&rdquo; an app even if it has been closed by the user. Plus I&rsquo;ve already played around with CoreBluetooth with my <a href="https://github.com/lauraskelton/simple-share">SimpleShare</a> Bluetooth LE Local Sharing project.</p>
+
+<p>I switched tasks to continue working through <a href="http://shop.oreilly.com/product/9780596529321.do">Programming Collective Intelligence</a>, an amazing book on Machine Learning algorithms. It was wonderful to get into working on Machine Learning again, since it&rsquo;s what I had originally intended to focus on at Hacker School before I was swept up with Swift.</p>
+
+<p><img class="center" src="/images/posts/pci.jpg" title="programming collective intelligence" alt="programming collective intelligence"></p>
+
+<p>I worked through the chapter on Non-Negative Matrix Factorization today, which was actually way more awesome than it sounds. You can scan through a bunch of articles and get word counts, just like in an earlier chapter on document classification using a naive Bayesian classifier. The Bayesian classifier used a weighted probability based on the word counts to predict which category a document belonged to out of a set of predetermined category options, and based on initial training data.</p>
+
+<p>Non-Negative Matrix Factorization is WAY cooler! It starts with the same word-count information for each article set up in a matrix, then factors the matrix into two matrices that, multiplied together, would be approximately equal to the original matrix (articles vs. words). The two factor matrices give you some really neat information about the data set, and they actually extract what the features (categories/themes) are automatically given a set number of desired features. The features can be described by which words are most likely to appear in them. So the first factor matrix has a column for each word and a row for each feature/theme/category, with each number in the matrix being the likelihood that a particular word belongs to that theme, and the second factor matrix has a row for each article and a column for each feature, and the numbers in the matrix correspond to the weight of each theme in that article.</p>
+
+<p><img class="center" src="/images/posts/nmf1.jpg" title="'non-negative matrix factorization'" ></p>
+
+<p><img class="center" src="/images/posts/nmf2.jpg" title="'non-negative matrix factorization'" ></p>
+
+<p><img class="center" src="/images/posts/nmf.jpg" title="'non-negative matrix factorization'" ></p>
+
+<p>It&rsquo;s very cool to see how some clever math and optimization can actually allow the algorithm to come up with its own categories/classes of articles (or anything else you&rsquo;re studying), without having any training data or input from the user about what is expected.</p>
+
+<p>I have one more chapter in the book I&rsquo;ve been working through that I&rsquo;m excited to get through tomorrow, on Genetic Programming, which is all about writing programs that can actually modify themselves and evolve the code itself. Super cool!</p>
+
+<p>I&rsquo;m also looking forward to getting started on learning about Neural Networks more in-depth. I&rsquo;d really like to understand on a deep conceptual level what neural nets are really doing, and this online book looks like a great way to get started. <a href="http://neuralnetworksanddeeplearning.com">http://neuralnetworksanddeeplearning.com</a></p>
+
+<p>I ended the day by doing a short presentation about a beer clustering project I did a couple of months ago in Python. My beer recommendations iOS app generated over 200,000 beer ratings, which has been a pretty cool data set to play around with. I started by scattering beers randomly in a 2 dimensional grid, then moved the points to try to get the distances between each beer to approximate the Pearson distance I calculated by comparing user ratings of all of the beers to find which were most similar (and so should be closer together on the beer map), and which beers were most different, and so should be far apart. I figured out some tricks to break out of the local minimums I kept running into, and ended up with a <a href="http://beerchooser.com/beermap/beergmap.html">pretty cool map</a> of many different beers and how they are related by user preference to each other. (The green color represents IBU &ndash; International Bittering Units, a measure of bitterness/hoppiness in beer, and the blue color represents ABV, or alcohol content, of each beer.)</p>
+
+<p>It was my first time ever presenting a coding project I&rsquo;d done in front of a group of people, and it was a cool experience to share something I&rsquo;d been working on with a group that could follow what I&rsquo;d done and understand what was neat about it. It was great practice for me in talking about my coding work to a larger group, which I have done much more with my design work than with my programming projects.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Bluetooth-LE | Hacker School Daily Log]]></title>
   <link href="http://lauraskelton.github.io/blog/categories/bluetooth-le/atom.xml" rel="self"/>
   <link href="http://lauraskelton.github.io/"/>
-  <updated>2014-06-26T11:16:09-04:00</updated>
+  <updated>2014-06-27T15:46:22-04:00</updated>
   <id>http://lauraskelton.github.io/</id>
   <author>
     <name><![CDATA[Laura Skelton]]></name>
@@ -12,6 +12,27 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Hacker School Day 13: Mesh Messaging App]]></title>
+    <link href="http://lauraskelton.github.io/blog/2014/06/26/hacker-school-day-13/"/>
+    <updated>2014-06-26T20:26:50-04:00</updated>
+    <id>http://lauraskelton.github.io/blog/2014/06/26/hacker-school-day-13</id>
+    <content type="html"><![CDATA[<p>I couldn&rsquo;t get my SecretHandshake app to work properly today after the OAuth changes I&rsquo;d made, so I got to go on a bug-finding detective mission. I couldn&rsquo;t find any code I changed that would make the app suddenly never have its bluetooth delegate methods called, and a lot of error-finding logs that were never called and indicated that nothing was wrong.</p>
+
+<p>I used Git to create a branch of the project from the last version I know for sure works, which I have on TestFlight. I built that and ran it on the device, and it still didn&rsquo;t work! At first I was frustrated, but then I realized that it meant it wasn&rsquo;t anything in the code that was the problem after all. If I built it in the XCode6 beta, it wouldn&rsquo;t ever detect other iBeacons, but if I built it in XCode5, it worked perfectly. Because I can&rsquo;t build for iOS8 from XCode5, that means that I can&rsquo;t get it to run on my iPod anymore at all. Hoping it&rsquo;s a bug in the XCode beta and not some mysterious unannounced change in the OS that breaks iBeacons.</p>
+
+<p>In the afternoon, I got to work laying out the framework for a Bluetooth LE based mobile ad-hoc mesh network using iPhones and CoreBluetooth (a lower level framework than iBeacons that allows me to send longer messages between phones). I built a simple app that lets you input a message and broadcast it to any other phones in range. It was very exciting that it works! I couldn&rsquo;t get out of range of the phones while in the Hacker School space, so I&rsquo;m looking forward to testing out whether the hopping is working (the phone that receives the message broadcasts it on to other phones).</p>
+
+<p><img class="center" src="/images/posts/13mobileadhoc.jpg" title="&lsquo;Mobile Ad Hoc Network&rsquo;" ></p>
+
+<p>I&rsquo;m interested in pairing with some friends to figure out a network protocol that would work for sending messages between phones and for building the network. To send directed messages instead of broadcast, should there be a &ldquo;message received&rdquo; response sent by the phone when it gets there? Perhaps the &ldquo;message&rdquo; is modified in some way by each phone with headers indicating the path it successfully took to get to the intended recipient the fastest, which we could store as a way to map the network. I&rsquo;m also interested in what we had discussed earlier in linking the mesh network to a trusted friend group to allow secure messages to be sent to the people they&rsquo;re intended for.</p>
+
+<p><img class="center" src="/images/posts/13weboftrust.jpg" title="&lsquo;Web of Trust&rsquo;" ></p>
+
+<p>The TorCoin model for route signing by each node is inspiring me with ideas for how each node in a mobile ad hoc mesh network might sign a message such that the network could perhaps get smarter about routing messages without having to broadcast everything to each node. Maybe we could incorporate a little bit of machine learning into the Mesh Messaging app (&hellip;meshaging?) to figure out the best routes to try for reaching particular nodes.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Hacker School Day 10: OAuth Challenges and Setting Goals]]></title>
@@ -389,53 +410,6 @@ uint32_t Wheel(byte WheelPos) {
 <p>We&rsquo;re planning to link the mesh network up with a hardware project using the programmable RGB LED lights from Adafruit to represent the users of the network. I thought it would be cool to make a sort of giant firefly jar with light-dots flying around inside, with one dot representing each user-node of the mesh network. The ObjC iOS app would allow users to join the network and then set their dot&rsquo;s color, which would be reflected in the physical firefly jar.</p>
 
 <p>We found a source for an affordable Bluetooth LE adapter for the Arduino and mapped out a plan for how to design the network on the whiteboard. Excited to give it a go tomorrow!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Hacker School Day 1: Swift Tricks]]></title>
-    <link href="http://lauraskelton.github.io/blog/2014/06/10/hacker-school-day-1/"/>
-    <updated>2014-06-10T14:25:15-04:00</updated>
-    <id>http://lauraskelton.github.io/blog/2014/06/10/hacker-school-day-1</id>
-    <content type="html"><![CDATA[<p>Things got much more tricky when I started trying to implement <a href="https://github.com/lauraskelton/simple-share">SimpleShare</a>, my Bluetooth LE (CoreBluetooth) mesh network sharing app, in Swift, using the new Multipeer Connectivity framework instead of Bluetooth. There were much more complicated things I needed to do in Obj-C, and the app couldn&rsquo;t be &ldquo;translated&rdquo; in the same way as the simpler apps just by changing to the new syntax, since Swift actually works differently in key ways than Obj-C does.</p>
-
-<p>Things I learned about Swift:</p>
-
-<ul>
-<li>Optional variables: You can no longer have variables that aren&rsquo;t set or that are nil like you could in Obj-C. If you don&rsquo;t know what a variable is when the class is created, you have to make it an optional variable by putting a <code>?</code> after the type declaration.</li>
-</ul>
-
-
-<p>```objc
-class MyClass {</p>
-
-<pre><code>var mystring: String?
-</code></pre>
-
-<p>}
-```
-* Global variables: It seems that any variables you set within a class but outside of a function act like public parameters for that class and are accessible to read or set from other classes</p>
-
-<ul>
-<li><p>Calling functions from another class: You call a function from another class by writing the class name followed by a dot then the function name with its arguments, eg: <code>MyClass.someFunction(arg1,arg2)</code></p></li>
-<li><p>Init functions are a special case: Instead of calling <code>MyClass.init(arg1,arg2)</code> like you would for any other function, just calling <code>MyClass(arg1,arg2)</code>
-is how you can init an instance of a class.</p></li>
-<li><p>Convenience init: If your init function requires arguments to create a class instance, you can create a second init method for convenience that creates an instance with default values.
-<code>objc
-class SimpleMesh {
-  init(simpleMeshAppID: String) {
-      self.simpleMeshAppID = simpleMeshAppID
-      self.myItemIDs = ["first", "second", "third", "fourth", "fifth"]
-  }
-  convenience init() {
-      self.init(simpleMeshAppID: "[NO ID]")
-  }
-}
-</code></p></li>
-</ul>
-
-
-<p>In the afternoon, I made a plan with Jorge and Kyle to work on a mesh networking inspector to figure out the limitations of Multipeer Connectivity so that we can build a stable mesh networking messaging app. We decided to move forward on the project in Objective-C while continuing to learn Swift on the side so we can finish more quickly.</p>
 ]]></content>
   </entry>
   

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Mesh-Networking | Hacker School Daily Log]]></title>
   <link href="http://lauraskelton.github.io/blog/categories/mesh-networking/atom.xml" rel="self"/>
   <link href="http://lauraskelton.github.io/"/>
-  <updated>2014-06-26T11:16:09-04:00</updated>
+  <updated>2014-06-27T15:46:22-04:00</updated>
   <id>http://lauraskelton.github.io/</id>
   <author>
     <name><![CDATA[Laura Skelton]]></name>
@@ -12,6 +12,27 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Hacker School Day 13: Mesh Messaging App]]></title>
+    <link href="http://lauraskelton.github.io/blog/2014/06/26/hacker-school-day-13/"/>
+    <updated>2014-06-26T20:26:50-04:00</updated>
+    <id>http://lauraskelton.github.io/blog/2014/06/26/hacker-school-day-13</id>
+    <content type="html"><![CDATA[<p>I couldn&rsquo;t get my SecretHandshake app to work properly today after the OAuth changes I&rsquo;d made, so I got to go on a bug-finding detective mission. I couldn&rsquo;t find any code I changed that would make the app suddenly never have its bluetooth delegate methods called, and a lot of error-finding logs that were never called and indicated that nothing was wrong.</p>
+
+<p>I used Git to create a branch of the project from the last version I know for sure works, which I have on TestFlight. I built that and ran it on the device, and it still didn&rsquo;t work! At first I was frustrated, but then I realized that it meant it wasn&rsquo;t anything in the code that was the problem after all. If I built it in the XCode6 beta, it wouldn&rsquo;t ever detect other iBeacons, but if I built it in XCode5, it worked perfectly. Because I can&rsquo;t build for iOS8 from XCode5, that means that I can&rsquo;t get it to run on my iPod anymore at all. Hoping it&rsquo;s a bug in the XCode beta and not some mysterious unannounced change in the OS that breaks iBeacons.</p>
+
+<p>In the afternoon, I got to work laying out the framework for a Bluetooth LE based mobile ad-hoc mesh network using iPhones and CoreBluetooth (a lower level framework than iBeacons that allows me to send longer messages between phones). I built a simple app that lets you input a message and broadcast it to any other phones in range. It was very exciting that it works! I couldn&rsquo;t get out of range of the phones while in the Hacker School space, so I&rsquo;m looking forward to testing out whether the hopping is working (the phone that receives the message broadcasts it on to other phones).</p>
+
+<p><img class="center" src="/images/posts/13mobileadhoc.jpg" title="&lsquo;Mobile Ad Hoc Network&rsquo;" ></p>
+
+<p>I&rsquo;m interested in pairing with some friends to figure out a network protocol that would work for sending messages between phones and for building the network. To send directed messages instead of broadcast, should there be a &ldquo;message received&rdquo; response sent by the phone when it gets there? Perhaps the &ldquo;message&rdquo; is modified in some way by each phone with headers indicating the path it successfully took to get to the intended recipient the fastest, which we could store as a way to map the network. I&rsquo;m also interested in what we had discussed earlier in linking the mesh network to a trusted friend group to allow secure messages to be sent to the people they&rsquo;re intended for.</p>
+
+<p><img class="center" src="/images/posts/13weboftrust.jpg" title="&lsquo;Web of Trust&rsquo;" ></p>
+
+<p>The TorCoin model for route signing by each node is inspiring me with ideas for how each node in a mobile ad hoc mesh network might sign a message such that the network could perhaps get smarter about routing messages without having to broadcast everything to each node. Maybe we could incorporate a little bit of machine learning into the Mesh Messaging app (&hellip;meshaging?) to figure out the best routes to try for reaching particular nodes.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Hacker School Day 7: Mesh Networking, Cryptocurrencies, and iBeacons]]></title>
