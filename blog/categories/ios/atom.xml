@@ -4,7 +4,7 @@
   <title><![CDATA[Category: iOS | Hacker School Daily Log]]></title>
   <link href="http://lauraskelton.github.io/blog/categories/ios/atom.xml" rel="self"/>
   <link href="http://lauraskelton.github.io/"/>
-  <updated>2014-06-30T11:10:35-04:00</updated>
+  <updated>2014-06-30T11:20:30-04:00</updated>
   <id>http://lauraskelton.github.io/</id>
   <author>
     <name><![CDATA[Laura Skelton]]></name>
@@ -23,6 +23,115 @@
 <p>I was confident that I could write a PHP script very quickly to do the URL shortening and routing, but as I put this up under a subdomain of an existing server I had running for another site, I had to make some tricky changes to the <code>.htaccess</code> file so that Apache would reroute all of the URLs for my shortener to the <code>index.php</code> file with all of my routing scripts. This proved trickier than I expected, since I&rsquo;m not super familiar with the syntax of the <code>.htaccess</code> file and had some trouble getting it to route things properly.</p>
 
 <p>Finally I got the <code>.htaccess</code> file to send things to my script so I could actually write the shortener, but I&rsquo;d like to revisit it this week and learn enough that I can write that part more confidently in the future, and so that I can implement this version better than it currently is written.</p>
+
+<p>I catch short URLs by grabbing the URL with PHP, then look up the short link in the MySQL database, and then redirect the page to the long URL.</p>
+
+<p>```php
+if ((strlen($shorturl) > 0) &amp;&amp; $shorturl != &ldquo;shorten&rdquo;) {</p>
+
+<pre><code>    # should redirect to this url
+
+$query = "
+    SELECT
+    id,
+    short,
+    url
+    FROM urllinks
+    WHERE
+    short = :shortlink
+    ";
+    $query_params = array(
+                          ':shortlink' =&gt; $shorturl
+                          );
+
+    try{
+        $stmt = $db-&gt;prepare($query);
+        $result = $stmt-&gt;execute($query_params);
+    }
+    catch(PDOException $ex){ die("Failed to run query: " . $ex-&gt;getMessage()); }
+    $goturl_ok = false;
+    $row = $stmt-&gt;fetch();
+    if($row){
+        $goturl_ok = true;
+    }
+
+    if($goturl_ok){
+        # redirect to the url
+        header("Location: " . $row[url]);
+        die("Redirecting to: " . $row[url]);
+    } else{
+        print("Redirect Failed. No such link.");
+    }
+</code></pre>
+
+<p>}
+```</p>
+
+<p>If it&rsquo;s not a short URL, then I look for <code>POST</code> variables to see if the user is trying to shorten their own URL. If so, and if it&rsquo;s a valid URL, I generate a random string of 6 characters and store them in the database with the URL they should point to.</p>
+
+<p>```php
+if(!empty($_POST[&lsquo;urltoshorten&rsquo;])){</p>
+
+<pre><code>if (filter_var($_POST['urltoshorten'], FILTER_VALIDATE_URL) === FALSE) {
+    echo "&lt;p&gt;URL '" . $_POST['urltoshorten'] . "' is not valid.&lt;/p&gt;";
+} else {
+
+    function random_string($length = 6, $chars = '1234567890qwrtypsdfghjklzxcvbnmQWRTYPSDFGHJKLZXCVBNM')
+    {
+        $chars_length = (strlen($chars) - 1);
+        $string = $chars{rand(0, $chars_length)};
+
+        for ($i = 1; $i &lt; $length; $i = strlen($string))
+        {
+            $r = $chars{rand(0, $chars_length)};
+            $string .=  $r;
+        }
+        return $string;
+    }
+
+    $shortstring = random_string();
+
+    $query = "
+    INSERT INTO urllinks (short, url)
+    VALUES (:shortstring, :urltoshorten)
+    ";
+    $query_params = array(
+                          ':shortstring' =&gt; $shortstring,
+                          ':urltoshorten' =&gt; $_POST['urltoshorten']
+                          );
+
+    try{
+        $stmt = $db-&gt;prepare($query);
+        $result = $stmt-&gt;execute($query_params);
+    }
+    catch(PDOException $ex){ die("Failed to run query: " . $ex-&gt;getMessage()); }
+    $goturl_ok = false;
+    $row = $stmt-&gt;rowCount();
+    # share the new short url
+    echo '&lt;p&gt;Shortened URL to &lt;a href="http://prty.us/' . $shortstring . '"&gt;' . 'http://prty.us/' . $shortstring . '&lt;/a&gt;&lt;/p&gt;';
+}
+</code></pre>
+
+<p>}</p>
+
+<p>```</p>
+
+<p>Otherwise, I return a pretty form for URL shortening that posts to this same page.</p>
+
+<p>```php
+<form method="post" action="http://prty.us/shorten" id="shortenurlform"></p>
+
+<pre><code>&lt;div&gt;
+    &lt;label for="urltoshorten"&gt;Enter your URL to shorten:&lt;/label&gt;
+    &lt;input type="text" class="input-field" id="urltoshorten" name="urltoshorten" value=""&gt;
+&lt;/div&gt;
+&lt;div&gt;
+    &lt;input type="submit" class="btn btn-default"&gt;
+&lt;/div&gt;
+</code></pre>
+
+<p></form>
+```</p>
 
 <p><a href="http://prty.us/shorten">Check it out!</a> It was cool how simple this was to implement (the PHP part at least). I used <a href="http://getbootstrap.com">Twitter Bootstrap</a> along with a template I&rsquo;ve used previously to get something nice-looking up very quickly. It&rsquo;s also responsive (everything rearranges nicely if the screen size is smaller, like on your phone) without putting really any extra work into it, since that&rsquo;s part of Bootstrap.</p>
 
