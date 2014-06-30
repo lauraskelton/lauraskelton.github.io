@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Hacker School Day 13: Mesh Messaging App - Hacker School Daily Log</title>
+  <title>Hacker School Day 14 - Hacker School Daily Log</title>
   <meta name="author" content="Laura Skelton">
 
   
-  <meta name="description" content="I couldn&rsquo;t get my SecretHandshake app to work properly today after the OAuth changes I&rsquo;d made, so I got to go on a bug-finding detective &hellip;">
+  <meta name="description" content="I went to the Jobs Practice session on Friday and worked on the assigned project of making a quick URL shortener in 2 hours, which is practice for &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://lauraskelton.github.io/blog/2014/06/26/hacker-school-day-13">
+  <link rel="canonical" href="http://lauraskelton.github.io/blog/2014/06/28/hacker-school-day-14">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Hacker School Daily Log" type="application/atom+xml">
@@ -90,7 +90,7 @@
   
   <header>
     
-      <h1 class="entry-title">Hacker School Day 13: Mesh Messaging App</h1>
+      <h1 class="entry-title">Hacker School Day 14</h1>
     
     
       <p class="meta">
@@ -106,26 +106,22 @@
   
 
 
-<time datetime="2014-06-26T20:26:50-04:00" pubdate data-updated="true">Jun 26<span>th</span>, 2014</time>
+<time datetime="2014-06-28T20:58:14-04:00" pubdate data-updated="true">Jun 28<span>th</span>, 2014</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>I couldn&rsquo;t get my SecretHandshake app to work properly today after the OAuth changes I&rsquo;d made, so I got to go on a bug-finding detective mission. I couldn&rsquo;t find any code I changed that would make the app suddenly never have its bluetooth delegate methods called, and a lot of error-finding logs that were never called and indicated that nothing was wrong.</p>
+<div class="entry-content"><p>I went to the Jobs Practice session on Friday and worked on the assigned project of making a quick URL shortener in 2 hours, which is practice for interview projects. I&rsquo;d never done a URL shortener before, and hadn&rsquo;t worked on web/PHP type stuff in awhile since I switched to iOS apps, so I was excited for the change of pace and the well-defined project.</p>
 
-<p>I used Git to create a branch of the project from the last version I know for sure works, which I have on TestFlight. I built that and ran it on the device, and it still didn&rsquo;t work! At first I was frustrated, but then I realized that it meant it wasn&rsquo;t anything in the code that was the problem after all. If I built it in the XCode6 beta, it wouldn&rsquo;t ever detect other iBeacons, but if I built it in XCode5, it worked perfectly. Because I can&rsquo;t build for iOS8 from XCode5, that means that I can&rsquo;t get it to run on my iPod anymore at all. Hoping it&rsquo;s a bug in the XCode beta and not some mysterious unannounced change in the OS that breaks iBeacons.</p>
+<p>I was confident that I could write a PHP script very quickly to do the URL shortening and routing, but as I put this up under a subdomain of an existing server I had running for another site, I had to make some tricky changes to the <code>.htaccess</code> file so that Apache would reroute all of the URLs for my shortener to the <code>index.php</code> file with all of my routing scripts. This proved trickier than I expected, since I&rsquo;m not super familiar with the syntax of the <code>.htaccess</code> file and had some trouble getting it to route things properly.</p>
 
-<p>In the afternoon, I got to work laying out the framework for a Bluetooth LE based mobile ad-hoc mesh network using iPhones and CoreBluetooth (a lower level framework than iBeacons that allows me to send longer messages between phones). I built a simple app that lets you input a message and broadcast it to any other phones in range. It was very exciting that it works! I couldn&rsquo;t get out of range of the phones while in the Hacker School space, so I&rsquo;m looking forward to testing out whether the hopping is working (the phone that receives the message broadcasts it on to other phones).</p>
+<p>Finally I got the <code>.htaccess</code> file to send things to my script so I could actually write the shortener, but I&rsquo;d like to revisit it this week and learn enough that I can write that part more confidently in the future, and so that I can implement this version better than it currently is written.</p>
 
-<p><img class="center" src="/images/posts/13mobileadhoc.jpg" title="'Mobile Ad Hoc Network'" ></p>
+<p><a href="http://prty.us/shorten">Check it out!</a> It was cool how simple this was to implement (the PHP part at least). I used <a href="http://getbootstrap.com">Twitter Bootstrap</a> along with a template I&rsquo;ve used previously to get something nice-looking up very quickly. It&rsquo;s also responsive (everything rearranges nicely if the screen size is smaller, like on your phone) without putting really any extra work into it, since that&rsquo;s part of Bootstrap.</p>
 
-<p>I&rsquo;m interested in pairing with some friends to figure out a network protocol that would work for sending messages between phones and for building the network. To send directed messages instead of broadcast, should there be a &ldquo;message received&rdquo; response sent by the phone when it gets there? Perhaps the &ldquo;message&rdquo; is modified in some way by each phone with headers indicating the path it successfully took to get to the intended recipient the fastest, which we could store as a way to map the network. I&rsquo;m also interested in what we had discussed earlier in linking the mesh network to a trusted friend group to allow secure messages to be sent to the people they&rsquo;re intended for.</p>
-
-<p><img class="center" src="/images/posts/13weboftrust.jpg" title="'Web of Trust'" ></p>
-
-<p>The TorCoin model for route signing by each node is inspiring me with ideas for how each node in a mobile ad hoc mesh network might sign a message such that the network could perhaps get smarter about routing messages without having to broadcast everything to each node. Maybe we could incorporate a little bit of machine learning into the Mesh Messaging app (&hellip;meshaging?) to figure out the best routes to try for reaching particular nodes.</p>
+<p>This made me miss doing web stuff and I&rsquo;m thinking of doing more web development while I&rsquo;m here. I find that every project I make needs a good website even just for marketing, and responsive mobile-friendly websites can be a great way to extend an iOS app&rsquo;s functionality to other device platforms.</p>
 </div>
 
 
@@ -133,7 +129,7 @@
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://lauraskelton.github.io/blog/2014/06/26/hacker-school-day-13/" data-via="" data-counturl="http://lauraskelton.github.io/blog/2014/06/26/hacker-school-day-13/" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://lauraskelton.github.io/blog/2014/06/28/hacker-school-day-14/" data-via="" data-counturl="http://lauraskelton.github.io/blog/2014/06/28/hacker-school-day-14/" >Tweet</a>
   
   
   
@@ -151,7 +147,7 @@
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/bluetooth-le/'>Bluetooth-LE</a>, <a class='category' href='/blog/categories/mesh-networking/'>Mesh-Networking</a>, <a class='category' href='/blog/categories/imesh/'>iMesh</a>, <a class='category' href='/blog/categories/ios/'>iOS</a>
+    <a class='category' href='/blog/categories/bluetooth-le/'>Bluetooth-LE</a>, <a class='category' href='/blog/categories/mesh-networking/'>Mesh-Networking</a>, <a class='category' href='/blog/categories/php/'>PHP</a>, <a class='category' href='/blog/categories/url-shortener/'>URL-Shortener</a>, <a class='category' href='/blog/categories/ios/'>iOS</a>
   
 </span>
 
@@ -159,12 +155,9 @@
     </p>
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/06/25/hacker-school-day-12/" 
-           title="Previous Post: Hacker School Day 12: OAuth Success and Focusing on Goals">&laquo; Hacker School Day 12: OAuth Success and Focusing on Goals</a>
+        <a class="basic-alignment left" href="/blog/2014/06/26/hacker-school-day-13/" 
+           title="Previous Post: Hacker School Day 13: Mesh Messaging App">&laquo; Hacker School Day 13: Mesh Messaging App</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/06/28/hacker-school-day-14/" 
-           title="Next Post: Hacker School Day 14">Hacker School Day 14 &raquo;</a>
       
     </p>
   </footer>

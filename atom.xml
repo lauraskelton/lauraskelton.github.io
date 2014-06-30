@@ -4,7 +4,7 @@
   <title><![CDATA[Hacker School Daily Log]]></title>
   <link href="http://lauraskelton.github.io/atom.xml" rel="self"/>
   <link href="http://lauraskelton.github.io/"/>
-  <updated>2014-06-27T15:46:22-04:00</updated>
+  <updated>2014-06-30T11:10:35-04:00</updated>
   <id>http://lauraskelton.github.io/</id>
   <author>
     <name><![CDATA[Laura Skelton]]></name>
@@ -12,6 +12,23 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Hacker School Day 14]]></title>
+    <link href="http://lauraskelton.github.io/blog/2014/06/28/hacker-school-day-14/"/>
+    <updated>2014-06-28T20:58:14-04:00</updated>
+    <id>http://lauraskelton.github.io/blog/2014/06/28/hacker-school-day-14</id>
+    <content type="html"><![CDATA[<p>I went to the Jobs Practice session on Friday and worked on the assigned project of making a quick URL shortener in 2 hours, which is practice for interview projects. I&rsquo;d never done a URL shortener before, and hadn&rsquo;t worked on web/PHP type stuff in awhile since I switched to iOS apps, so I was excited for the change of pace and the well-defined project.</p>
+
+<p>I was confident that I could write a PHP script very quickly to do the URL shortening and routing, but as I put this up under a subdomain of an existing server I had running for another site, I had to make some tricky changes to the <code>.htaccess</code> file so that Apache would reroute all of the URLs for my shortener to the <code>index.php</code> file with all of my routing scripts. This proved trickier than I expected, since I&rsquo;m not super familiar with the syntax of the <code>.htaccess</code> file and had some trouble getting it to route things properly.</p>
+
+<p>Finally I got the <code>.htaccess</code> file to send things to my script so I could actually write the shortener, but I&rsquo;d like to revisit it this week and learn enough that I can write that part more confidently in the future, and so that I can implement this version better than it currently is written.</p>
+
+<p><a href="http://prty.us/shorten">Check it out!</a> It was cool how simple this was to implement (the PHP part at least). I used <a href="http://getbootstrap.com">Twitter Bootstrap</a> along with a template I&rsquo;ve used previously to get something nice-looking up very quickly. It&rsquo;s also responsive (everything rearranges nicely if the screen size is smaller, like on your phone) without putting really any extra work into it, since that&rsquo;s part of Bootstrap.</p>
+
+<p>This made me miss doing web stuff and I&rsquo;m thinking of doing more web development while I&rsquo;m here. I find that every project I make needs a good website even just for marketing, and responsive mobile-friendly websites can be a great way to extend an iOS app&rsquo;s functionality to other device platforms.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Hacker School Day 13: Mesh Messaging App]]></title>

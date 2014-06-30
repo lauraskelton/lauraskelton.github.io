@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Mesh-Networking | Hacker School Daily Log]]></title>
   <link href="http://lauraskelton.github.io/blog/categories/mesh-networking/atom.xml" rel="self"/>
   <link href="http://lauraskelton.github.io/"/>
-  <updated>2014-06-27T15:46:22-04:00</updated>
+  <updated>2014-06-30T11:10:35-04:00</updated>
   <id>http://lauraskelton.github.io/</id>
   <author>
     <name><![CDATA[Laura Skelton]]></name>
@@ -12,6 +12,23 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Hacker School Day 14]]></title>
+    <link href="http://lauraskelton.github.io/blog/2014/06/28/hacker-school-day-14/"/>
+    <updated>2014-06-28T20:58:14-04:00</updated>
+    <id>http://lauraskelton.github.io/blog/2014/06/28/hacker-school-day-14</id>
+    <content type="html"><![CDATA[<p>I went to the Jobs Practice session on Friday and worked on the assigned project of making a quick URL shortener in 2 hours, which is practice for interview projects. I&rsquo;d never done a URL shortener before, and hadn&rsquo;t worked on web/PHP type stuff in awhile since I switched to iOS apps, so I was excited for the change of pace and the well-defined project.</p>
+
+<p>I was confident that I could write a PHP script very quickly to do the URL shortening and routing, but as I put this up under a subdomain of an existing server I had running for another site, I had to make some tricky changes to the <code>.htaccess</code> file so that Apache would reroute all of the URLs for my shortener to the <code>index.php</code> file with all of my routing scripts. This proved trickier than I expected, since I&rsquo;m not super familiar with the syntax of the <code>.htaccess</code> file and had some trouble getting it to route things properly.</p>
+
+<p>Finally I got the <code>.htaccess</code> file to send things to my script so I could actually write the shortener, but I&rsquo;d like to revisit it this week and learn enough that I can write that part more confidently in the future, and so that I can implement this version better than it currently is written.</p>
+
+<p><a href="http://prty.us/shorten">Check it out!</a> It was cool how simple this was to implement (the PHP part at least). I used <a href="http://getbootstrap.com">Twitter Bootstrap</a> along with a template I&rsquo;ve used previously to get something nice-looking up very quickly. It&rsquo;s also responsive (everything rearranges nicely if the screen size is smaller, like on your phone) without putting really any extra work into it, since that&rsquo;s part of Bootstrap.</p>
+
+<p>This made me miss doing web stuff and I&rsquo;m thinking of doing more web development while I&rsquo;m here. I find that every project I make needs a good website even just for marketing, and responsive mobile-friendly websites can be a great way to extend an iOS app&rsquo;s functionality to other device platforms.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Hacker School Day 13: Mesh Messaging App]]></title>
@@ -171,53 +188,6 @@ uint32_t Wheel(byte WheelPos) {
 <p>We&rsquo;re planning to link the mesh network up with a hardware project using the programmable RGB LED lights from Adafruit to represent the users of the network. I thought it would be cool to make a sort of giant firefly jar with light-dots flying around inside, with one dot representing each user-node of the mesh network. The ObjC iOS app would allow users to join the network and then set their dot&rsquo;s color, which would be reflected in the physical firefly jar.</p>
 
 <p>We found a source for an affordable Bluetooth LE adapter for the Arduino and mapped out a plan for how to design the network on the whiteboard. Excited to give it a go tomorrow!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Hacker School Day 1: Swift Tricks]]></title>
-    <link href="http://lauraskelton.github.io/blog/2014/06/10/hacker-school-day-1/"/>
-    <updated>2014-06-10T14:25:15-04:00</updated>
-    <id>http://lauraskelton.github.io/blog/2014/06/10/hacker-school-day-1</id>
-    <content type="html"><![CDATA[<p>Things got much more tricky when I started trying to implement <a href="https://github.com/lauraskelton/simple-share">SimpleShare</a>, my Bluetooth LE (CoreBluetooth) mesh network sharing app, in Swift, using the new Multipeer Connectivity framework instead of Bluetooth. There were much more complicated things I needed to do in Obj-C, and the app couldn&rsquo;t be &ldquo;translated&rdquo; in the same way as the simpler apps just by changing to the new syntax, since Swift actually works differently in key ways than Obj-C does.</p>
-
-<p>Things I learned about Swift:</p>
-
-<ul>
-<li>Optional variables: You can no longer have variables that aren&rsquo;t set or that are nil like you could in Obj-C. If you don&rsquo;t know what a variable is when the class is created, you have to make it an optional variable by putting a <code>?</code> after the type declaration.</li>
-</ul>
-
-
-<p>```objc
-class MyClass {</p>
-
-<pre><code>var mystring: String?
-</code></pre>
-
-<p>}
-```
-* Global variables: It seems that any variables you set within a class but outside of a function act like public parameters for that class and are accessible to read or set from other classes</p>
-
-<ul>
-<li><p>Calling functions from another class: You call a function from another class by writing the class name followed by a dot then the function name with its arguments, eg: <code>MyClass.someFunction(arg1,arg2)</code></p></li>
-<li><p>Init functions are a special case: Instead of calling <code>MyClass.init(arg1,arg2)</code> like you would for any other function, just calling <code>MyClass(arg1,arg2)</code>
-is how you can init an instance of a class.</p></li>
-<li><p>Convenience init: If your init function requires arguments to create a class instance, you can create a second init method for convenience that creates an instance with default values.
-<code>objc
-class SimpleMesh {
-  init(simpleMeshAppID: String) {
-      self.simpleMeshAppID = simpleMeshAppID
-      self.myItemIDs = ["first", "second", "third", "fourth", "fifth"]
-  }
-  convenience init() {
-      self.init(simpleMeshAppID: "[NO ID]")
-  }
-}
-</code></p></li>
-</ul>
-
-
-<p>In the afternoon, I made a plan with Jorge and Kyle to work on a mesh networking inspector to figure out the limitations of Multipeer Connectivity so that we can build a stable mesh networking messaging app. We decided to move forward on the project in Objective-C while continuing to learn Swift on the side so we can finish more quickly.</p>
 ]]></content>
   </entry>
   

@@ -9,7 +9,7 @@
   <meta name="author" content="Laura Skelton">
 
   
-  <meta name="description" content="I couldn&rsquo;t get my SecretHandshake app to work properly today after the OAuth changes I&rsquo;d made, so I got to go on a bug-finding detective &hellip;">
+  <meta name="description" content="I went to the Jobs Practice session on Friday and worked on the assigned project of making a quick URL shortener in 2 hours, which is practice for &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -87,6 +87,50 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/06/28/hacker-school-day-14/">Hacker School Day 14</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-28T20:58:14-04:00" pubdate data-updated="true">Jun 28<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I went to the Jobs Practice session on Friday and worked on the assigned project of making a quick URL shortener in 2 hours, which is practice for interview projects. I&rsquo;d never done a URL shortener before, and hadn&rsquo;t worked on web/PHP type stuff in awhile since I switched to iOS apps, so I was excited for the change of pace and the well-defined project.</p>
+
+<p>I was confident that I could write a PHP script very quickly to do the URL shortening and routing, but as I put this up under a subdomain of an existing server I had running for another site, I had to make some tricky changes to the <code>.htaccess</code> file so that Apache would reroute all of the URLs for my shortener to the <code>index.php</code> file with all of my routing scripts. This proved trickier than I expected, since I&rsquo;m not super familiar with the syntax of the <code>.htaccess</code> file and had some trouble getting it to route things properly.</p>
+
+<p>Finally I got the <code>.htaccess</code> file to send things to my script so I could actually write the shortener, but I&rsquo;d like to revisit it this week and learn enough that I can write that part more confidently in the future, and so that I can implement this version better than it currently is written.</p>
+
+<p><a href="http://prty.us/shorten">Check it out!</a> It was cool how simple this was to implement (the PHP part at least). I used <a href="http://getbootstrap.com">Twitter Bootstrap</a> along with a template I&rsquo;ve used previously to get something nice-looking up very quickly. It&rsquo;s also responsive (everything rearranges nicely if the screen size is smaller, like on your phone) without putting really any extra work into it, since that&rsquo;s part of Bootstrap.</p>
+
+<p>This made me miss doing web stuff and I&rsquo;m thinking of doing more web development while I&rsquo;m here. I find that every project I make needs a good website even just for marketing, and responsive mobile-friendly websites can be a great way to extend an iOS app&rsquo;s functionality to other device platforms.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1287,66 +1331,6 @@
 <p>This got me very excited about the idea of applying a neural network classifier to my beer ratings dataset of 200,000 beer ratings from a few thousand users of a couple thousand beers. I realized that not only can I use a neural network to recommend beers to users very quickly once the network is trained, but I realized that for beers, the hidden nodes would represent groupings of beers into a sort of taste profile. I&rsquo;m imagining a node each for hoppy-bitter beers, boozy belgians, roasty stouts, and sweeter lighter beers, with each individual user&rsquo;s preferences being some combination of those flavor types, represented in the program by different activations of those hidden nodes. This is very exciting!</p>
 
 <p>I got my beer data into an appropriate format and trained a neural network with 10 hidden nodes (which to my understanding represents 10 beer-taste-profiles), and tomorrow I&rsquo;m going to work on a representation showing which of the top 100 beers activate each node, representing independent features (meaningful beer groupings) of the dataset.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/06/13/hacker-school-day-4/">Hacker School Day 4: Neural Networks</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-06-13T18:18:21-04:00" pubdate data-updated="true">Jun 13<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I continued on the Machine Learning path by starting work on <a href="http://neuralnetworksanddeeplearning.com">Neural Networks and Deep Learning</a> to deepen my understanding of Neural Nets.</p>
-
-<p>I started working on Neural Networks in the <a href="http://shop.oreilly.com/product/9780596529321.do">Programming Collective Intelligence</a> book a few months ago as a way to train a search engine to learn to return better results for a query. The explanation of how Neural Networks were really operating, and why the algorithms were laid out the way they were, was an extremely brief page or two. I got the basic idea of a layer of inputs that fed through a network to return outputs, and then backpropagated based on training data to correct mistakes and improve over time. I didn&rsquo;t understand what was going on with the Hidden Layer, the nodes between the input and output layers, or what was really happening with the weights and where the complicated formula for calculating the new weight of each node was coming from.</p>
-
-<p>The new Neural Networks and Deep Learning book fills in that deeper understanding so well! The pace is perfect, and the author takes the time to pause to explain each step and each formula used in detail. He starts by explaining the Perceptron, the simplest node component of a Neural Network which has been around for a while, and how it could be used to create a similar logical path as a NAND gate, which meant that it can be used for any type of logical calculation since any type of computation can be built up from NAND gates.</p>
-
-<p><img class="center" src="/images/posts/4neuralnet_perceptron.png" title="'perceptron acting as NAND gate'" ></p>
-
-<p>The trouble with Perceptrons is that the inputs and outputs are all binary, and so when it comes to training the network to improve results, the changes are sudden instead of gradual when the weights and biases of a node are adjusted (eg. the output suddenly flips from 1 to 0 instead of decreasing gradually). So, in order to learn, Neural Networks need to use a variation of the Perceptron called a Sigmoid Neuron, which is able to take inputs that range from 0 to 1, and outputs a number ranging from 0 to 1. Instead of a jump from 0 to 1 when the inputs * weights are greater than the bias, the sigmoid function takes the weights of all the inputs and the bias and outputs a number scaled smoothly between 0 and 1, so that incremental changes to the network&rsquo;s weights and biases will make small improvements to the results that can then be optimized.</p>
-
-<p><img class="center" src="/images/posts/4neuralnet_sigmoid.png" title="'sigmoid neuron reflects small changes'" ></p>
-
-<p>I was so excited by this section, because the sigmoid function that was unclearly derived in my earlier Neural Network explorations made perfect sense after this explanation. I got excited and actually graphed out the sigmoid function before I saw his graph a little further down because I saw that it would output larger values scaled to a max of 1 and smaller values scaled to a min of 0 for the inputs. The tone of this book is wonderful in the way that a good professor can explain conversationally a complicated topic and make everything suddenly make perfect sense.</p>
-
-<p>I&rsquo;m embarrassed to admit that I got a bit lost with the math in the next section. I took Multivariable Calculus, Linear Algebra, and Partial Differential Equations when I was still in high school, and since I haven&rsquo;t used most of that math since then it&rsquo;s a bit rusty. (Though, side note, I was pleasantly surprised to make use of MV Calc for an architecture project that involved making calculations for projecting a flat print around a spherical globe.) I tracked down my high school textbooks to review some of the concepts I couldn&rsquo;t remember clearly, and learned that most of the textbooks are now available in full online! I&rsquo;m looking forward to reviewing my <a href="https://archive.org/stream/Calculus_643/Spivak-Calculus">Calculus book</a> and <a href="https://archive.org/stream/LinearAlgebra/Hadley-LinearAlgebra">Linear Algebra textbook</a> to quickly relearn a few things, as well as browsing through some other math topics that have always interested me, such as Non-Euclidean Geometry. It&rsquo;s a challenge to stay focused when there are so many amazing things to learn.</p>
-
-<p>The book has a fantastic explanation of what is happening with the hidden layers of a Neural Network, and some overview of what features the hidden nodes might represent.</p>
-
-<p><img class="center" src="/images/posts/4neuralnet_digits.png" title="'neural network digit classifier'" ></p>
-
-<p>After setting up a certain number of layers and specifying the number of hidden nodes, you assign random weights and biases to each node in the network to begin. You then run the inputs through the network and check the outputs against the known correct answers. Using an optimization method similar to those used in other Machine Learning algorithms, you then attempt to find a local minimum of the error calculation for the output vs. the known answers. In order to avoid doing zillions of calculations for a large data set, you can use an optimization called Stochastic Gradient Descent to pick a random subset of inputs and optimize only on those, which with a large enough subset should approximate the values of the full dataset with a fraction of the processing time.</p>
-
-<p>Super excited to continue working through this book and to learn to implement custom neural network classifiers in code!</p>
-
-<p><img class="center" src="/images/posts/4neuralnet_decider.png" title="'neural network decision maker'" ></p>
 </div>
   
   

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: iOS | Hacker School Daily Log]]></title>
   <link href="http://lauraskelton.github.io/blog/categories/ios/atom.xml" rel="self"/>
   <link href="http://lauraskelton.github.io/"/>
-  <updated>2014-06-27T15:46:22-04:00</updated>
+  <updated>2014-06-30T11:10:35-04:00</updated>
   <id>http://lauraskelton.github.io/</id>
   <author>
     <name><![CDATA[Laura Skelton]]></name>
@@ -12,6 +12,23 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Hacker School Day 14]]></title>
+    <link href="http://lauraskelton.github.io/blog/2014/06/28/hacker-school-day-14/"/>
+    <updated>2014-06-28T20:58:14-04:00</updated>
+    <id>http://lauraskelton.github.io/blog/2014/06/28/hacker-school-day-14</id>
+    <content type="html"><![CDATA[<p>I went to the Jobs Practice session on Friday and worked on the assigned project of making a quick URL shortener in 2 hours, which is practice for interview projects. I&rsquo;d never done a URL shortener before, and hadn&rsquo;t worked on web/PHP type stuff in awhile since I switched to iOS apps, so I was excited for the change of pace and the well-defined project.</p>
+
+<p>I was confident that I could write a PHP script very quickly to do the URL shortening and routing, but as I put this up under a subdomain of an existing server I had running for another site, I had to make some tricky changes to the <code>.htaccess</code> file so that Apache would reroute all of the URLs for my shortener to the <code>index.php</code> file with all of my routing scripts. This proved trickier than I expected, since I&rsquo;m not super familiar with the syntax of the <code>.htaccess</code> file and had some trouble getting it to route things properly.</p>
+
+<p>Finally I got the <code>.htaccess</code> file to send things to my script so I could actually write the shortener, but I&rsquo;d like to revisit it this week and learn enough that I can write that part more confidently in the future, and so that I can implement this version better than it currently is written.</p>
+
+<p><a href="http://prty.us/shorten">Check it out!</a> It was cool how simple this was to implement (the PHP part at least). I used <a href="http://getbootstrap.com">Twitter Bootstrap</a> along with a template I&rsquo;ve used previously to get something nice-looking up very quickly. It&rsquo;s also responsive (everything rearranges nicely if the screen size is smaller, like on your phone) without putting really any extra work into it, since that&rsquo;s part of Bootstrap.</p>
+
+<p>This made me miss doing web stuff and I&rsquo;m thinking of doing more web development while I&rsquo;m here. I find that every project I make needs a good website even just for marketing, and responsive mobile-friendly websites can be a great way to extend an iOS app&rsquo;s functionality to other device platforms.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Hacker School Day 13: Mesh Messaging App]]></title>
@@ -367,48 +384,6 @@ NSString *postString = [NSString stringWithFormat:@"grant_type=refresh_token&amp
 <p>I came away with some great new ideas for things that would be good and/or fun to focus on in the coming weeks and clearer goals for the rest of Hacker School. A side effect of being around so much creative energy and cool projects is that you can get overwhelmed with fear of missing out on what everyone else is doing, even if that&rsquo;s not what you came here to work on. Part of that is a fun and enriching distraction, like Arduino, and part of it just ends up being noise that confuses your focus. If a bunch of people are excited about writing compilers and learning Rust, should I be doing those things too?</p>
 
 <p>I have a few ideas for some quick iOS apps that I&rsquo;d like to try to implement in Swift, that are more of a game/drawing style of app that use more math, graphics, and touch interface than the social utility apps I&rsquo;ve written in the past, which tended to take advantage of Apple&rsquo;s great built in user interface elements more than custom graphics and animations. Looking forward to the coming weeks!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Hacker School Day 8: Secret Handshake App]]></title>
-    <link href="http://lauraskelton.github.io/blog/2014/06/19/hacker-school-day-8/"/>
-    <updated>2014-06-19T20:53:29-04:00</updated>
-    <id>http://lauraskelton.github.io/blog/2014/06/19/hacker-school-day-8</id>
-    <content type="html"><![CDATA[<p>I finished a <a href="https://github.com/lauraskelton/secrethandshake">new iPhone app</a> today!! It was inspired by someone at the Swift meetup saying that Hacker School was like the new Freemasons &ndash; some kind of secret society that instantly connected you with other people. I had such a good time talking to some Hacker School alums I hadn&rsquo;t met before, that I thought it would be good to have an app that would let me know at future meetups whether there were any other Hacker Schoolers in the room.</p>
-
-<p>In iOS 7, Apple introduce iBeacons, a proximity beacon built on top of Bluetooth LE. IPhones can scan for iBeacon signals, and display special hyperlocal information when they come within range of one, such as at a store display or at a particular museum exhibit. The iBeacon signal can even wake up an iPhone that is inactive with an alert and a notification banner.</p>
-
-<p><img class="center" src="/images/posts/8ibeacon.jpg" title="&lsquo;ibeacon&rsquo;" ></p>
-
-<p>The really exciting thing is that iPhones can also act as iBeacon emitters as well as receivers. You can send out an iBeacon signal from your phone while also scanning for similar signals from other people&rsquo;s phones.</p>
-
-<p>```objc
-&ndash; (void)initBeacon {</p>
-
-<pre><code>self.beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:uuid
-                                                            major:1
-                                                            minor:userID
-                                                       identifier:@"someregion"];
-</code></pre>
-
-<p>}</p>
-
-<ul>
-<li>(void)transmitBeacon
-{
-      self.beaconPeripheralData = [self.beaconRegion peripheralDataWithMeasuredPower:nil];
-      self.peripheralManager = [[CBPeripheralManager alloc] initWithDelegate:self
-                                                                       queue:nil
-                                                                     options:nil];
-}
-```</li>
-</ul>
-
-
-<p>I set up my app so that each user&rsquo;s phone emits an iBeacon signal that includes their userID. Each phone also scans for other signals, and if it finds that of another Hacker Schooler&rsquo;s phone, it sends an alert to the scanner&rsquo;s phone and downloads a profile photo, name, and batch of the nearby person. That way, you could make sure to stop by and chat with that person at a conference or meetup.</p>
-
-<p>So far it seems to be working well, but I definitely need beta testing help from some other Hacker School folks who wouldn&rsquo;t mind giving some feedback. I have it up on TestFlight if you have an iPhone and time to test it out! <a href="http://tflig.ht/1stcVLG">http://tflig.ht/1stcVLG</a></p>
 ]]></content>
   </entry>
   
