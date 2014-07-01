@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Mesh-Networking | Hacker School Daily Log]]></title>
   <link href="http://lauraskelton.github.io/blog/categories/mesh-networking/atom.xml" rel="self"/>
   <link href="http://lauraskelton.github.io/"/>
-  <updated>2014-06-30T11:25:28-04:00</updated>
+  <updated>2014-07-01T11:18:58-04:00</updated>
   <id>http://lauraskelton.github.io/</id>
   <author>
     <name><![CDATA[Laura Skelton]]></name>
@@ -12,6 +12,31 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Hacker School Day 15: Mesh Messaging and ASCII Photo Booths]]></title>
+    <link href="http://lauraskelton.github.io/blog/2014/06/30/hacker-school-day-15/"/>
+    <updated>2014-06-30T20:30:06-04:00</updated>
+    <id>http://lauraskelton.github.io/blog/2014/06/30/hacker-school-day-15</id>
+    <content type="html"><![CDATA[<p>I completely reworked my ad-hoc mobile networking app. It had been set up so that each time a phone had a message to send, it would advertise itself over Bluetooth LE, connect to other phones as a peripheral, send the message, then close the connection.</p>
+
+<p>I reworked the entire process. Now, the phones are still listening most of the time for other devices, but each periodically broadcasts itself (and becomes discoverable) at random intervals every few minutes. When phones discover each other, they connect and subscribe to push notifications from each other. That way, when there is a message to send, it transmits to all connected devices in a split second.</p>
+
+<p><img class="center" src="/images/posts/14adhocnetwork.gif" title="&lsquo;Split Ad-Hoc Network&rsquo;" ></p>
+
+<p>There&rsquo;s still some debugging to do with connection stability and perfecting the advertising interval so that devices become connected quickly, but so far it is working quite well! I&rsquo;m excited to finish getting the base network established so that I can play around with different network setups that could be built with the technology. I was intrigued by some <a href="http://lauraskelton.github.io/blog/2014/06/18/hacker-school-day-7/">earlier conversations about secure communications and web-of-trust networks</a>, as well as <a href="http://ghost.lesiuk.org/AdHoc/network_simulator/">different optimizations for routing the packets beyond simple broadcasting</a>, and it would be cool to use Bluetooth LE to build this.</p>
+
+<p><img class="center" src="/images/posts/14adhocrouting.gif" title="&lsquo;Ad-Hoc Specific Route&rsquo;" ></p>
+
+<p>We were talking about what type of photo booth would be appropriate for a Hacker School party, and I had the idea for a fun modification to the booth that would take 4 photos, turn each into ASCII art (green on a black background), and then make an animated GIF image from them that could be projected continuously during a party, inspired by <a href="https://github.com/oxling/iphone-ascii">Amy&rsquo;s ASCII Cam project</a>.</p>
+
+<p><img class="center" src="/images/posts/14asciiphoto.gif" title="&lsquo;ASCII Photo&rsquo;" ></p>
+
+<p>Totally coincidentally, when checking out <a href="https://hackmanhattan.com/2014/06/facetron6000-at-figment-2014/">Hack Manhattan</a>, I came across their recent ASCII photo booth project, which takes a photo, converts it to ASCII art, then actually has an Arduino-controlled vintage typewriter type it out onto a sheet of paper for the user to take with them. So cool!</p>
+
+<p><img class="center" src="/images/posts/14asciitypewriter.jpg" title="&lsquo;ASCII Typewriter Booth&rsquo;" ></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Hacker School Day 14: URL Shortener]]></title>
@@ -229,74 +254,6 @@ if(!empty($_POST[&lsquo;urltoshorten&rsquo;])){</p>
 <p>I ended the day by doing a short presentation about a beer clustering project I did a couple of months ago in Python. My beer recommendations iOS app generated over 200,000 beer ratings, which has been a pretty cool data set to play around with. I started by scattering beers randomly in a 2 dimensional grid, then moved the points to try to get the distances between each beer to approximate the Pearson distance I calculated by comparing user ratings of all of the beers to find which were most similar (and so should be closer together on the beer map), and which beers were most different, and so should be far apart. I figured out some tricks to break out of the local minimums I kept running into, and ended up with a <a href="http://beerchooser.com/beermap/beergmap.html">pretty cool map</a> of many different beers and how they are related by user preference to each other. (The green color represents IBU &ndash; International Bittering Units, a measure of bitterness/hoppiness in beer, and the blue color represents ABV, or alcohol content, of each beer.)</p>
 
 <p>It was my first time ever presenting a coding project I&rsquo;d done in front of a group of people, and it was a cool experience to share something I&rsquo;d been working on with a group that could follow what I&rsquo;d done and understand what was neat about it. It was great practice for me in talking about my coding work to a larger group, which I have done much more with my design work than with my programming projects.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Hacker School Day 2: Arduino and Mesh Networking]]></title>
-    <link href="http://lauraskelton.github.io/blog/2014/06/11/hacker-school-day-2/"/>
-    <updated>2014-06-11T20:44:53-04:00</updated>
-    <id>http://lauraskelton.github.io/blog/2014/06/11/hacker-school-day-2</id>
-    <content type="html"><![CDATA[<p>I had such a fun day! In the morning I learned how to use Arduino to control Neopixel RGB LED lights from Adafruit. It was so fast to get going with this, and the code was easy to tweak to change the patterns the lights would display.</p>
-
-<p><img class="center" src="/images/posts/adapixels.jpg" title="&lsquo;adafruit neopixels&rsquo; &lsquo;adafruit neopixels&rsquo;" ></p>
-
-<p>We wrote some code a little later that cycled through a rainbow with alternating pixels flashing opposite colors off and on.</p>
-
-<p>```java
-void rainbow(uint8_t wait) {
-  uint16_t i, j;</p>
-
-<p>  for(j=0; j&lt;256; j++) {</p>
-
-<pre><code>for(i=0; i&lt;strip.numPixels(); i++) {
-  if (i%2==0) {
-      if ((j/10) %2==0) {
-        strip.setPixelColor(i, Wheel((255-i-j) &amp; 255));
-      } else {
-        strip.setPixelColor(i,0,0,0);
-      }
-  } else {
-    if ((j/10) %2!=0) {
-         strip.setPixelColor(i, Wheel((i+j) &amp; 255));
-      } else {
-        strip.setPixelColor(i,0,0,0);
-      }
-  }
-}
-strip.show();
-delay(wait);
-</code></pre>
-
-<p>  }
-}
-```</p>
-
-<p><code>Wheel</code> is a neat little function in the Adafruit Neopixel code that converts a value from 0 to 255 to an RGB color value.</p>
-
-<p><code>java
-// Input a value 0 to 255 to get a color value.
-// The colours are a transition r - g - b - back to r.
-uint32_t Wheel(byte WheelPos) {
-  if(WheelPos &lt; 85) {
-   return strip.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
-  } else if(WheelPos &lt; 170) {
-   WheelPos -= 85;
-   return strip.Color(255 - WheelPos * 3, 0, WheelPos * 3);
-  } else {
-   WheelPos -= 170;
-   return strip.Color(0, WheelPos * 3, 255 - WheelPos * 3);
-  }
-}
-</code></p>
-
-<p>I&rsquo;m so excited to learn more about hardware and connecting apps to display patterns with the lights.</p>
-
-<p>I spent some time brainstorming about Mesh Networking with a group. We want to create our own implementation of ICMP (Internet Control Message Protocol) over Bluetooth LE, using iBeacons as a sort of push notification to alert nearby devices that messages are available, and broadcasting messages through the nodes of the network to get to the intended user.</p>
-
-<p>We&rsquo;re planning to link the mesh network up with a hardware project using the programmable RGB LED lights from Adafruit to represent the users of the network. I thought it would be cool to make a sort of giant firefly jar with light-dots flying around inside, with one dot representing each user-node of the mesh network. The ObjC iOS app would allow users to join the network and then set their dot&rsquo;s color, which would be reflected in the physical firefly jar.</p>
-
-<p>We found a source for an affordable Bluetooth LE adapter for the Arduino and mapped out a plan for how to design the network on the whiteboard. Excited to give it a go tomorrow!</p>
 ]]></content>
   </entry>
   

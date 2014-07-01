@@ -4,7 +4,7 @@
   <title><![CDATA[Category: iMesh | Hacker School Daily Log]]></title>
   <link href="http://lauraskelton.github.io/blog/categories/imesh/atom.xml" rel="self"/>
   <link href="http://lauraskelton.github.io/"/>
-  <updated>2014-06-30T11:25:28-04:00</updated>
+  <updated>2014-07-01T11:18:58-04:00</updated>
   <id>http://lauraskelton.github.io/</id>
   <author>
     <name><![CDATA[Laura Skelton]]></name>
@@ -12,6 +12,31 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Hacker School Day 15: Mesh Messaging and ASCII Photo Booths]]></title>
+    <link href="http://lauraskelton.github.io/blog/2014/06/30/hacker-school-day-15/"/>
+    <updated>2014-06-30T20:30:06-04:00</updated>
+    <id>http://lauraskelton.github.io/blog/2014/06/30/hacker-school-day-15</id>
+    <content type="html"><![CDATA[<p>I completely reworked my ad-hoc mobile networking app. It had been set up so that each time a phone had a message to send, it would advertise itself over Bluetooth LE, connect to other phones as a peripheral, send the message, then close the connection.</p>
+
+<p>I reworked the entire process. Now, the phones are still listening most of the time for other devices, but each periodically broadcasts itself (and becomes discoverable) at random intervals every few minutes. When phones discover each other, they connect and subscribe to push notifications from each other. That way, when there is a message to send, it transmits to all connected devices in a split second.</p>
+
+<p><img class="center" src="/images/posts/14adhocnetwork.gif" title="&lsquo;Split Ad-Hoc Network&rsquo;" ></p>
+
+<p>There&rsquo;s still some debugging to do with connection stability and perfecting the advertising interval so that devices become connected quickly, but so far it is working quite well! I&rsquo;m excited to finish getting the base network established so that I can play around with different network setups that could be built with the technology. I was intrigued by some <a href="http://lauraskelton.github.io/blog/2014/06/18/hacker-school-day-7/">earlier conversations about secure communications and web-of-trust networks</a>, as well as <a href="http://ghost.lesiuk.org/AdHoc/network_simulator/">different optimizations for routing the packets beyond simple broadcasting</a>, and it would be cool to use Bluetooth LE to build this.</p>
+
+<p><img class="center" src="/images/posts/14adhocrouting.gif" title="&lsquo;Ad-Hoc Specific Route&rsquo;" ></p>
+
+<p>We were talking about what type of photo booth would be appropriate for a Hacker School party, and I had the idea for a fun modification to the booth that would take 4 photos, turn each into ASCII art (green on a black background), and then make an animated GIF image from them that could be projected continuously during a party, inspired by <a href="https://github.com/oxling/iphone-ascii">Amy&rsquo;s ASCII Cam project</a>.</p>
+
+<p><img class="center" src="/images/posts/14asciiphoto.gif" title="&lsquo;ASCII Photo&rsquo;" ></p>
+
+<p>Totally coincidentally, when checking out <a href="https://hackmanhattan.com/2014/06/facetron6000-at-figment-2014/">Hack Manhattan</a>, I came across their recent ASCII photo booth project, which takes a photo, converts it to ASCII art, then actually has an Arduino-controlled vintage typewriter type it out onto a sheet of paper for the user to take with them. So cool!</p>
+
+<p><img class="center" src="/images/posts/14asciitypewriter.jpg" title="&lsquo;ASCII Typewriter Booth&rsquo;" ></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Hacker School Day 13: Mesh Messaging App]]></title>
