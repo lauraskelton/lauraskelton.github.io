@@ -113,7 +113,7 @@
   </header>
 
 
-<div class="entry-content"><p>I completely reworked my ad-hoc mobile networking app. It had been set up so that each time a phone had a message to send, it would advertise itself over Bluetooth LE, connect to other phones as a peripheral, send the message, then close the connection.</p>
+<div class="entry-content"><p>I completely reworked my <a href="https://github.com/lauraskelton/imesh">ad-hoc mobile networking app</a>. It had been set up so that each time a phone had a message to send, it would advertise itself over Bluetooth LE, connect to other phones as a peripheral, send the message, then close the connection.</p>
 
 <p>I reworked the entire process. Now, the phones are still listening most of the time for other devices, but each periodically broadcasts itself (and becomes discoverable) at random intervals every few minutes. When phones discover each other, they connect and subscribe to push notifications from each other. That way, when there is a message to send, it transmits to all connected devices in a split second.</p>
 

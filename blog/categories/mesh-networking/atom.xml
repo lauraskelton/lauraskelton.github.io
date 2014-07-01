@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Mesh-Networking | Hacker School Daily Log]]></title>
   <link href="http://lauraskelton.github.io/blog/categories/mesh-networking/atom.xml" rel="self"/>
   <link href="http://lauraskelton.github.io/"/>
-  <updated>2014-07-01T11:18:58-04:00</updated>
+  <updated>2014-07-01T11:20:15-04:00</updated>
   <id>http://lauraskelton.github.io/</id>
   <author>
     <name><![CDATA[Laura Skelton]]></name>
@@ -18,7 +18,7 @@
     <link href="http://lauraskelton.github.io/blog/2014/06/30/hacker-school-day-15/"/>
     <updated>2014-06-30T20:30:06-04:00</updated>
     <id>http://lauraskelton.github.io/blog/2014/06/30/hacker-school-day-15</id>
-    <content type="html"><![CDATA[<p>I completely reworked my ad-hoc mobile networking app. It had been set up so that each time a phone had a message to send, it would advertise itself over Bluetooth LE, connect to other phones as a peripheral, send the message, then close the connection.</p>
+    <content type="html"><![CDATA[<p>I completely reworked my <a href="https://github.com/lauraskelton/imesh">ad-hoc mobile networking app</a>. It had been set up so that each time a phone had a message to send, it would advertise itself over Bluetooth LE, connect to other phones as a peripheral, send the message, then close the connection.</p>
 
 <p>I reworked the entire process. Now, the phones are still listening most of the time for other devices, but each periodically broadcasts itself (and becomes discoverable) at random intervals every few minutes. When phones discover each other, they connect and subscribe to push notifications from each other. That way, when there is a message to send, it transmits to all connected devices in a split second.</p>
 
