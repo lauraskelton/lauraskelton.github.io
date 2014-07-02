@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Testing | Hacker School Daily Log]]></title>
   <link href="http://lauraskelton.github.io/blog/categories/testing/atom.xml" rel="self"/>
   <link href="http://lauraskelton.github.io/"/>
-  <updated>2014-07-02T11:25:09-04:00</updated>
+  <updated>2014-07-02T11:29:32-04:00</updated>
   <id>http://lauraskelton.github.io/</id>
   <author>
     <name><![CDATA[Laura Skelton]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Hacker School Day 16: ASCII Photo Booth and Unit Testing]]></title>
-    <link href="http://lauraskelton.github.io/blog/2014/06/25/hacker-school-day-16/"/>
-    <updated>2014-06-25T10:55:33-04:00</updated>
-    <id>http://lauraskelton.github.io/blog/2014/06/25/hacker-school-day-16</id>
+    <link href="http://lauraskelton.github.io/blog/2014/07/01/hacker-school-day-16/"/>
+    <updated>2014-07-01T20:55:33-04:00</updated>
+    <id>http://lauraskelton.github.io/blog/2014/07/01/hacker-school-day-16</id>
     <content type="html"><![CDATA[<p>I added a filter to my photo booth that turns each photo into an ASCII art image, then deployed the <a href="http://bprty.com/BGkvq3/">GIF Photo Booth mode</a> I wrote to the live <a href="http://blockpartyapp.com">Block Party</a> server.</p>
 
 <p>It was amazing how easy it was to extend the Photo Booth filter set to add this new filter. I&rsquo;m using the Mosaic filter from <a href="https://github.com/BradLarson/GPUImage">GPUImage</a>, an open-source Objective-C framework that runs filtering calculations in Open-GL for fast image processing. I used an image containing 64 tiles ranging from lightest to darkest, and the calculations in the Open-GL mosaic filter took a stepped luminosity and selected which tile to display.</p>

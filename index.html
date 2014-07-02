@@ -9,7 +9,7 @@
   <meta name="author" content="Laura Skelton">
 
   
-  <meta name="description" content="I completely reworked my ad-hoc mobile networking app. It had been set up so that each time a phone had a message to send, it would advertise itself &hellip;">
+  <meta name="description" content="I added a filter to my photo booth that turns each photo into an ASCII art image, then deployed the GIF Photo Booth mode I wrote to the live Block &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -87,6 +87,151 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/07/01/hacker-school-day-16/">Hacker School Day 16: ASCII Photo Booth and Unit Testing</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-01T20:55:33-04:00" pubdate data-updated="true">Jul 1<span>st</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I added a filter to my photo booth that turns each photo into an ASCII art image, then deployed the <a href="http://bprty.com/BGkvq3/">GIF Photo Booth mode</a> I wrote to the live <a href="http://blockpartyapp.com">Block Party</a> server.</p>
+
+<p>It was amazing how easy it was to extend the Photo Booth filter set to add this new filter. I&rsquo;m using the Mosaic filter from <a href="https://github.com/BradLarson/GPUImage">GPUImage</a>, an open-source Objective-C framework that runs filtering calculations in Open-GL for fast image processing. I used an image containing 64 tiles ranging from lightest to darkest, and the calculations in the Open-GL mosaic filter took a stepped luminosity and selected which tile to display.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">(</span>
+</span><span class='line'> <span class="n">precision</span> <span class="n">highp</span> <span class="kt">float</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'> <span class="n">varying</span> <span class="n">vec2</span> <span class="n">textureCoordinate</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'> <span class="n">uniform</span> <span class="n">sampler2D</span> <span class="n">inputImageTexture</span><span class="p">;</span>
+</span><span class='line'> <span class="n">uniform</span> <span class="n">sampler2D</span> <span class="n">inputImageTexture2</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'> <span class="n">uniform</span> <span class="n">vec2</span> <span class="n">inputTileSize</span><span class="p">;</span>
+</span><span class='line'> <span class="n">uniform</span> <span class="n">vec2</span> <span class="n">displayTileSize</span><span class="p">;</span>
+</span><span class='line'> <span class="n">uniform</span> <span class="kt">float</span> <span class="n">numTiles</span><span class="p">;</span>
+</span><span class='line'> <span class="n">uniform</span> <span class="kt">int</span> <span class="n">colorOn</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'> <span class="kt">void</span> <span class="nf">main</span><span class="p">()</span>
+</span><span class='line'> <span class="p">{</span>
+</span><span class='line'>     <span class="n">vec2</span> <span class="n">xy</span> <span class="o">=</span> <span class="n">textureCoordinate</span><span class="p">;</span>
+</span><span class='line'>     <span class="n">xy</span> <span class="o">=</span> <span class="n">xy</span> <span class="o">-</span> <span class="n">mod</span><span class="p">(</span><span class="n">xy</span><span class="p">,</span> <span class="n">displayTileSize</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>     <span class="n">vec4</span> <span class="n">lumcoeff</span> <span class="o">=</span> <span class="n">vec4</span><span class="p">(</span><span class="mf">0.299</span><span class="p">,</span><span class="mf">0.587</span><span class="p">,</span><span class="mf">0.114</span><span class="p">,</span><span class="mf">0.0</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>     <span class="n">vec4</span> <span class="n">inputColor</span> <span class="o">=</span> <span class="n">texture2D</span><span class="p">(</span><span class="n">inputImageTexture2</span><span class="p">,</span> <span class="n">xy</span><span class="p">);</span>
+</span><span class='line'>     <span class="kt">float</span> <span class="n">lum</span> <span class="o">=</span> <span class="n">dot</span><span class="p">(</span><span class="n">inputColor</span><span class="p">,</span><span class="n">lumcoeff</span><span class="p">);</span>
+</span><span class='line'>     <span class="n">lum</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">lum</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>     <span class="kt">float</span> <span class="n">stepsize</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">numTiles</span><span class="p">;</span>
+</span><span class='line'>     <span class="kt">float</span> <span class="n">lumStep</span> <span class="o">=</span> <span class="p">(</span><span class="n">lum</span> <span class="o">-</span> <span class="n">mod</span><span class="p">(</span><span class="n">lum</span><span class="p">,</span> <span class="n">stepsize</span><span class="p">))</span> <span class="o">/</span> <span class="n">stepsize</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>     <span class="kt">float</span> <span class="n">rowStep</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">inputTileSize</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+</span><span class='line'>     <span class="kt">float</span> <span class="n">x</span> <span class="o">=</span> <span class="n">mod</span><span class="p">(</span><span class="n">lumStep</span><span class="p">,</span> <span class="n">rowStep</span><span class="p">);</span>
+</span><span class='line'>     <span class="kt">float</span> <span class="n">y</span> <span class="o">=</span> <span class="n">floor</span><span class="p">(</span><span class="n">lumStep</span> <span class="o">/</span> <span class="n">rowStep</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>     <span class="n">vec2</span> <span class="n">startCoord</span> <span class="o">=</span> <span class="n">vec2</span><span class="p">(</span><span class="kt">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">*</span>  <span class="n">inputTileSize</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="kt">float</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">*</span> <span class="n">inputTileSize</span><span class="p">.</span><span class="n">y</span><span class="p">);</span>
+</span><span class='line'>     <span class="n">vec2</span> <span class="n">finalCoord</span> <span class="o">=</span> <span class="n">startCoord</span> <span class="o">+</span> <span class="p">((</span><span class="n">textureCoordinate</span> <span class="o">-</span> <span class="n">xy</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">inputTileSize</span> <span class="o">/</span> <span class="n">displayTileSize</span><span class="p">));</span>
+</span><span class='line'>
+</span><span class='line'>     <span class="n">vec4</span> <span class="n">color</span> <span class="o">=</span> <span class="n">texture2D</span><span class="p">(</span><span class="n">inputImageTexture</span><span class="p">,</span> <span class="n">finalCoord</span><span class="p">);</span>
+</span><span class='line'>     <span class="k">if</span> <span class="p">(</span><span class="n">colorOn</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>         <span class="n">color</span> <span class="o">=</span> <span class="n">color</span> <span class="o">*</span> <span class="n">inputColor</span><span class="p">;</span>
+</span><span class='line'>     <span class="p">}</span>
+</span><span class='line'>     <span class="n">gl_FragColor</span> <span class="o">=</span> <span class="n">color</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'> <span class="p">}</span>
+</span><span class='line'><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img class="center" src="/images/posts/16hackercamtiles.png" title="'ASCII Tiles'" ></p>
+
+<p>I grouped the ASCII filter with a filter I already had that tends to increase facial feature definition, and that seemed to make the ASCII images a bit clearer.</p>
+
+<p>It so quite fast to implement the ASCII filter that I had time to do both a light and a dark version, and I was happy to see that I had set up the Block Party app intelligently enough that the filtering menu extended automatically once the new filters were added, and everything just worked!</p>
+
+<p><img class="center" src="/images/posts/16asciiboothgif.gif" title="'ASCII Booth GIF'" ></p>
+
+<p>The GIF mode of the photo booth takes 4 photos in rapid succession, saves them to the camera roll, combines them into a GIF animation, and combines them into a movie file playable on the iPhone (as GIF animations are not supported outside of the browser), then it uploads everything to the server with metadata indicating to the app that it is an animated GIF instead of a JPG so it can be displayed accordingly.</p>
+
+<p>In the process of working with GPUImage&rsquo;s Mosaic filter, I discovered a small bug in the project, and with Allison&rsquo;s help I submitted <a href="https://github.com/BradLarson/GPUImage/pulls">my first Pull request</a>! It was good to get some practice working with a large existing code base and working to improve a small part of it.</p>
+
+<p>In the evening, I learned how to use <a href="https://developer.apple.com/library/ios/documentation/ToolsLanguages/Conceptual/Xcode_Overview/UnitTestYourApp/UnitTestYourApp.html">XCode&rsquo;s built-in Testing framework</a>.</p>
+
+<p><img class="center" src="/images/posts/16xcodetesting.png" title="'XCode Testing Framework'" ></p>
+
+<p>In the process of rewriting my code so that it was easier to test, everything was just better. The classes and methods naturally became more modular and reusable, it was easy and quickly repeatable to test all of the edge cases, and my code seemed much clearer. I learned that testing can be seen as a sort of specification set for the code and its features. If the class has some expected properties, or a function is expected to behave in a particular way, I can in a way &ldquo;define&rdquo; that class&rsquo;s features by the way that I write the expected outputs of the test functions, sort of like an outline for how I expect my program to behave. I actually think it would help me to be clearer and more organized in the way I develop my code if I start writing these feature-specification tests before I even write the methods and classes they are testing, and build the method code to match the spec, instead of the other way around. This may not always be feasible if something needs to be mocked up very quickly, but I think in general this is how I will try to work moving forward.</p>
+
+<p>This work with testing feels like great progress towards the goal of becoming a better programmer. I&rsquo;m going to work on rewriting several of my existing projects in this way as it seems to add stability and clarity without having to spend so much time manually checking that everything works.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -468,151 +613,6 @@
 <p>Then I go to a bunch of workshops, and sometimes they&rsquo;re amazingly helpful and right in line with what my learning goals are here. And I think, I should go to more of these! But, other times, I realize a few minutes in that the workshop&rsquo;s focus is not furthering my goals, and I get frustrated at missing out on what could have been coding time, which feels so limited already as my time at Hacker School is flying by.</p>
 
 <p>So, I think I need to just be more aware of the pitfalls of participating in something just because I feel like I &ldquo;should&rdquo;, and do a check with myself before I sign up for things during Hacker School hours to make sure they line up well with what I&rsquo;m already working on and interested in here.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/06/25/hacker-school-day-16/">Hacker School Day 16: ASCII Photo Booth and Unit Testing</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-06-25T10:55:33-04:00" pubdate data-updated="true">Jun 25<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I added a filter to my photo booth that turns each photo into an ASCII art image, then deployed the <a href="http://bprty.com/BGkvq3/">GIF Photo Booth mode</a> I wrote to the live <a href="http://blockpartyapp.com">Block Party</a> server.</p>
-
-<p>It was amazing how easy it was to extend the Photo Booth filter set to add this new filter. I&rsquo;m using the Mosaic filter from <a href="https://github.com/BradLarson/GPUImage">GPUImage</a>, an open-source Objective-C framework that runs filtering calculations in Open-GL for fast image processing. I used an image containing 64 tiles ranging from lightest to darkest, and the calculations in the Open-GL mosaic filter took a stepped luminosity and selected which tile to display.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">(</span>
-</span><span class='line'> <span class="n">precision</span> <span class="n">highp</span> <span class="kt">float</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'> <span class="n">varying</span> <span class="n">vec2</span> <span class="n">textureCoordinate</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'> <span class="n">uniform</span> <span class="n">sampler2D</span> <span class="n">inputImageTexture</span><span class="p">;</span>
-</span><span class='line'> <span class="n">uniform</span> <span class="n">sampler2D</span> <span class="n">inputImageTexture2</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'> <span class="n">uniform</span> <span class="n">vec2</span> <span class="n">inputTileSize</span><span class="p">;</span>
-</span><span class='line'> <span class="n">uniform</span> <span class="n">vec2</span> <span class="n">displayTileSize</span><span class="p">;</span>
-</span><span class='line'> <span class="n">uniform</span> <span class="kt">float</span> <span class="n">numTiles</span><span class="p">;</span>
-</span><span class='line'> <span class="n">uniform</span> <span class="kt">int</span> <span class="n">colorOn</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'> <span class="kt">void</span> <span class="nf">main</span><span class="p">()</span>
-</span><span class='line'> <span class="p">{</span>
-</span><span class='line'>     <span class="n">vec2</span> <span class="n">xy</span> <span class="o">=</span> <span class="n">textureCoordinate</span><span class="p">;</span>
-</span><span class='line'>     <span class="n">xy</span> <span class="o">=</span> <span class="n">xy</span> <span class="o">-</span> <span class="n">mod</span><span class="p">(</span><span class="n">xy</span><span class="p">,</span> <span class="n">displayTileSize</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>     <span class="n">vec4</span> <span class="n">lumcoeff</span> <span class="o">=</span> <span class="n">vec4</span><span class="p">(</span><span class="mf">0.299</span><span class="p">,</span><span class="mf">0.587</span><span class="p">,</span><span class="mf">0.114</span><span class="p">,</span><span class="mf">0.0</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>     <span class="n">vec4</span> <span class="n">inputColor</span> <span class="o">=</span> <span class="n">texture2D</span><span class="p">(</span><span class="n">inputImageTexture2</span><span class="p">,</span> <span class="n">xy</span><span class="p">);</span>
-</span><span class='line'>     <span class="kt">float</span> <span class="n">lum</span> <span class="o">=</span> <span class="n">dot</span><span class="p">(</span><span class="n">inputColor</span><span class="p">,</span><span class="n">lumcoeff</span><span class="p">);</span>
-</span><span class='line'>     <span class="n">lum</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">lum</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>     <span class="kt">float</span> <span class="n">stepsize</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">numTiles</span><span class="p">;</span>
-</span><span class='line'>     <span class="kt">float</span> <span class="n">lumStep</span> <span class="o">=</span> <span class="p">(</span><span class="n">lum</span> <span class="o">-</span> <span class="n">mod</span><span class="p">(</span><span class="n">lum</span><span class="p">,</span> <span class="n">stepsize</span><span class="p">))</span> <span class="o">/</span> <span class="n">stepsize</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>     <span class="kt">float</span> <span class="n">rowStep</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">inputTileSize</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
-</span><span class='line'>     <span class="kt">float</span> <span class="n">x</span> <span class="o">=</span> <span class="n">mod</span><span class="p">(</span><span class="n">lumStep</span><span class="p">,</span> <span class="n">rowStep</span><span class="p">);</span>
-</span><span class='line'>     <span class="kt">float</span> <span class="n">y</span> <span class="o">=</span> <span class="n">floor</span><span class="p">(</span><span class="n">lumStep</span> <span class="o">/</span> <span class="n">rowStep</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>     <span class="n">vec2</span> <span class="n">startCoord</span> <span class="o">=</span> <span class="n">vec2</span><span class="p">(</span><span class="kt">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">*</span>  <span class="n">inputTileSize</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="kt">float</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">*</span> <span class="n">inputTileSize</span><span class="p">.</span><span class="n">y</span><span class="p">);</span>
-</span><span class='line'>     <span class="n">vec2</span> <span class="n">finalCoord</span> <span class="o">=</span> <span class="n">startCoord</span> <span class="o">+</span> <span class="p">((</span><span class="n">textureCoordinate</span> <span class="o">-</span> <span class="n">xy</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">inputTileSize</span> <span class="o">/</span> <span class="n">displayTileSize</span><span class="p">));</span>
-</span><span class='line'>
-</span><span class='line'>     <span class="n">vec4</span> <span class="n">color</span> <span class="o">=</span> <span class="n">texture2D</span><span class="p">(</span><span class="n">inputImageTexture</span><span class="p">,</span> <span class="n">finalCoord</span><span class="p">);</span>
-</span><span class='line'>     <span class="k">if</span> <span class="p">(</span><span class="n">colorOn</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>         <span class="n">color</span> <span class="o">=</span> <span class="n">color</span> <span class="o">*</span> <span class="n">inputColor</span><span class="p">;</span>
-</span><span class='line'>     <span class="p">}</span>
-</span><span class='line'>     <span class="n">gl_FragColor</span> <span class="o">=</span> <span class="n">color</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'> <span class="p">}</span>
-</span><span class='line'><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><img class="center" src="/images/posts/16hackercamtiles.png" title="'ASCII Tiles'" ></p>
-
-<p>I grouped the ASCII filter with a filter I already had that tends to increase facial feature definition, and that seemed to make the ASCII images a bit clearer.</p>
-
-<p>It so quite fast to implement the ASCII filter that I had time to do both a light and a dark version, and I was happy to see that I had set up the Block Party app intelligently enough that the filtering menu extended automatically once the new filters were added, and everything just worked!</p>
-
-<p><img class="center" src="/images/posts/16asciiboothgif.gif" title="'ASCII Booth GIF'" ></p>
-
-<p>The GIF mode of the photo booth takes 4 photos in rapid succession, saves them to the camera roll, combines them into a GIF animation, and combines them into a movie file playable on the iPhone (as GIF animations are not supported outside of the browser), then it uploads everything to the server with metadata indicating to the app that it is an animated GIF instead of a JPG so it can be displayed accordingly.</p>
-
-<p>In the process of working with GPUImage&rsquo;s Mosaic filter, I discovered a small bug in the project, and with Allison&rsquo;s help I submitted <a href="https://github.com/BradLarson/GPUImage/pulls">my first Pull request</a>! It was good to get some practice working with a large existing code base and working to improve a small part of it.</p>
-
-<p>In the evening, I learned how to use <a href="https://developer.apple.com/library/ios/documentation/ToolsLanguages/Conceptual/Xcode_Overview/UnitTestYourApp/UnitTestYourApp.html">XCode&rsquo;s built-in Testing framework</a>.</p>
-
-<p><img class="center" src="/images/posts/16xcodetesting.png" title="'XCode Testing Framework'" ></p>
-
-<p>In the process of rewriting my code so that it was easier to test, everything was just better. The classes and methods naturally became more modular and reusable, it was easy and quickly repeatable to test all of the edge cases, and my code seemed much clearer. I learned that testing can be seen as a sort of specification set for the code and its features. If the class has some expected properties, or a function is expected to behave in a particular way, I can in a way &ldquo;define&rdquo; that class&rsquo;s features by the way that I write the expected outputs of the test functions, sort of like an outline for how I expect my program to behave. I actually think it would help me to be clearer and more organized in the way I develop my code if I start writing these feature-specification tests before I even write the methods and classes they are testing, and build the method code to match the spec, instead of the other way around. This may not always be feasible if something needs to be mocked up very quickly, but I think in general this is how I will try to work moving forward.</p>
-
-<p>This work with testing feels like great progress towards the goal of becoming a better programmer. I&rsquo;m going to work on rewriting several of my existing projects in this way as it seems to add stability and clarity without having to spend so much time manually checking that everything works.</p>
 </div>
   
   
