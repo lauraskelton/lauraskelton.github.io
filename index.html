@@ -480,6 +480,151 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2014/06/25/hacker-school-day-16/">Hacker School Day 16: ASCII Photo Booth and Unit Testing</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-25T10:55:33-04:00" pubdate data-updated="true">Jun 25<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I added a filter to my photo booth that turns each photo into an ASCII art image, then deployed the <a href="http://bprty.com/BGkvq3/">GIF Photo Booth mode</a> I wrote to the live <a href="http://blockpartyapp.com">Block Party</a> server.</p>
+
+<p>It was amazing how easy it was to extend the Photo Booth filter set to add this new filter. I&rsquo;m using the Mosaic filter from <a href="https://github.com/BradLarson/GPUImage">GPUImage</a>, an open-source Objective-C framework that runs filtering calculations in Open-GL for fast image processing. I used an image containing 64 tiles ranging from lightest to darkest, and the calculations in the Open-GL mosaic filter took a stepped luminosity and selected which tile to display.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">(</span>
+</span><span class='line'> <span class="n">precision</span> <span class="n">highp</span> <span class="kt">float</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'> <span class="n">varying</span> <span class="n">vec2</span> <span class="n">textureCoordinate</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'> <span class="n">uniform</span> <span class="n">sampler2D</span> <span class="n">inputImageTexture</span><span class="p">;</span>
+</span><span class='line'> <span class="n">uniform</span> <span class="n">sampler2D</span> <span class="n">inputImageTexture2</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'> <span class="n">uniform</span> <span class="n">vec2</span> <span class="n">inputTileSize</span><span class="p">;</span>
+</span><span class='line'> <span class="n">uniform</span> <span class="n">vec2</span> <span class="n">displayTileSize</span><span class="p">;</span>
+</span><span class='line'> <span class="n">uniform</span> <span class="kt">float</span> <span class="n">numTiles</span><span class="p">;</span>
+</span><span class='line'> <span class="n">uniform</span> <span class="kt">int</span> <span class="n">colorOn</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'> <span class="kt">void</span> <span class="nf">main</span><span class="p">()</span>
+</span><span class='line'> <span class="p">{</span>
+</span><span class='line'>     <span class="n">vec2</span> <span class="n">xy</span> <span class="o">=</span> <span class="n">textureCoordinate</span><span class="p">;</span>
+</span><span class='line'>     <span class="n">xy</span> <span class="o">=</span> <span class="n">xy</span> <span class="o">-</span> <span class="n">mod</span><span class="p">(</span><span class="n">xy</span><span class="p">,</span> <span class="n">displayTileSize</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>     <span class="n">vec4</span> <span class="n">lumcoeff</span> <span class="o">=</span> <span class="n">vec4</span><span class="p">(</span><span class="mf">0.299</span><span class="p">,</span><span class="mf">0.587</span><span class="p">,</span><span class="mf">0.114</span><span class="p">,</span><span class="mf">0.0</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>     <span class="n">vec4</span> <span class="n">inputColor</span> <span class="o">=</span> <span class="n">texture2D</span><span class="p">(</span><span class="n">inputImageTexture2</span><span class="p">,</span> <span class="n">xy</span><span class="p">);</span>
+</span><span class='line'>     <span class="kt">float</span> <span class="n">lum</span> <span class="o">=</span> <span class="n">dot</span><span class="p">(</span><span class="n">inputColor</span><span class="p">,</span><span class="n">lumcoeff</span><span class="p">);</span>
+</span><span class='line'>     <span class="n">lum</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">lum</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>     <span class="kt">float</span> <span class="n">stepsize</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">numTiles</span><span class="p">;</span>
+</span><span class='line'>     <span class="kt">float</span> <span class="n">lumStep</span> <span class="o">=</span> <span class="p">(</span><span class="n">lum</span> <span class="o">-</span> <span class="n">mod</span><span class="p">(</span><span class="n">lum</span><span class="p">,</span> <span class="n">stepsize</span><span class="p">))</span> <span class="o">/</span> <span class="n">stepsize</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>     <span class="kt">float</span> <span class="n">rowStep</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">inputTileSize</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+</span><span class='line'>     <span class="kt">float</span> <span class="n">x</span> <span class="o">=</span> <span class="n">mod</span><span class="p">(</span><span class="n">lumStep</span><span class="p">,</span> <span class="n">rowStep</span><span class="p">);</span>
+</span><span class='line'>     <span class="kt">float</span> <span class="n">y</span> <span class="o">=</span> <span class="n">floor</span><span class="p">(</span><span class="n">lumStep</span> <span class="o">/</span> <span class="n">rowStep</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>     <span class="n">vec2</span> <span class="n">startCoord</span> <span class="o">=</span> <span class="n">vec2</span><span class="p">(</span><span class="kt">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">*</span>  <span class="n">inputTileSize</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="kt">float</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">*</span> <span class="n">inputTileSize</span><span class="p">.</span><span class="n">y</span><span class="p">);</span>
+</span><span class='line'>     <span class="n">vec2</span> <span class="n">finalCoord</span> <span class="o">=</span> <span class="n">startCoord</span> <span class="o">+</span> <span class="p">((</span><span class="n">textureCoordinate</span> <span class="o">-</span> <span class="n">xy</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">inputTileSize</span> <span class="o">/</span> <span class="n">displayTileSize</span><span class="p">));</span>
+</span><span class='line'>
+</span><span class='line'>     <span class="n">vec4</span> <span class="n">color</span> <span class="o">=</span> <span class="n">texture2D</span><span class="p">(</span><span class="n">inputImageTexture</span><span class="p">,</span> <span class="n">finalCoord</span><span class="p">);</span>
+</span><span class='line'>     <span class="k">if</span> <span class="p">(</span><span class="n">colorOn</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>         <span class="n">color</span> <span class="o">=</span> <span class="n">color</span> <span class="o">*</span> <span class="n">inputColor</span><span class="p">;</span>
+</span><span class='line'>     <span class="p">}</span>
+</span><span class='line'>     <span class="n">gl_FragColor</span> <span class="o">=</span> <span class="n">color</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'> <span class="p">}</span>
+</span><span class='line'><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img class="center" src="/images/posts/16hackercamtiles.png" title="'ASCII Tiles'" ></p>
+
+<p>I grouped the ASCII filter with a filter I already had that tends to increase facial feature definition, and that seemed to make the ASCII images a bit clearer.</p>
+
+<p>It so quite fast to implement the ASCII filter that I had time to do both a light and a dark version, and I was happy to see that I had set up the Block Party app intelligently enough that the filtering menu extended automatically once the new filters were added, and everything just worked!</p>
+
+<p><img class="center" src="/images/posts/16asciiboothgif.gif" title="'ASCII Booth GIF'" ></p>
+
+<p>The GIF mode of the photo booth takes 4 photos in rapid succession, saves them to the camera roll, combines them into a GIF animation, and combines them into a movie file playable on the iPhone (as GIF animations are not supported outside of the browser), then it uploads everything to the server with metadata indicating to the app that it is an animated GIF instead of a JPG so it can be displayed accordingly.</p>
+
+<p>In the process of working with GPUImage&rsquo;s Mosaic filter, I discovered a small bug in the project, and with Allison&rsquo;s help I submitted <a href="https://github.com/BradLarson/GPUImage/pulls">my first Pull request</a>! It was good to get some practice working with a large existing code base and working to improve a small part of it.</p>
+
+<p>In the evening, I learned how to use <a href="https://developer.apple.com/library/ios/documentation/ToolsLanguages/Conceptual/Xcode_Overview/UnitTestYourApp/UnitTestYourApp.html">XCode&rsquo;s built-in Testing framework</a>.</p>
+
+<p><img class="center" src="/images/posts/16xcodetesting.png" title="'XCode Testing Framework'" ></p>
+
+<p>In the process of rewriting my code so that it was easier to test, everything was just better. The classes and methods naturally became more modular and reusable, it was easy and quickly repeatable to test all of the edge cases, and my code seemed much clearer. I learned that testing can be seen as a sort of specification set for the code and its features. If the class has some expected properties, or a function is expected to behave in a particular way, I can in a way &ldquo;define&rdquo; that class&rsquo;s features by the way that I write the expected outputs of the test functions, sort of like an outline for how I expect my program to behave. I actually think it would help me to be clearer and more organized in the way I develop my code if I start writing these feature-specification tests before I even write the methods and classes they are testing, and build the method code to match the spec, instead of the other way around. This may not always be feasible if something needs to be mocked up very quickly, but I think in general this is how I will try to work moving forward.</p>
+
+<p>This work with testing feels like great progress towards the goal of becoming a better programmer. I&rsquo;m going to work on rewriting several of my existing projects in this way as it seems to add stability and clarity without having to spend so much time manually checking that everything works.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2014/06/24/hacker-school-day-11/">Hacker School Day 11: Sprites and Space Invaders</a></h1>
     
     
@@ -1458,54 +1603,6 @@
 <p><img class="center" src="/images/posts/7ibeacon.jpg" title="'ibeacons'" ></p>
 
 <p>I finished up the nitty gritty late into the evening, and should have a fully working app ready for testing tomorrow!</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/06/17/hacker-school-day-6/">Hacker School Day 6: Beer Neural Network and Testing Code</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-06-17T20:48:27-04:00" pubdate data-updated="true">Jun 17<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I worked on getting a visualization up of the beer neural network (with 100 beers as both inputs and outputs of the network and 10 hidden nodes) that I trained yesterday. Theoretically it should be able to take as input all of a user&rsquo;s beer ratings, and output their predicted ratings for every beer in the system.</p>
-
-<p>I was most interested in classifying the beers and seeing what happened with the inputs to the hidden nodes- would it group certain beers together as sort of tastemakers of that node? I mapped out the top 5 positive and top 5 negative inputs to each node after it was trained onto my beer clustering map, and the results were interesting and a bit confusing. Some of the nodes made more intuitive sense than others, such as this node of someone whose defining taste predictor is that they love pale watery beers and hate Guinness and bitter IPAs.</p>
-
-<p><img class="center" src="/images/posts/6node3.jpg" title="'first beernet node 3'" ></p>
-
-<p>Some of the nodes seemed confusing and a bit random to me intuitively, although the error rate seemed pretty low which seems to indicate that there must be some meaning there. I&rsquo;m going to work tomorrow on training a new network using 900 beers instead of just the top 100 to fill in some of the gaps and nuance of the taste profiles. I actually wonder if 10 nodes was too many for only 100 beers, which would make the groupings more idiosyncratic when broader groups might be more informative. I&rsquo;m also planning to read up on Restricted Boltzmann Machines to delve into some deep learning networks.</p>
-
-<p>I spent a few hours in the afternoon learning about testing in Javascript. This was by far the most formally directed thing I&rsquo;ve worked on at Hacker School so far. Mary gave a presentation showing a simple program in various stages along with the tests she wrote for it, so we could really see how the tests became easier to write as she refactored the code into many smaller functions. We got a chance to pair program afterwards to refactor her Javascript server code and write some tests for it. This was very helpful, and I feel much more directed now in terms of knowing some best practices for writing code.</p>
-
-<p>I spent much of the afternoon rewriting some of my own Python code to break out some of the giant run-on functions into small pieces that I can reuse. It&rsquo;s much cleaner so far, and seems easier to follow since I can get right to a particular piece of code I need to tweak.</p>
-
-<p>I&rsquo;m looking forward to cleaning up my code a LOT more. It&rsquo;s helpful to be around so many other programmers I can learn and improve from to write much cleaner, more efficient code, instead of just being happy that the program runs well with no bugs. Planning to focus a lot during Hacker School on improving in that area!</p>
 </div>
   
   

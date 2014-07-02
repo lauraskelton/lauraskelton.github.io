@@ -9,7 +9,7 @@
   <meta name="author" content="Laura Skelton">
 
   
-  <meta name="description" content="I continued working through the Neural Networks book. A lot of the rusty math started finally coming back to me in sudden bursts of insight, and the &hellip;">
+  <meta name="description" content="I worked on getting a visualization up of the beer neural network (with 100 beers as both inputs and outputs of the network and 10 hidden nodes) that &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -87,6 +87,54 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/06/17/hacker-school-day-6/">Hacker School Day 6: Beer Neural Network and Testing Code</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-17T20:48:27-04:00" pubdate data-updated="true">Jun 17<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I worked on getting a visualization up of the beer neural network (with 100 beers as both inputs and outputs of the network and 10 hidden nodes) that I trained yesterday. Theoretically it should be able to take as input all of a user&rsquo;s beer ratings, and output their predicted ratings for every beer in the system.</p>
+
+<p>I was most interested in classifying the beers and seeing what happened with the inputs to the hidden nodes- would it group certain beers together as sort of tastemakers of that node? I mapped out the top 5 positive and top 5 negative inputs to each node after it was trained onto my beer clustering map, and the results were interesting and a bit confusing. Some of the nodes made more intuitive sense than others, such as this node of someone whose defining taste predictor is that they love pale watery beers and hate Guinness and bitter IPAs.</p>
+
+<p><img class="center" src="/images/posts/6node3.jpg" title="'first beernet node 3'" ></p>
+
+<p>Some of the nodes seemed confusing and a bit random to me intuitively, although the error rate seemed pretty low which seems to indicate that there must be some meaning there. I&rsquo;m going to work tomorrow on training a new network using 900 beers instead of just the top 100 to fill in some of the gaps and nuance of the taste profiles. I actually wonder if 10 nodes was too many for only 100 beers, which would make the groupings more idiosyncratic when broader groups might be more informative. I&rsquo;m also planning to read up on Restricted Boltzmann Machines to delve into some deep learning networks.</p>
+
+<p>I spent a few hours in the afternoon learning about testing in Javascript. This was by far the most formally directed thing I&rsquo;ve worked on at Hacker School so far. Mary gave a presentation showing a simple program in various stages along with the tests she wrote for it, so we could really see how the tests became easier to write as she refactored the code into many smaller functions. We got a chance to pair program afterwards to refactor her Javascript server code and write some tests for it. This was very helpful, and I feel much more directed now in terms of knowing some best practices for writing code.</p>
+
+<p>I spent much of the afternoon rewriting some of my own Python code to break out some of the giant run-on functions into small pieces that I can reuse. It&rsquo;s much cleaner so far, and seems easier to follow since I can get right to a particular piece of code I need to tweak.</p>
+
+<p>I&rsquo;m looking forward to cleaning up my code a LOT more. It&rsquo;s helpful to be around so many other programmers I can learn and improve from to write much cleaner, more efficient code, instead of just being happy that the program runs well with no bugs. Planning to focus a lot during Hacker School on improving in that area!</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>

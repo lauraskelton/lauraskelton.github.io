@@ -1,0 +1,303 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Hacker School Day 16: ASCII Photo Booth and Unit Testing - Hacker School Daily Log</title>
+  <meta name="author" content="Laura Skelton">
+
+  
+  <meta name="description" content="I added a filter to my photo booth that turns each photo into an ASCII art image, then deployed the GIF Photo Booth mode I wrote to the live Block &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://lauraskelton.github.io/blog/2014/06/25/hacker-school-day-16">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Hacker School Daily Log" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Poller+One' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Germania+One' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fontdiner+Swanky' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Cardo' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Sorts+Mill+Goudy' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=EB+Garamond' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Della+Respira' rel='stylesheet' type='text/css'>
+
+  
+
+</head>
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<logo>
+
+<img src="/logo.png" alt="Website Logo. Upload to /source/logo.png ; disable in /source/_includes/logo.html" height="32px" width="32px">
+</logo>
+
+
+
+<body >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Hacker School Daily Log</a></h1>
+  
+    <h2>Laura Skelton | Summer 2014 Batch</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+<br>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:lauraskelton.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<!--
+<ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+-->
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Hacker School Day 16: ASCII Photo Booth and Unit Testing</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-25T10:55:33-04:00" pubdate data-updated="true">Jun 25<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I added a filter to my photo booth that turns each photo into an ASCII art image, then deployed the <a href="http://bprty.com/BGkvq3/">GIF Photo Booth mode</a> I wrote to the live <a href="http://blockpartyapp.com">Block Party</a> server.</p>
+
+<p>It was amazing how easy it was to extend the Photo Booth filter set to add this new filter. I&rsquo;m using the Mosaic filter from <a href="https://github.com/BradLarson/GPUImage">GPUImage</a>, an open-source Objective-C framework that runs filtering calculations in Open-GL for fast image processing. I used an image containing 64 tiles ranging from lightest to darkest, and the calculations in the Open-GL mosaic filter took a stepped luminosity and selected which tile to display.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">(</span>
+</span><span class='line'> <span class="n">precision</span> <span class="n">highp</span> <span class="kt">float</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'> <span class="n">varying</span> <span class="n">vec2</span> <span class="n">textureCoordinate</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'> <span class="n">uniform</span> <span class="n">sampler2D</span> <span class="n">inputImageTexture</span><span class="p">;</span>
+</span><span class='line'> <span class="n">uniform</span> <span class="n">sampler2D</span> <span class="n">inputImageTexture2</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'> <span class="n">uniform</span> <span class="n">vec2</span> <span class="n">inputTileSize</span><span class="p">;</span>
+</span><span class='line'> <span class="n">uniform</span> <span class="n">vec2</span> <span class="n">displayTileSize</span><span class="p">;</span>
+</span><span class='line'> <span class="n">uniform</span> <span class="kt">float</span> <span class="n">numTiles</span><span class="p">;</span>
+</span><span class='line'> <span class="n">uniform</span> <span class="kt">int</span> <span class="n">colorOn</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'> <span class="kt">void</span> <span class="nf">main</span><span class="p">()</span>
+</span><span class='line'> <span class="p">{</span>
+</span><span class='line'>     <span class="n">vec2</span> <span class="n">xy</span> <span class="o">=</span> <span class="n">textureCoordinate</span><span class="p">;</span>
+</span><span class='line'>     <span class="n">xy</span> <span class="o">=</span> <span class="n">xy</span> <span class="o">-</span> <span class="n">mod</span><span class="p">(</span><span class="n">xy</span><span class="p">,</span> <span class="n">displayTileSize</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>     <span class="n">vec4</span> <span class="n">lumcoeff</span> <span class="o">=</span> <span class="n">vec4</span><span class="p">(</span><span class="mf">0.299</span><span class="p">,</span><span class="mf">0.587</span><span class="p">,</span><span class="mf">0.114</span><span class="p">,</span><span class="mf">0.0</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>     <span class="n">vec4</span> <span class="n">inputColor</span> <span class="o">=</span> <span class="n">texture2D</span><span class="p">(</span><span class="n">inputImageTexture2</span><span class="p">,</span> <span class="n">xy</span><span class="p">);</span>
+</span><span class='line'>     <span class="kt">float</span> <span class="n">lum</span> <span class="o">=</span> <span class="n">dot</span><span class="p">(</span><span class="n">inputColor</span><span class="p">,</span><span class="n">lumcoeff</span><span class="p">);</span>
+</span><span class='line'>     <span class="n">lum</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">lum</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>     <span class="kt">float</span> <span class="n">stepsize</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">numTiles</span><span class="p">;</span>
+</span><span class='line'>     <span class="kt">float</span> <span class="n">lumStep</span> <span class="o">=</span> <span class="p">(</span><span class="n">lum</span> <span class="o">-</span> <span class="n">mod</span><span class="p">(</span><span class="n">lum</span><span class="p">,</span> <span class="n">stepsize</span><span class="p">))</span> <span class="o">/</span> <span class="n">stepsize</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>     <span class="kt">float</span> <span class="n">rowStep</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">inputTileSize</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+</span><span class='line'>     <span class="kt">float</span> <span class="n">x</span> <span class="o">=</span> <span class="n">mod</span><span class="p">(</span><span class="n">lumStep</span><span class="p">,</span> <span class="n">rowStep</span><span class="p">);</span>
+</span><span class='line'>     <span class="kt">float</span> <span class="n">y</span> <span class="o">=</span> <span class="n">floor</span><span class="p">(</span><span class="n">lumStep</span> <span class="o">/</span> <span class="n">rowStep</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>     <span class="n">vec2</span> <span class="n">startCoord</span> <span class="o">=</span> <span class="n">vec2</span><span class="p">(</span><span class="kt">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">*</span>  <span class="n">inputTileSize</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="kt">float</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">*</span> <span class="n">inputTileSize</span><span class="p">.</span><span class="n">y</span><span class="p">);</span>
+</span><span class='line'>     <span class="n">vec2</span> <span class="n">finalCoord</span> <span class="o">=</span> <span class="n">startCoord</span> <span class="o">+</span> <span class="p">((</span><span class="n">textureCoordinate</span> <span class="o">-</span> <span class="n">xy</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">inputTileSize</span> <span class="o">/</span> <span class="n">displayTileSize</span><span class="p">));</span>
+</span><span class='line'>
+</span><span class='line'>     <span class="n">vec4</span> <span class="n">color</span> <span class="o">=</span> <span class="n">texture2D</span><span class="p">(</span><span class="n">inputImageTexture</span><span class="p">,</span> <span class="n">finalCoord</span><span class="p">);</span>
+</span><span class='line'>     <span class="k">if</span> <span class="p">(</span><span class="n">colorOn</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>         <span class="n">color</span> <span class="o">=</span> <span class="n">color</span> <span class="o">*</span> <span class="n">inputColor</span><span class="p">;</span>
+</span><span class='line'>     <span class="p">}</span>
+</span><span class='line'>     <span class="n">gl_FragColor</span> <span class="o">=</span> <span class="n">color</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'> <span class="p">}</span>
+</span><span class='line'><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img class="center" src="/images/posts/16hackercamtiles.png" title="'ASCII Tiles'" ></p>
+
+<p>I grouped the ASCII filter with a filter I already had that tends to increase facial feature definition, and that seemed to make the ASCII images a bit clearer.</p>
+
+<p>It so quite fast to implement the ASCII filter that I had time to do both a light and a dark version, and I was happy to see that I had set up the Block Party app intelligently enough that the filtering menu extended automatically once the new filters were added, and everything just worked!</p>
+
+<p><img class="center" src="/images/posts/16asciiboothgif.gif" title="'ASCII Booth GIF'" ></p>
+
+<p>The GIF mode of the photo booth takes 4 photos in rapid succession, saves them to the camera roll, combines them into a GIF animation, and combines them into a movie file playable on the iPhone (as GIF animations are not supported outside of the browser), then it uploads everything to the server with metadata indicating to the app that it is an animated GIF instead of a JPG so it can be displayed accordingly.</p>
+
+<p>In the process of working with GPUImage&rsquo;s Mosaic filter, I discovered a small bug in the project, and with Allison&rsquo;s help I submitted <a href="https://github.com/BradLarson/GPUImage/pulls">my first Pull request</a>! It was good to get some practice working with a large existing code base and working to improve a small part of it.</p>
+
+<p>In the evening, I learned how to use <a href="https://developer.apple.com/library/ios/documentation/ToolsLanguages/Conceptual/Xcode_Overview/UnitTestYourApp/UnitTestYourApp.html">XCode&rsquo;s built-in Testing framework</a>.</p>
+
+<p><img class="center" src="/images/posts/16xcodetesting.png" title="'XCode Testing Framework'" ></p>
+
+<p>In the process of rewriting my code so that it was easier to test, everything was just better. The classes and methods naturally became more modular and reusable, it was easy and quickly repeatable to test all of the edge cases, and my code seemed much clearer. I learned that testing can be seen as a sort of specification set for the code and its features. If the class has some expected properties, or a function is expected to behave in a particular way, I can in a way &ldquo;define&rdquo; that class&rsquo;s features by the way that I write the expected outputs of the test functions, sort of like an outline for how I expect my program to behave. I actually think it would help me to be clearer and more organized in the way I develop my code if I start writing these feature-specification tests before I even write the methods and classes they are testing, and build the method code to match the spec, instead of the other way around. This may not always be feasible if something needs to be mocked up very quickly, but I think in general this is how I will try to work moving forward.</p>
+
+<p>This work with testing feels like great progress towards the goal of becoming a better programmer. I&rsquo;m going to work on rewriting several of my existing projects in this way as it seems to add stability and clarity without having to spend so much time manually checking that everything works.</p>
+</div>
+
+
+  <footer>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://lauraskelton.github.io/blog/2014/06/25/hacker-school-day-16/" data-via="" data-counturl="http://lauraskelton.github.io/blog/2014/06/25/hacker-school-day-16/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Text authored by <span class="fn">Laura Skelton</span></span>
+
+
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/objective-c/'>Objective-C</a>, <a class='category' href='/blog/categories/open-gl/'>Open-GL</a>, <a class='category' href='/blog/categories/photo-booth/'>Photo-Booth</a>, <a class='category' href='/blog/categories/testing/'>Testing</a>
+  
+</span>
+
+
+    </p>
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/06/24/hacker-school-day-11/" 
+           title="Previous Post: Hacker School Day 11: Sprites and Space Invaders">&laquo; Hacker School Day 11: Sprites and Space Invaders</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2014/06/25/hacker-school-day-12/" 
+           title="Next Post: Hacker School Day 12: OAuth Success and Focusing on Goals">Hacker School Day 12: OAuth Success and Focusing on Goals &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Website copyright &copy; 2014 - Laura Skelton |
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> | Themed with <a href="https://github.com/TheChymera/Koenigspress">Königspress</a></span>.
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
