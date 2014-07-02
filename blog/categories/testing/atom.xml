@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Testing | Hacker School Daily Log]]></title>
   <link href="http://lauraskelton.github.io/blog/categories/testing/atom.xml" rel="self"/>
   <link href="http://lauraskelton.github.io/"/>
-  <updated>2014-07-02T11:50:03-04:00</updated>
+  <updated>2014-07-02T11:52:11-04:00</updated>
   <id>http://lauraskelton.github.io/</id>
   <author>
     <name><![CDATA[Laura Skelton]]></name>
@@ -79,7 +79,7 @@
 
 <p>The GIF mode of the photo booth takes 4 photos in rapid succession, saves them to the camera roll, combines them into a GIF animation, and combines them into a movie file playable on the iPhone (as GIF animations are not supported outside of the browser), then it uploads everything to the server with metadata indicating to the app that it is an animated GIF instead of a JPG so it can be displayed accordingly.</p>
 
-<p>In the process of working with GPUImage&rsquo;s Mosaic filter, I discovered a small bug in the project, and with Allison&rsquo;s help I submitted <a href="https://github.com/BradLarson/GPUImage/pulls">my first Pull request</a>! It was good to get some practice working with a large existing code base and working to improve a small part of it.</p>
+<p>In the process of working with GPUImage&rsquo;s Mosaic filter, I discovered a small bug in the project, and with <a href="https://github.com/akaptur">Allison</a>&rsquo;s help I submitted <a href="https://github.com/BradLarson/GPUImage/pulls">my first Pull request</a>! It was good to get some practice working with a large existing code base and working to improve a small part of it.</p>
 
 <p>In the evening, I learned how to use <a href="https://developer.apple.com/library/ios/documentation/ToolsLanguages/Conceptual/Xcode_Overview/UnitTestYourApp/UnitTestYourApp.html">XCode&rsquo;s built-in Testing framework</a>.</p>
 
