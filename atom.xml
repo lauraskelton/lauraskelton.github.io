@@ -4,7 +4,7 @@
   <title><![CDATA[Hacker School Daily Log]]></title>
   <link href="http://lauraskelton.github.io/atom.xml" rel="self"/>
   <link href="http://lauraskelton.github.io/"/>
-  <updated>2014-07-02T11:52:11-04:00</updated>
+  <updated>2014-07-02T12:04:22-04:00</updated>
   <id>http://lauraskelton.github.io/</id>
   <author>
     <name><![CDATA[Laura Skelton]]></name>
@@ -113,7 +113,7 @@
 
 <p>I grouped the ASCII filter with a filter I already had that tends to increase facial feature definition, and that seemed to make the ASCII images a bit clearer.</p>
 
-<p>It so quite fast to implement the ASCII filter that I had time to do both a light and a dark version, and I was happy to see that I had set up the Block Party app intelligently enough that the filtering menu extended automatically once the new filters were added, and everything just worked!</p>
+<p>It was so fast to implement the ASCII filter that I had time to do both a light and a dark version, and I was happy to see that I had set up the Block Party app intelligently enough that the filtering menu extended automatically once the new filters were added, and everything just worked!</p>
 
 <p><img class="center" src="http://lauraskelton.github.io/images/posts/16asciiboothgif.gif" title="'ASCII Booth GIF'" ></p>
 
