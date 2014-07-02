@@ -113,7 +113,7 @@
   </header>
 
 
-<div class="entry-content"><p>I added a filter to my photo booth that turns each photo into an ASCII art image, then deployed the <a href="http://bprty.com/BGkvq3/">GIF Photo Booth mode</a> I wrote to the live <a href="http://blockpartyapp.com">Block Party</a> server.</p>
+<div class="entry-content"><p>I added a filter to my photo booth that turns each photo into an ASCII art image, then deployed the GIF Photo Booth mode I wrote to the live <a href="http://blockpartyapp.com">Block Party</a> server.</p>
 
 <p>It was amazing how easy it was to extend the Photo Booth filter set to add this new filter. I&rsquo;m using the Mosaic filter from <a href="https://github.com/BradLarson/GPUImage">GPUImage</a>, an open-source Objective-C framework that runs filtering calculations in Open-GL for fast image processing. I used an image containing 64 tiles ranging from lightest to darkest, and the calculations in the Open-GL mosaic filter took a stepped luminosity and selected which tile to display.</p>
 
