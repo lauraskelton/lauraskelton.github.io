@@ -1,0 +1,343 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Hacker School Day 17: Objective-C Particulars and Conceptual Limits - Hacker School Daily Log</title>
+  <meta name="author" content="Laura Skelton">
+
+  
+  <meta name="description" content="I learned a bunch of little things about Objective-C today in the course of trying to write good tests for my Secret Handshake app. After running &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://lauraskelton.github.io/blog/2014/07/02/hacker-school-day-17">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Hacker School Daily Log" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Poller+One' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Germania+One' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fontdiner+Swanky' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Cardo' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Sorts+Mill+Goudy' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=EB+Garamond' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Della+Respira' rel='stylesheet' type='text/css'>
+
+  
+
+</head>
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<logo>
+
+<img src="/logo.png" alt="Website Logo. Upload to /source/logo.png ; disable in /source/_includes/logo.html" height="32px" width="32px">
+</logo>
+
+
+
+<body >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Hacker School Daily Log</a></h1>
+  
+    <h2>Laura Skelton | Summer 2014 Batch</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+<br>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:lauraskelton.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<!--
+<ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+-->
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Hacker School Day 17: Objective-C Particulars and Conceptual Limits</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-02T21:24:58-04:00" pubdate data-updated="true">Jul 2<span>nd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I learned a bunch of little things about Objective-C today in the course of trying to write good tests for my Secret Handshake app.</p>
+
+<p>After running into a bunch of unhelpful compiler errors, like <code>Member reference type 'struct_objc_class *' is a pointer</code>, I finally figured out the difference between a <code>+</code> and a <code>-</code> in an Objective-C method.</p>
+
+<p>A <code>+</code> at the front of an Objective-C method indicates that it is a Class Method. That means that you don&rsquo;t need to call that method on a particular instance of the class- you can call it without ever having instantiated the class. For example,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">+</span> <span class="p">(</span><span class="n">NSDictionary</span> <span class="o">*</span><span class="p">)</span><span class="nf">parseQueryString:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">query</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">NSMutableDictionary</span> <span class="o">*</span><span class="n">dict</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSMutableDictionary</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithCapacity:</span><span class="mi">6</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">NSArray</span> <span class="o">*</span><span class="n">pairs</span> <span class="o">=</span> <span class="p">[</span><span class="n">query</span> <span class="nl">componentsSeparatedByString:</span><span class="s">@&quot;&amp;&quot;</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="n">pair</span> <span class="k">in</span> <span class="n">pairs</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">NSArray</span> <span class="o">*</span><span class="n">elements</span> <span class="o">=</span> <span class="p">[</span><span class="n">pair</span> <span class="nl">componentsSeparatedByString:</span><span class="s">@&quot;=&quot;</span><span class="p">];</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">([</span><span class="n">elements</span> <span class="n">count</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="n">NSString</span> <span class="o">*</span><span class="n">key</span> <span class="o">=</span> <span class="p">[[</span><span class="n">elements</span> <span class="nl">objectAtIndex:</span><span class="mi">0</span><span class="p">]</span> <span class="nl">stringByReplacingPercentEscapesUsingEncoding:</span><span class="n">NSUTF8StringEncoding</span><span class="p">];</span>
+</span><span class='line'>            <span class="n">NSString</span> <span class="o">*</span><span class="n">val</span> <span class="o">=</span> <span class="p">[[</span><span class="n">elements</span> <span class="nl">objectAtIndex:</span><span class="mi">1</span><span class="p">]</span> <span class="nl">stringByReplacingPercentEscapesUsingEncoding:</span><span class="n">NSUTF8StringEncoding</span><span class="p">];</span>
+</span><span class='line'>            <span class="p">[</span><span class="n">dict</span> <span class="nl">setObject:</span><span class="n">val</span> <span class="nl">forKey:</span><span class="n">key</span><span class="p">];</span>
+</span><span class='line'>            <span class="n">key</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+</span><span class='line'>            <span class="n">val</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="n">elements</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="n">pairs</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">dict</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I don&rsquo;t have to instantiate my <code>QueryParser</code> class in order to call this <code>parseQueryString:</code> method to parse a query string into a dictionary. Because the class instance doesn&rsquo;t need to exist for this method to be called, I&rsquo;m not allowed to use a reference to <code>self</code> or <code>self.someproperty</code> within a class <code>+</code> method, and it will throw a confusing compiler error if I try to do this. Because I normally use methods that operate on a particular class instance, I rarely use <code>+</code> methods. The <code>parseQueryString:</code> method doesn&rsquo;t necessarily need a <code>+</code> if I throw it into another class that might need to parse query strings. It only needs the <code>+</code> if I want it to be more modular, and put it into a convenient file full of self-contained methods I might use in many other classes, where it wouldn&rsquo;t make sense to instantiate some unused object on which to call the method before parsing my string.</p>
+
+<p>I do absolutely need to use the plus when I&rsquo;m creating a class that&rsquo;s a singleton. For example,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">+</span> <span class="p">(</span><span class="n">OAuthHandler</span> <span class="o">*</span><span class="p">)</span><span class="nf">sharedHandler</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">static</span> <span class="n">OAuthHandler</span> <span class="o">*</span><span class="n">_sharedHandler</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">static</span> <span class="n">dispatch_once_t</span> <span class="n">onceToken</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">dispatch_once</span><span class="p">(</span><span class="o">&amp;</span><span class="n">onceToken</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+</span><span class='line'>        <span class="n">_sharedHandler</span> <span class="o">=</span> <span class="p">[[</span><span class="n">OAuthHandler</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="n">_sharedHandler</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Outside of the OAuthHandler class, I refer to <code>[OAuthHandler sharedHandler]</code>, which will either create a single shared instance of the OAuthHandler class for my app, or will return the already-created instance of OAuthHandler. This is a convenient way for me to have one OAuthHandler referenced by several other classes without complicated dependencies. Because the <code>sharedHandler</code> method actually creates the OAuthHandler class instance, it can&rsquo;t be called on an instance I already have a reference to, so it needs to have a <code>+</code>.</p>
+
+<p>For most other types of methods I&rsquo;d use in Objective-C, it makes sense to use a <code>-</code>. When I need to run a method that references the specific properties of that instance of the class, I need to use the <code>-</code> type of method. For example, I would use a <code>-</code> method if I needed to configure a view with a specific state.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">configureView</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// Update the user interface for the detail item.</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">event</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">self</span><span class="p">.</span><span class="n">nameLabel</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSString</span> <span class="nl">stringWithFormat:</span><span class="s">@&quot;%@ %@&quot;</span><span class="p">,</span><span class="n">self</span><span class="p">.</span><span class="n">event</span><span class="p">.</span><span class="n">hackerSchooler</span><span class="p">.</span><span class="n">first_name</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">event</span><span class="p">.</span><span class="n">hackerSchooler</span><span class="p">.</span><span class="n">last_name</span><span class="p">];</span>
+</span><span class='line'>        <span class="n">self</span><span class="p">.</span><span class="n">batchLabel</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">event</span><span class="p">.</span><span class="n">hackerSchooler</span><span class="p">.</span><span class="n">batch</span><span class="p">;</span>
+</span><span class='line'>        <span class="n">self</span><span class="p">.</span><span class="n">profileImageView</span><span class="p">.</span><span class="n">image</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIImage</span> <span class="nl">imageWithContentsOfFile:</span><span class="n">self</span><span class="p">.</span><span class="n">event</span><span class="p">.</span><span class="n">hackerSchooler</span><span class="p">.</span><span class="n">photoFilePath</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Because I need to access this particular view controller instance&rsquo;s properties, such as <code>self.event.hackerSchooler</code>, in order to display this particular person&rsquo;s name and photo, I must use the <code>-</code> to indicate that this is an Instance Method, and not a Class Method that could be called without a class instance that has specific property settings.</p>
+
+<p>I also learned the difference between a <code>*</code> and a <code>&amp;</code> in Objective-C, and a little bit about how pointers work. Whenever I name an object in Objective-C, I write something like <code>NSString *someString</code>. This <code>*</code> indicates that <code>someString</code> is a pointer to an <code>NSString</code> type object. If I create two strings and try to directly compare their pointers, it will only return true if the pointers are pointing to the exact same instance of the object at the same memory location.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">firstStringPointer</span> <span class="o">=</span> <span class="s">@&quot;hello world&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">secondStringPointer</span> <span class="o">=</span> <span class="s">@&quot;hello world&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="k">if</span> <span class="p">(</span><span class="n">firstStringPointer</span> <span class="o">==</span> <span class="n">secondStringPointer</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">YES</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This string pointer comparison will return false, even though the strings are identical, because they are two different string objects. It&rsquo;s like, we are checking if two people are the same person, and these two string pointers are the names of identical twins instead of nicknames for the same person, so it will answer that No, this is not the same person, even though the two people are identical.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">if</span> <span class="p">([</span><span class="n">firstStringPointer</span> <span class="nl">isEqualToString:</span><span class="n">secondStringPointer</span><span class="p">])</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">YES</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That&rsquo;s why we have to use the above type of comparison method if we want to check if two objects have identical properties, instead of whether they are the exact same instance of the object, which is asking a fundamentally different question. Like asking about the identical twins, do these people look exactly the same, and have all of the same features? Yes, they do.</p>
+
+<p>The <code>&amp;</code> I only use when I&rsquo;m declaring an error that I pass to a method which might or might not return an error. I don&rsquo;t instantiate the error, but I use the <code>&amp;</code> to create a reference to a location in memory where an <code>NSError</code> object might be put in the future, if the method needs to do so.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">fetchedResultsController</span> <span class="nl">performFetch:</span><span class="o">&amp;</span><span class="n">error</span><span class="p">])</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Unresolved error: %@&quot;</span><span class="p">,</span> <span class="n">error</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>As I understand it, if the <code>performFetch</code> method fails, it will create an <code>NSError</code> object and place it at the memory location referenced by <code>&amp;error</code>. I can subsequently access the <code>NSError</code> object by using the <code>error</code> pointer. If it succeeds, then <code>error</code> is <code>nil</code>.</p>
+
+<p>I also enjoyed reading <a href="http://www.rntz.net/post/2014-07-02-option-in-dynlangs.html">rntz&rsquo;s post about Option and Null in dynamic languages</a>. I had some trouble following the explanations in Haskell, as I&rsquo;m unfamiliar both with the syntax and with the concepts in Haskell that don&rsquo;t exist in Objective-C.</p>
+
+<p>Ironically, this is part of the point rntz was trying to make (in Appendix A) about how <a href="http://en.wikipedia.org/wiki/Sapir-Whorf_Hypothesis">different programming languages can limit the way you conceive of the world</a>, similarly to how native speakers of a language that conflates the colors Blue and Green have trouble visually differentiating the two colors, since their language only creates one cognitive category for the two.</p>
+
+<p>After <a href="https://github.com/aeyakovenko">Anatoly</a> explained a few things about Haskell syntax, as well as the <code>Maybe</code> datatype, which seems to work similarly to <code>?</code> Optionals in Swift, I followed the explanation a lot better, and it was interesting to recognize that because of the way Objective-C dictionaries are structured, I conceptually conflate a key being set to <code>nil</code> as being the same as a key not being in the dictionary at all, (actually, the way to check in an <code>NSDictionary</code> if a key exists is to see if <code>[dictionary objectForKey:@"someKey"]</code> is <code>nil</code>) and how this could be seen as actually two distinct ideas: One, that the key does exist, but it is <code>nil</code>, and two, that the key does not exist in the dictionary.</p>
+
+<p>The congnitive limits that can come about through the limitations of whichever programming language in which you first reach fluency is something I&rsquo;ve been struggling with as I&rsquo;m learning Swift after working within the confines of Objective-C for so long. I can simply translate the way I&rsquo;ve implemented something in Objective-C into the new syntax that Swift introduces, but this severely limits my ability to take advantage of much more precise and efficient tools that Swift has with which I&rsquo;m completely unfamiliar. I&rsquo;m excited about getting better at native Swift tools as I can see this expanding the way I conceptualize code, which would give me tools to be a better programmer in the future in many other languages more powerful than Objective-C.</p>
+</div>
+
+
+  <footer>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://lauraskelton.github.io/blog/2014/07/02/hacker-school-day-17/" data-via="" data-counturl="http://lauraskelton.github.io/blog/2014/07/02/hacker-school-day-17/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Text authored by <span class="fn">Laura Skelton</span></span>
+
+
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/class-methods/'>Class-Methods</a>, <a class='category' href='/blog/categories/objective-c/'>Objective-C</a>, <a class='category' href='/blog/categories/pointers/'>Pointers</a>, <a class='category' href='/blog/categories/testing/'>Testing</a>
+  
+</span>
+
+
+    </p>
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/07/01/hacker-school-day-16/" 
+           title="Previous Post: Hacker School Day 16: ASCII Photo Booth and Unit Testing">&laquo; Hacker School Day 16: ASCII Photo Booth and Unit Testing</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Website copyright &copy; 2014 - Laura Skelton |
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> | Themed with <a href="https://github.com/TheChymera/Koenigspress">Königspress</a></span>.
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

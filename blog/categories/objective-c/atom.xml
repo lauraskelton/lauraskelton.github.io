@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Objective-C | Hacker School Daily Log]]></title>
   <link href="http://lauraskelton.github.io/blog/categories/objective-c/atom.xml" rel="self"/>
   <link href="http://lauraskelton.github.io/"/>
-  <updated>2014-07-02T12:04:22-04:00</updated>
+  <updated>2014-07-03T12:32:02-04:00</updated>
   <id>http://lauraskelton.github.io/</id>
   <author>
     <name><![CDATA[Laura Skelton]]></name>
@@ -12,6 +12,129 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Hacker School Day 17: Objective-C Particulars and Conceptual Limits]]></title>
+    <link href="http://lauraskelton.github.io/blog/2014/07/02/hacker-school-day-17/"/>
+    <updated>2014-07-02T21:24:58-04:00</updated>
+    <id>http://lauraskelton.github.io/blog/2014/07/02/hacker-school-day-17</id>
+    <content type="html"><![CDATA[<p>I learned a bunch of little things about Objective-C today in the course of trying to write good tests for my Secret Handshake app.</p>
+
+<p>After running into a bunch of unhelpful compiler errors, like <code>Member reference type 'struct_objc_class *' is a pointer</code>, I finally figured out the difference between a <code>+</code> and a <code>-</code> in an Objective-C method.</p>
+
+<p>A <code>+</code> at the front of an Objective-C method indicates that it is a Class Method. That means that you don&rsquo;t need to call that method on a particular instance of the class- you can call it without ever having instantiated the class. For example,</p>
+
+<p>```objc
++ (NSDictionary <em>)parseQueryString:(NSString </em>)query
+{</p>
+
+<pre><code>NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithCapacity:6];
+NSArray *pairs = [query componentsSeparatedByString:@"&amp;"];
+
+for (NSString *pair in pairs) {
+    NSArray *elements = [pair componentsSeparatedByString:@"="];
+    if ([elements count] == 2) {
+        NSString *key = [[elements objectAtIndex:0] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSString *val = [[elements objectAtIndex:1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        [dict setObject:val forKey:key];
+        key = nil;
+        val = nil;
+    }
+    elements = nil;
+}
+pairs = nil;
+return dict;
+</code></pre>
+
+<p>}
+```</p>
+
+<p>I don&rsquo;t have to instantiate my <code>QueryParser</code> class in order to call this <code>parseQueryString:</code> method to parse a query string into a dictionary. Because the class instance doesn&rsquo;t need to exist for this method to be called, I&rsquo;m not allowed to use a reference to <code>self</code> or <code>self.someproperty</code> within a class <code>+</code> method, and it will throw a confusing compiler error if I try to do this. Because I normally use methods that operate on a particular class instance, I rarely use <code>+</code> methods. The <code>parseQueryString:</code> method doesn&rsquo;t necessarily need a <code>+</code> if I throw it into another class that might need to parse query strings. It only needs the <code>+</code> if I want it to be more modular, and put it into a convenient file full of self-contained methods I might use in many other classes, where it wouldn&rsquo;t make sense to instantiate some unused object on which to call the method before parsing my string.</p>
+
+<p>I do absolutely need to use the plus when I&rsquo;m creating a class that&rsquo;s a singleton. For example,</p>
+
+<p>```objc
++ (OAuthHandler *)sharedHandler
+{</p>
+
+<pre><code>static OAuthHandler *_sharedHandler = nil;
+static dispatch_once_t onceToken;
+dispatch_once(&amp;onceToken, ^{
+    _sharedHandler = [[OAuthHandler alloc] init];
+
+});
+
+return _sharedHandler;
+</code></pre>
+
+<p>}
+<code>``
+Outside of the OAuthHandler class, I refer to</code>[OAuthHandler sharedHandler]<code>, which will either create a single shared instance of the OAuthHandler class for my app, or will return the already-created instance of OAuthHandler. This is a convenient way for me to have one OAuthHandler referenced by several other classes without complicated dependencies. Because the</code>sharedHandler<code>method actually creates the OAuthHandler class instance, it can't be called on an instance I already have a reference to, so it needs to have a</code>+`.</p>
+
+<p>For most other types of methods I&rsquo;d use in Objective-C, it makes sense to use a <code>-</code>. When I need to run a method that references the specific properties of that instance of the class, I need to use the <code>-</code> type of method. For example, I would use a <code>-</code> method if I needed to configure a view with a specific state.</p>
+
+<p>```objc
+&ndash; (void)configureView {</p>
+
+<pre><code>// Update the user interface for the detail item.
+if (self.event) {
+    self.nameLabel.text = [NSString stringWithFormat:@"%@ %@",self.event.hackerSchooler.first_name, self.event.hackerSchooler.last_name];
+    self.batchLabel.text = self.event.hackerSchooler.batch;
+    self.profileImageView.image = [UIImage imageWithContentsOfFile:self.event.hackerSchooler.photoFilePath];
+
+}
+</code></pre>
+
+<p>}
+<code>``
+Because I need to access this particular view controller instance's properties, such as</code>self.event.hackerSchooler<code>, in order to display this particular person's name and photo, I must use the</code>&ndash;` to indicate that this is an Instance Method, and not a Class Method that could be called without a class instance that has specific property settings.</p>
+
+<p>I also learned the difference between a <code>*</code> and a <code>&amp;</code> in Objective-C, and a little bit about how pointers work. Whenever I name an object in Objective-C, I write something like <code>NSString *someString</code>. This <code>*</code> indicates that <code>someString</code> is a pointer to an <code>NSString</code> type object. If I create two strings and try to directly compare their pointers, it will only return true if the pointers are pointing to the exact same instance of the object at the same memory location.</p>
+
+<p>```
+NSString <em>firstStringPointer = @&ldquo;hello world&rdquo;;
+NSString </em>secondStringPointer = @&ldquo;hello world&rdquo;;
+if (firstStringPointer == secondStringPointer) {</p>
+
+<pre><code>return YES;
+</code></pre>
+
+<p>}
+```
+This string pointer comparison will return false, even though the strings are identical, because they are two different string objects. It&rsquo;s like, we are checking if two people are the same person, and these two string pointers are the names of identical twins instead of nicknames for the same person, so it will answer that No, this is not the same person, even though the two people are identical.</p>
+
+<p>```objc
+if ([firstStringPointer isEqualToString:secondStringPointer]) {</p>
+
+<pre><code>return YES;
+</code></pre>
+
+<p>}
+```
+That&rsquo;s why we have to use the above type of comparison method if we want to check if two objects have identical properties, instead of whether they are the exact same instance of the object, which is asking a fundamentally different question. Like asking about the identical twins, do these people look exactly the same, and have all of the same features? Yes, they do.</p>
+
+<p>The <code>&amp;</code> I only use when I&rsquo;m declaring an error that I pass to a method which might or might not return an error. I don&rsquo;t instantiate the error, but I use the <code>&amp;</code> to create a reference to a location in memory where an <code>NSError</code> object might be put in the future, if the method needs to do so.</p>
+
+<p>```objc
+NSError *error;</p>
+
+<pre><code>if (![self.fetchedResultsController performFetch:&amp;error]) {
+    NSLog(@"Unresolved error: %@", error);
+}
+</code></pre>
+
+<p><code>``
+As I understand it, if the</code>performFetch<code>method fails, it will create an</code>NSError<code>object and place it at the memory location referenced by</code>&amp;error<code>. I can subsequently access the</code>NSError<code>object by using the</code>error<code>pointer. If it succeeds, then</code>error<code>is</code>nil`.</p>
+
+<p>I also enjoyed reading <a href="http://www.rntz.net/post/2014-07-02-option-in-dynlangs.html">rntz&rsquo;s post about Option and Null in dynamic languages</a>. I had some trouble following the explanations in Haskell, as I&rsquo;m unfamiliar both with the syntax and with the concepts in Haskell that don&rsquo;t exist in Objective-C.</p>
+
+<p>Ironically, this is part of the point rntz was trying to make (in Appendix A) about how <a href="http://en.wikipedia.org/wiki/Sapir-Whorf_Hypothesis">different programming languages can limit the way you conceive of the world</a>, similarly to how native speakers of a language that conflates the colors Blue and Green have trouble visually differentiating the two colors, since their language only creates one cognitive category for the two.</p>
+
+<p>After <a href="https://github.com/aeyakovenko">Anatoly</a> explained a few things about Haskell syntax, as well as the <code>Maybe</code> datatype, which seems to work similarly to <code>?</code> Optionals in Swift, I followed the explanation a lot better, and it was interesting to recognize that because of the way Objective-C dictionaries are structured, I conceptually conflate a key being set to <code>nil</code> as being the same as a key not being in the dictionary at all, (actually, the way to check in an <code>NSDictionary</code> if a key exists is to see if <code>[dictionary objectForKey:@"someKey"]</code> is <code>nil</code>) and how this could be seen as actually two distinct ideas: One, that the key does exist, but it is <code>nil</code>, and two, that the key does not exist in the dictionary.</p>
+
+<p>The congnitive limits that can come about through the limitations of whichever programming language in which you first reach fluency is something I&rsquo;ve been struggling with as I&rsquo;m learning Swift after working within the confines of Objective-C for so long. I can simply translate the way I&rsquo;ve implemented something in Objective-C into the new syntax that Swift introduces, but this severely limits my ability to take advantage of much more precise and efficient tools that Swift has with which I&rsquo;m completely unfamiliar. I&rsquo;m excited about getting better at native Swift tools as I can see this expanding the way I conceptualize code, which would give me tools to be a better programmer in the future in many other languages more powerful than Objective-C.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Hacker School Day 16: ASCII Photo Booth and Unit Testing]]></title>
@@ -399,45 +522,6 @@ NSString *postString = [NSString stringWithFormat:@"grant_type=refresh_token&amp
 <p><img class="center" src="/images/posts/7ibeacon.jpg" title="&lsquo;ibeacons&rsquo;" ></p>
 
 <p>I finished up the nitty gritty late into the evening, and should have a fully working app ready for testing tomorrow!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Hacker School Day 5: Neural Network Handwritten Digit Classifier]]></title>
-    <link href="http://lauraskelton.github.io/blog/2014/06/16/hacker-school-day-5/"/>
-    <updated>2014-06-16T21:04:29-04:00</updated>
-    <id>http://lauraskelton.github.io/blog/2014/06/16/hacker-school-day-5</id>
-    <content type="html"><![CDATA[<p>I continued working through the <a href="http://neuralnetworksanddeeplearning.com">Neural Networks book</a>. A lot of the rusty math started finally coming back to me in sudden bursts of insight, and the book broke the main formulas down enough that I was able to really follow what was going on and how the pieces were working together on a conceptual and mathematical level.</p>
-
-<p>I got some Python code running in the terminal to create and backpropagate a neural network for classifying handwritten digits, using the MNIST dataset, following along with the exercises in the book. It&rsquo;s pretty exciting how quickly the error decreases with the stochastic gradient descent optimization on the weights and biases of the neural network nodes. It seems to learn very quickly!</p>
-
-<p><img class="center" src="/images/posts/5digits.png" title="&lsquo;handwritten digits&rsquo;" ></p>
-
-<p>I was bummed to learn that deep neural networks, which have multiple hidden layers between the input and output nodes, are apparently much harder to train than these &ldquo;shallow&rdquo; neural networks with just one hidden layer. Deeper networks are awesome because they can make much smarter decisions and much more complicated distinctions and abstractions between things by looking at patterns in a more complicated way. There is apparently some very recent math (from 2006!) that enables more efficient learning in deeper neural nets, that can train networks with 5 to 10 hidden layers. I&rsquo;m looking forward to learning how to implement these deeper networks, but will have to find a new source of learning materials as this book is currently unfinished and stops after explaining the mathematical proof and conceptual model behind back propagation.</p>
-
-<p><img class="center" src="/images/posts/5deepnetworklayer.png" title="&lsquo;Deep Neural Network&rsquo;" ></p>
-
-<p>What is cool about the limitations of training deep neural networks is that one of my early ideas for a Hacker School project now seems like it would actually be useful, more than when I mistakenly believed that many-layered neural networks were easy to set up and train. I wanted to make a modular neural network for image classification, with input layers that took particular sets of images and output them into different categories. For example, networks that detect lines, or shapes, or an eye, or sort by color, etc. The neural networks could be set up in such a way that they are trained individually, but they could be linked to feed information from one to the next in order to do more complicated classifications. Training neural networks takes some processing power, but once they are well-trained, they can process and classify new data very quickly, even running in the browser. I think it would be a really cool open-source project if I could set up a modular framework so that people could add different types of pre-trained visual image processing neural networks that could then be linked up in a custom way for anyone who needed to do image classification quickly.</p>
-
-<p><img class="center" src="/images/posts/5deepnetwork.png" title="&lsquo;Deep Neural Network Image Classification&rsquo;" ></p>
-
-<p>I discovered <a href="http://evolvingstuff.blogspot.com/2012/12/learning-mnist-with-shallow-neural.html">another article about shallow neural networks and handwritten digit classification</a> that was very exciting! I hadn&rsquo;t realized until I read it that once the neural network is trained, you could display the relative weights of the inputs to each hidden neuron as a representation of what that hidden neuron was looking for. This is a very similar concept to the discovery of independent features in Non-Negative Matrix Factorization that I learned about last week. The &ldquo;features&rdquo;, or the features the hidden nodes represent, can be represented and described purely by the relative weights of the data inputs they represent. For the articles and topic themes in the Non-Negative Matrix Factorization exercise, that would be the words that describe the theme. For handwritten digit classification, that turns out to be the intensity of the weight of each pixel input for that node, which can be represented visually.</p>
-
-<p><img class="center" src="/images/posts/5input1.jpg" title="&lsquo;handwritten digit feature&rsquo;" ></p>
-
-<p><img class="center" src="/images/posts/5input2.jpg" title="&lsquo;handwritten digit feature&rsquo;" ></p>
-
-<p><img class="center" src="/images/posts/5input3.jpg" title="&lsquo;handwritten digit feature&rsquo;" ></p>
-
-<p><img class="center" src="/images/posts/5input4.jpg" title="&lsquo;handwritten digit feature&rsquo;" ></p>
-
-<p><img class="center" src="/images/posts/5input5.jpg" title="&lsquo;handwritten digit feature&rsquo;" ></p>
-
-<p>You can actually see what visual features of the image a particular hidden node of the digit classifier neural network is looking for, and it&rsquo;s easy to imagine that if two hidden nodes were highly active, it could represent for example a top curve and a bottom curve that would indicate the number zero. This visualization of the input weights helped a lot with my conceptual understanding of what the hidden nodes represent and how they might be working together.</p>
-
-<p>This got me very excited about the idea of applying a neural network classifier to my beer ratings dataset of 200,000 beer ratings from a few thousand users of a couple thousand beers. I realized that not only can I use a neural network to recommend beers to users very quickly once the network is trained, but I realized that for beers, the hidden nodes would represent groupings of beers into a sort of taste profile. I&rsquo;m imagining a node each for hoppy-bitter beers, boozy belgians, roasty stouts, and sweeter lighter beers, with each individual user&rsquo;s preferences being some combination of those flavor types, represented in the program by different activations of those hidden nodes. This is very exciting!</p>
-
-<p>I got my beer data into an appropriate format and trained a neural network with 10 hidden nodes (which to my understanding represents 10 beer-taste-profiles), and tomorrow I&rsquo;m going to work on a representation showing which of the top 100 beers activate each node, representing independent features (meaningful beer groupings) of the dataset.</p>
 ]]></content>
   </entry>
   
