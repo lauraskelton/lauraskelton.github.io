@@ -4,7 +4,7 @@
   <title><![CDATA[Hacker School Daily Log]]></title>
   <link href="http://lauraskelton.github.io/atom.xml" rel="self"/>
   <link href="http://lauraskelton.github.io/"/>
-  <updated>2014-07-03T12:32:02-04:00</updated>
+  <updated>2014-07-07T12:06:30-04:00</updated>
   <id>http://lauraskelton.github.io/</id>
   <author>
     <name><![CDATA[Laura Skelton]]></name>
@@ -12,6 +12,74 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Hacker School Day 18: Better iOS Testing Tools and Continuous Integration]]></title>
+    <link href="http://lauraskelton.github.io/blog/2014/07/03/hacker-school-day-18/"/>
+    <updated>2014-07-03T20:58:06-04:00</updated>
+    <id>http://lauraskelton.github.io/blog/2014/07/03/hacker-school-day-18</id>
+    <content type="html"><![CDATA[<p>I continued working on rewriting my <a href="https://github.com/lauraskelton/secrethandshake">Secret Handshake app</a> to be more testable, and writing tests for each method. I moved all of the event management and framework managers out of my view controllers and App Delegate and into their own separate modular implementation files. The delegate callbacks for each of them are now handled by the App Delegate, which manages communication between them upon certain events, such as when the Hacker School API Manager finishes downloading my profile details, the iBeacon Transmitter Handler should start broadcasting my User ID. It&rsquo;s a much more organized, stable structure, and is much cleaner than it was before, since tasks are much more strictly separated from each other, and the view controllers are handling only things directly related to view management.</p>
+
+<p>I was lucky enough to get some amazing help and advice from <a href="https://github.com/lazerwalker">Mike Walker</a> about some awesome third-party testing tools for iOS. They are built on top of XCode&rsquo;s testing functionality, so you still get the advantages of what comes with XCode, with some much more powerful features. It&rsquo;s this kind of advice that makes me so happy to be at Hacker School. Having a more experienced developer show you the best way to do something and the best tools available for you to use is invaluable, and is an area where self-teaching falls short.</p>
+
+<p>Mike introduced me to <a href="https://github.com/specta/specta">Specta</a>, which is a testing framework for iOS that is much more human-readable than using XCode&rsquo;s built-in testing functionality. It reads like actual specs for the code. You write a series of nested sentences explaining what each piece of code does, and what you expect to happen under different circumstances. Within those statements, you write the actual code test that should validate whether that statement is true in your code.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">it</span><span class="p">(</span><span class="s">@&quot;sets the user&#39;s name when the user loads&quot;</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">_view</span><span class="p">.</span><span class="n">user</span> <span class="n">load</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">expect</span><span class="p">(</span><span class="n">_view</span><span class="p">.</span><span class="n">nameLabel</span><span class="p">.</span><span class="n">text</span><span class="p">).</span><span class="n">will</span><span class="p">.</span><span class="n">equal</span><span class="p">(</span><span class="s">@&quot;Ben Day&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>With <a href="https://github.com/specta/expecta">Expecta</a>, you can write your actual test to read like English, which also helps the whole thing to read like a clear outline of your code. This was so exciting to me after working the day before and finding it helped if I wrote in comments above each test what Specta and Expecta include in the tests themselves. If a test fails, it gives useful errors showing you exactly how the code did not meet the specifications.</p>
+
+<p>Instead of something like,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">assertThat</span><span class="p">(</span><span class="s">@&quot;foo&quot;</span><span class="p">,</span> <span class="n">is</span><span class="p">(</span><span class="n">equalTo</span><span class="p">(</span><span class="s">@&quot;foo&quot;</span><span class="p">)));</span>
+</span><span class='line'><span class="n">assertThatUnsignedInteger</span><span class="p">(</span><span class="n">foo</span><span class="p">,</span> <span class="n">isNot</span><span class="p">(</span><span class="n">equalToUnsignedInteger</span><span class="p">(</span><span class="mi">1</span><span class="p">)));</span>
+</span><span class='line'><span class="n">assertThatBool</span><span class="p">([</span><span class="n">bar</span> <span class="n">isBar</span><span class="p">],</span> <span class="n">is</span><span class="p">(</span><span class="n">equalToBool</span><span class="p">(</span><span class="n">YES</span><span class="p">)));</span>
+</span><span class='line'><span class="n">assertThatDouble</span><span class="p">(</span><span class="n">baz</span><span class="p">,</span> <span class="n">is</span><span class="p">(</span><span class="n">equalToDouble</span><span class="p">(</span><span class="mf">3.14159</span><span class="p">)));</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>you would use Expecta to write something much more readable, like</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">expect</span><span class="p">(</span><span class="s">@&quot;foo&quot;</span><span class="p">).</span><span class="n">to</span><span class="p">.</span><span class="n">equal</span><span class="p">(</span><span class="s">@&quot;foo&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="n">expect</span><span class="p">(</span><span class="n">foo</span><span class="p">).</span><span class="n">notTo</span><span class="p">.</span><span class="n">equal</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span><span class='line'><span class="n">expect</span><span class="p">([</span><span class="n">bar</span> <span class="n">isBar</span><span class="p">]).</span><span class="n">to</span><span class="p">.</span><span class="n">equal</span><span class="p">(</span><span class="n">YES</span><span class="p">);</span>
+</span><span class='line'><span class="n">expect</span><span class="p">(</span><span class="n">baz</span><span class="p">).</span><span class="n">to</span><span class="p">.</span><span class="n">equal</span><span class="p">(</span><span class="mf">3.14159</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I love how it reads so clearly. The human-readable clarity makes it so much faster to spot inconsistencies and errors than when you are devoting more brain power to untangling a less logically-organized series of statements.</p>
+
+<p>Mike also suggested using <a href="https://github.com/jonreid/OCMockito">OCMockito</a> to create mock objects for my projects, which should help with some of the more complicated frameworks I&rsquo;m using in my iBeacon app.</p>
+
+<p>These testing tools apparently are Objective-C implementations of testing frameworks from the Ruby community. This makes picking up these tools as an Objective-C developer somewhat challenging. The tutorials out there are mainly focused on Ruby developers who are familiar with the frameworks in Ruby, and need to know how to use those same tools in an Objective-C project. The new-to-testing tutorials are much more commonly for Ruby developers. After some searching time, I&rsquo;ve found some documentation and overviews in Objective-C that I&rsquo;m going to work through this week, on <a href="http://nshipster.com/unit-testing/">Unit Testing in Objective-C</a>, <a href="http://www.annema.me/why-i-prefer-testing-with-specta-expecta-and-ocmockito">using Specta, Expecta, and OCMockito in Objective-C</a>, and <a href="http://robots.thoughtbot.com/test-driving-ios-a-primer">Testing in iOS</a>.</p>
+
+<p>In order to use all of these great 3rd party tools, I&rsquo;m going to have to get over my frustration with <a href="http://cocoapods.org">CocoaPods</a> and get some practice using that tool to automatically integrate these different tools with my new XCode projects. I don&rsquo;t like giving up the ability to manually manage these dependencies in XCode (especially when it comes to getting rid of a 3rd party project) and using command-line Ruby tools instead to integrate dependencies, but it&rsquo;s become clear that the benefits outweight this annoyance.</p>
+
+<p>One of the most exciting new tools I&rsquo;m going to start using is <a href="https://travis-ci.org">Travis CI</a>. Travis offers continuous integration for projects hosted on GitHub, and it has supported iOS since April 2013. Continuous integration is great because it automatically checks for problems each time you build or commit your code. If a change you made breaks some other part of the code which, especially in a larger project, you might not have even realized was dependent upon what you were working on, Travis will automatically check and let you know immediately that there&rsquo;s a problem. This early-warning system can be hugely helpful, because it&rsquo;s so much easier to fix these kinds of problems the sooner you know about them, before you&rsquo;ve built more code on top of that initial change. It&rsquo;s especially important for larger projects, such as some of the open-source projects on GitHub, because it warns you right away when a pull request fails Travis CI&rsquo;s automatic checks. I&rsquo;m going to work my way through this tutorial on <a href="http://www.objc.io/issue-6/travis-ci.html">Travis CI for iOS</a>, as it seems to need a hefty amount of configuration to take full advantage of its potential.</p>
+
+<p>I got a little overwhelmed after all this about just how much I have to learn and how many new tools I need to get comfortable with to become a more awesome iOS developer. The silver lining here is that it&rsquo;s completely broken through the directionless feeling I had a bit of last week, where I felt like, sure I can come up with some fun iOS projects or learn some new library, but I didn&rsquo;t feel like I was becoming a much more solid programmer by doing those things.</p>
+
+<p>I decided I&rsquo;m going to spend as much time over the next month of Hacker School working on a completely from-scratch rewrite of BeerChooser, my first-ever iOS app from back in 2010. It was a decent app considering I started learning Objective-C just that year, and it even was featured in the Lifestyle section of the App Store when it first came out, but I&rsquo;ve learned SO MUCH since then and it would be amazing to write a useful larger project like this from the ground up using everything I now know about better ways to handle data storage, API integration, and testing.</p>
+
+<p>I&rsquo;m also planning to rewrite a much cleaner version of the server-side API using Python, as well as a new responsive web app using Javascript to talk to the API and provide the old, bloated website&rsquo;s functionality to users across multiple platforms. This gives me a chance to get so much practice in with new tools and better practices, as well as a chance to work on some of the other areas I&rsquo;d like to improve in, like being able to write awesome web apps and work on the API/database integration in a better way. It even lets me work in a bit of Machine Learning, as I&rsquo;d like to improve the beer recommendations algorithm before I re-launch the app.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Hacker School Day 17: Objective-C Particulars and Conceptual Limits]]></title>

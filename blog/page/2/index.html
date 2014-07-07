@@ -9,7 +9,7 @@
   <meta name="author" content="Laura Skelton">
 
   
-  <meta name="description" content="I started off working on my beer neural network a bit more. I figured out part of the problem that was giving me data that didn&rsquo;t feel right, &hellip;">
+  <meta name="description" content="I finished a new iPhone app today!! It was inspired by someone at the Swift meetup saying that Hacker School was like the new Freemasons &ndash; some &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -87,6 +87,83 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/06/19/hacker-school-day-8/">Hacker School Day 8: Secret Handshake App</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-19T20:53:29-04:00" pubdate data-updated="true">Jun 19<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I finished a <a href="https://github.com/lauraskelton/secrethandshake">new iPhone app</a> today!! It was inspired by someone at the Swift meetup saying that Hacker School was like the new Freemasons &ndash; some kind of secret society that instantly connected you with other people. I had such a good time talking to some Hacker School alums I hadn&rsquo;t met before, that I thought it would be good to have an app that would let me know at future meetups whether there were any other Hacker Schoolers in the room.</p>
+
+<p>In iOS 7, Apple introduce iBeacons, a proximity beacon built on top of Bluetooth LE. IPhones can scan for iBeacon signals, and display special hyperlocal information when they come within range of one, such as at a store display or at a particular museum exhibit. The iBeacon signal can even wake up an iPhone that is inactive with an alert and a notification banner.</p>
+
+<p><img class="center" src="/images/posts/8ibeacon.jpg" title="'ibeacon'" ></p>
+
+<p>The really exciting thing is that iPhones can also act as iBeacon emitters as well as receivers. You can send out an iBeacon signal from your phone while also scanning for similar signals from other people&rsquo;s phones.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">initBeacon</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">self</span><span class="p">.</span><span class="n">beaconRegion</span> <span class="o">=</span> <span class="p">[[</span><span class="n">CLBeaconRegion</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithProximityUUID:</span><span class="n">uuid</span>
+</span><span class='line'>                                                                <span class="nl">major:</span><span class="mi">1</span>
+</span><span class='line'>                                                                <span class="nl">minor:</span><span class="n">userID</span>
+</span><span class='line'>                                                           <span class="nl">identifier:</span><span class="s">@&quot;someregion&quot;</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">transmitBeacon</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>        <span class="n">self</span><span class="p">.</span><span class="n">beaconPeripheralData</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">beaconRegion</span> <span class="nl">peripheralDataWithMeasuredPower:</span><span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'>        <span class="n">self</span><span class="p">.</span><span class="n">peripheralManager</span> <span class="o">=</span> <span class="p">[[</span><span class="n">CBPeripheralManager</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithDelegate:</span><span class="n">self</span>
+</span><span class='line'>                                                                         <span class="nl">queue:</span><span class="nb">nil</span>
+</span><span class='line'>                                                                       <span class="nl">options:</span><span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I set up my app so that each user&rsquo;s phone emits an iBeacon signal that includes their userID. Each phone also scans for other signals, and if it finds that of another Hacker Schooler&rsquo;s phone, it sends an alert to the scanner&rsquo;s phone and downloads a profile photo, name, and batch of the nearby person. That way, you could make sure to stop by and chat with that person at a conference or meetup.</p>
+
+<p>So far it seems to be working well, but I definitely need beta testing help from some other Hacker School folks who wouldn&rsquo;t mind giving some feedback. I have it up on TestFlight if you have an iPhone and time to test it out! <a href="http://tflig.ht/1stcVLG">http://tflig.ht/1stcVLG</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
