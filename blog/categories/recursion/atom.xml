@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Recursion, | Hacker School Daily Log]]></title>
+  <link href="http://lauraskelton.github.io/blog/categories/recursion/atom.xml" rel="self"/>
+  <link href="http://lauraskelton.github.io/"/>
+  <updated>2014-07-15T12:26:48-04:00</updated>
+  <id>http://lauraskelton.github.io/</id>
+  <author>
+    <name><![CDATA[Laura Skelton]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Hacker School Week 5: VIPER iOS Architecture and Recursion]]></title>
+    <link href="http://lauraskelton.github.io/blog/2014/07/12/hacker-school-week-5/"/>
+    <updated>2014-07-12T11:01:47-04:00</updated>
+    <id>http://lauraskelton.github.io/blog/2014/07/12/hacker-school-week-5</id>
+    <content type="html"><![CDATA[<p>I decided that for the rest of my time at Hacker School, I&rsquo;m going to work on rewriting from scratch my very first iPhone app, <a href="https://github.com/lauraskelton/beerchooser">BeerChooser</a>, including the entire iOS app, the server-side API, and a simple responsive web app.</p>
+
+<p><img class="center" src="/images/posts/17bcscreengrab.jpg" title="&lsquo;BeerChooser 2.0&rsquo;" ></p>
+
+<p>I wrote the BeerChooser website as my first major development project back in 2009. It took existing user ratings of different beers to predict what someone would think of a beer they hadn&rsquo;t tried yet. I taught myself Objective-C in 2010 and released it as an iPhone app that fall. It was featured in the App Store and several thousand users signed up, recording over 200,000 beer ratings.</p>
+
+<p>I&rsquo;m in the process of rewriting BeerChooser using all of the things I&rsquo;ve learned in the intervening years. It has unit tests using the <a href="https://github.com/specta/specta">Specta framework</a>, continuous integration through GitHub and <a href="https://travis-ci.org">Travis CI</a>, and a highly modular, testable architecture inspired by the new <a href="http://www.objc.io/issue-13/viper.html">VIPER model</a>.</p>
+
+<p>This week, I learned how to use a bunch of new iOS development tools, and finished writing the main module of the app using a <a href="http://www.objc.io/issue-13/viper.html">VIPER-inspired architecture</a>, which is a list of beers with their predicted ratings connected to the server API.</p>
+
+<p><a href="http://www.objc.io/issue-13/viper.html">VIPER</a> is an application of <a href="http://blog.8thlight.com/uncle-bob/2012/08/13/the-clean-architecture.html">Clean Architecture</a> to iOS apps. It attempts to solve the common issue of the way the software architectural pattern MVC (Model-View-Controller) works out in iOS to result in <a href="https://twitter.com/Colin_Campbell/status/293167951132098560">Massive View Controllers</a>.</p>
+
+<p>This results in code that is very difficult to reuse and even to maintain. The data is mixed up in the view controller, which may be a delegate for many other things that are happening in the app other than just displaying the view. The User Interface code tends to get mixed up within the same file that is controlling much of the application&rsquo;s behavior, making it a huge undertaking to make changes to the user interface, and forcing you to rewrite tests to ensure that your application&rsquo;s basic behavior is still working after you change the look of the app.</p>
+
+<p><img class="center" src="/images/posts/17viper.jpg" title="&lsquo;VIPER Architecture&rsquo;" ></p>
+
+<p>VIPER separates out each basic function of the app into its own module, and within the module it separates out methods pertaining to the view/user interface (the View) from methods which react to user inputs and prepares content for display (the Presenter), from methods which contain the main business logic of the app (the Interactor), from Entities (the data objects used by the Interactor), from Routing (the wireframes that present and dismiss views at appropriate times), from the Data Managers that talk to the Data Store.</p>
+
+<p><img class="center" src="/images/posts/17vipergraph.png" title="&lsquo;VIPER Diagram&rsquo;" ></p>
+
+<p>This makes it MUCH easier to change out one of these pieces entirely (such as changing the UI from a list of items to a grid of thumbnails, or changing the data store from Core Data to simple SQLite, without affecting the other pieces at all. It also means that, when starting a new app project, you can reuse much of your well-tested code from an older project, and only change out the pieces related to different types of data or a different interface look in the new app.</p>
+
+<p>Moving forward, I&rsquo;m going to work on re-creating the multiple tabs of the original app, which had different beer lists including suggested beers you&rsquo;d like, your previous ratings, nearby beers, search, and a list of widely available beers to get started with rating. It&rsquo;s been intersting thinking about the best way to structure the data to account for the separate lists, figuring out when and how the data should refresh, and how to integrate the network calls to the API with the app&rsquo;s data managers to follow the spirit of the VIPER model.</p>
+
+<p>On Friday, I worked on <a href="https://github.com/lauraskelton/recursion">some Recursion exercises</a>. I decided to implement these in Swift, to get a chance to practice with the new language, and also because Swift playgrounds are perfect for implementing new algorithms and data structures and getting immediate feedback on how they are working. I found that the trickier problems were a lot easier if I first broke them down into a few simple cases, such as for 2 or 3 items. I wrote functions for those cases, then could visualize much more easily what the general recursive function would look like for <code>n</code> items, and was able to write that.</p>
+
+<p>```objc
+// function for returning all reordering variations of an array of characters</p>
+
+<p>// for string of n, there are n times swap(n-1) variations</p>
+
+<p>// swap n items
+func swapn(letters: [Character]) &ndash;> [[Character]] {</p>
+
+<pre><code>var returnArray : [[Character]] = []
+
+if letters.count &lt; 2 {
+    // return letters, because it is only variation
+    return [letters]
+}
+
+// special case to swap 2 characters
+if letters.count == 2 {
+    var thisArray = letters
+    returnArray += thisArray
+    let second = thisArray[1]
+    thisArray[1] = thisArray[0]
+    thisArray[0] = second
+    returnArray += thisArray
+    return returnArray
+}
+
+for index in 0..&lt;letters.count {
+    var thisArray = letters
+    let removed = thisArray.removeAtIndex(index)
+    let nArr = swapn(thisArray)
+    for anArray in nArr {
+        var newArr = anArray
+        newArr.insert(removed, atIndex: index)
+        returnArray += newArr
+    }
+}
+return returnArray
+</code></pre>
+
+<p>}
+```</p>
+
+<p>I also learned about memoizing from working on a Fibonacci function (where each number is the sum of the previous two numbers). My original simple implementation was easy, but since it calculated every number from scratch, it got extremely slow with numbers that were slightly larger.</p>
+
+<p>```objc
+// Fibonacci</p>
+
+<pre><code>func fibSimple(n:Int) -&gt; Int {
+    if n == 0 {
+        return 0
+    } else if n == 1 {
+        return 1
+    }
+    return fibSimple(n-1) + fibSimple(n-2)
+}
+</code></pre>
+
+<p>```</p>
+
+<p>&ldquo;Memoizing&rdquo; just meant implementing the function the same way I would do the calculations by hand. I wouldn&rsquo;t look all the way back to <code>fib[0]</code> to calculate <code>fib[12]</code> &ndash; I would save the first time I calculated <code>fib[10]</code> and <code>fib[11]</code> and use those stored values to quickly calculate <code>fib[12]</code>. I wrote a new function that used an array to store previously calculated values of <code>fib</code>, and because Swift automatically compiles, I could see right away how dramatically faster this was than the original implementation.</p>
+
+<p>```objc</p>
+
+<p>class fib {</p>
+
+<pre><code>var arrayCache: [Int]
+
+init () {
+    self.arrayCache = [0,1]
+}
+
+// Fibonacci
+// Memoized Array
+func fibArr(n:Int) -&gt; Int {
+    if arrayCache.count &lt;= n {
+        arrayCache += fibArr(n-1) + fibArr(n-2)
+    }
+    return arrayCache[n]
+}
+</code></pre>
+
+<p>}</p>
+
+<p>```</p>
+
+<p>I also learned how to take advantage of <a href="http://en.wikipedia.org/wiki/Tail_call">Tail Calls</a> in recursive functions. Here&rsquo;s one way to set up a simple function that returns the sum of numbers in an array.</p>
+
+<p>```objc
+func listSum (numbers: [Int]) &ndash;> Int {</p>
+
+<pre><code>if numbers.count == 0 {
+    return 0
+}
+var nextNumbers = numbers
+var thisNum = nextNumbers.removeAtIndex(0)
+return thisNum + listSum(nextNumbers)
+</code></pre>
+
+<p>}</p>
+
+<p>```</p>
+
+<p>This works, but the problem is that the function ends up stacking up a whole bunch of function calls until it finally gets a value for the last listSum (when <code>numbers.count</code> finally is zero), then it has to go back up through each level and add in <code>thisNum</code> until it gets back to the top. This is fine if you have, say, 10 numbers to add up, but if you had a very large array, remembering all of those nested functions would overwhelm the computer.</p>
+
+<p><img class="center" src="/images/posts/17nontailrecursion.gif" title="&lsquo;Recursion&rsquo;" ></p>
+
+<p>Instead, there&rsquo;s a tricky way to rewrite this so that the entire calculation is passed along to the next call of the recursive function. Then, the entire sum calculation happens when the recursion gets to the bottom (when <code>numbers.count</code> is zero), and it doesn&rsquo;t ever need to come back up to the highest-level function call, it just needs to return that final calculation. The trick is that the computer realizes it can forget about all of those nested functions, and just move the return along to the new recursive function call each time the entire calculation is passed along. Here&rsquo;s an example of how to rewrite the above sum function to take advantage of a tail call.</p>
+
+<p>```objc
+func listSum (numbers:[Int], sum_so_far:Int) &ndash;> Int {</p>
+
+<pre><code>if numbers.count == 0 {
+    return sum_so_far
+}
+var newSum = sum_so_far + numbers[0]
+var nextNumbers = numbers
+nextNumbers.removeAtIndex(0)
+return listSum(nextNumbers, newSum)
+</code></pre>
+
+<p>}
+```</p>
+
+<p>This way, it skips all of those nested calculations and just returns the value calculated at the end.</p>
+
+<p><img class="center" src="/images/posts/17tailrecursion.gif" title="&lsquo;Tail Recursion&rsquo;" ></p>
+
+<p>In other news, <a href="https://github.com/aeyakovenko/">Anatoly</a> visited, and we got a chance to explore the city a bit outside of Hacker School. We checked out an amazing experimental theater project called <a href="http://www.nytimes.com/2013/08/11/theater/then-she-fell-is-inspired-by-lewis-carrolls-life-and-work.html">Then She Fell</a>, which might have been the best theatrical performance I&rsquo;ve ever been to. It is a totally immersive, participatory experience based on the writings of Lewis Carroll, with only 15 audience members per show. You are frequently alone with the performers, there are delicious &ldquo;elixers&rdquo; served throughout the 2-hour performance, and everyone&rsquo;s experience is different. I&rsquo;d highly recommend checking it out!</p>
+
+<p><img class="center" src="/images/posts/17thenshefell.jpg" title="&lsquo;Then She Fell&rsquo;" ></p>
+]]></content>
+  </entry>
+  
+</feed>
