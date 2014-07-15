@@ -9,7 +9,7 @@
   <meta name="author" content="Laura Skelton">
 
   
-  <meta name="description" content="I finished a new iPhone app today!! It was inspired by someone at the Swift meetup saying that Hacker School was like the new Freemasons &ndash; some &hellip;">
+  <meta name="description" content="After chatting with some alums who were visiting, I decided it would be a good idea to spend some time studying Data Structures and Algorithms while &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -87,6 +87,331 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/06/20/hacker-school-day-9/">Hacker School Day 9: Data Structures in Swift</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-20T23:54:01-04:00" pubdate data-updated="true">Jun 20<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>After chatting with some alums who were visiting, I decided it would be a good idea to spend some time studying Data Structures and Algorithms while I&rsquo;m at Hacker School. The great thing about being involved in a program with other people instead of learning on your own is that you become aware of some of your unknown unknowns. I can certainly teach myself things I know that I need to learn, but it&rsquo;s more challenging to know if there&rsquo;s something I need to learn that I&rsquo;ve never even heard of.</p>
+
+<p>As I was getting ready to post a question about any books or online courses for Data Structures that folks recommended, a couple of friends walked over and started coincidentally talking about the exact same thing. We picked out <a href="http://www.amazon.com/Algorithm-Design-Manual-Steven-Skiena/dp/1848000693">The Algorithm Design Manual</a> as the book we&rsquo;d work through, and put together a study group to read through it and work on the exercises together.</p>
+
+<p>We ended up working late into the evening reading through the Data Structures section and implementing our own versions of some data structures in Apple&rsquo;s new Swift programming language. This worked wonderfully, as Swift works with XCode&rsquo;s new Playgrounds, which auto-compile code to show you right away if your code is working the way you expect it to.</p>
+
+<p>We implemented a Swift version of a Linked List, and had some great conversations about the advantages and drawbacks of structuring some of the necessary methods in different ways, ending up with a neat implementation that took advantage of recursion to keep the code simple.</p>
+
+<p><img class="center" src="/images/posts/9linkedlist.gif" title="'linked list'" ></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">class</span> <span class="n">LinkedList</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">var</span> <span class="n">head</span> <span class="o">:</span> <span class="n">LinkedListNode</span><span class="o">?</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">func</span> <span class="n">search</span><span class="p">(</span><span class="nl">item:</span> <span class="n">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LinkedListNode</span><span class="o">?</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="n">head</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="n">head</span><span class="o">!</span><span class="p">.</span><span class="n">search</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="nb">nil</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="n">func</span> <span class="n">add</span><span class="p">(</span><span class="nl">item:</span> <span class="n">String</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="n">head</span> <span class="p">{</span>
+</span><span class='line'>            <span class="n">head</span><span class="o">!</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>            <span class="n">head</span> <span class="o">=</span> <span class="n">LinkedListNode</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="n">func</span> <span class="n">size</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Int</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="n">head</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="n">head</span><span class="o">!</span><span class="p">.</span><span class="n">size</span><span class="p">()</span>
+</span><span class='line'>        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="mi">0</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">class</span> <span class="n">LinkedListNode</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">item:</span> <span class="n">String</span>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">next:</span> <span class="n">LinkedListNode</span><span class="o">?</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">init</span><span class="p">(</span><span class="n">_</span> <span class="nl">contents:</span> <span class="n">String</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">self</span><span class="p">.</span><span class="n">item</span> <span class="o">=</span> <span class="n">contents</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="n">func</span> <span class="n">add</span><span class="p">(</span><span class="nl">itemToAdd:</span> <span class="n">String</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="n">let</span> <span class="n">nextNode</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">next</span> <span class="p">{</span>
+</span><span class='line'>            <span class="n">nextNode</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">itemToAdd</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>            <span class="n">self</span><span class="p">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">LinkedListNode</span><span class="p">(</span><span class="n">itemToAdd</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="n">func</span> <span class="n">cons</span><span class="p">(</span><span class="nl">itemToAdd:</span> <span class="n">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LinkedListNode</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">var</span> <span class="n">oldHead</span> <span class="o">=</span> <span class="n">LinkedListNode</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">item</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">self</span><span class="p">.</span><span class="n">item</span> <span class="o">=</span> <span class="n">itemToAdd</span>
+</span><span class='line'>        <span class="n">self</span><span class="p">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">oldHead</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">self</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="n">func</span> <span class="n">search</span><span class="p">(</span><span class="nl">itemToFind:</span> <span class="n">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LinkedListNode</span><span class="o">?</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="n">self</span><span class="p">.</span><span class="n">item</span> <span class="o">==</span> <span class="n">itemToFind</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="n">self</span>
+</span><span class='line'>        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="n">let</span> <span class="n">nextNode</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">next</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="n">nextNode</span><span class="p">.</span><span class="n">search</span><span class="p">(</span><span class="n">itemToFind</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="nb">nil</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="n">func</span> <span class="n">size</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Int</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="n">let</span> <span class="n">nextNode</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">next</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">nextNode</span><span class="p">.</span><span class="n">size</span><span class="p">()</span>
+</span><span class='line'>        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="mi">1</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I learned a lot that I didn&rsquo;t know before about what an Array represents on a machine level (same-type items stored in consecutive memory locations), and how it differs from a Linked List or a Dictionary (same-type items stored in different memory locations with pointers to the next item), which explained some things about Objective-C that I hadn&rsquo;t known the reasoning behind before we started, like why empty Arrays are initialized with a capacity.</p>
+
+<p><img class="center" src="/images/posts/9arraycapacity.jpg" title="'array capacity'" ></p>
+
+<p>We also learned a much more generalized definition of a Dictionary which was interesting. It was also helpful to go through worst-case algorithm processing times, called Big O notation or Asymptotic notation. We figured out the Big O notation for various functions on an unsorted and a sorted array, and then learned that deletes on an unsorted array can be done more cleverly than we had originally thought.</p>
+
+<p><img class="center" src="/images/posts/9bigo.png" title="'big o notation'" ></p>
+
+<p>I learned about Binary Searches on sorted arrays, where instead of having to iterate through every item to find a specific value, you keep splitting the array down the middle and figuring out which half the value would be in, reducing the number of steps to find an item dramatically.</p>
+
+<p><img class="center" src="/images/posts/9binarysearch.png" title="'binary search'" ></p>
+
+<p>Later that evening, we learned about Binary Trees and the special Binary Search Trees. The Binary Search Trees work just like Binary Searches on sorted arrays, and the search is cleverly designed in the structure of the data itself. Each larger value is put into a branch node to the right, and each smaller value goes to the right. That way, to find a specific value, you have built in short-cuts as compared to an array.</p>
+
+<p><img class="center" src="/images/posts/9binarysearchtree.png" title="'binary search tree'" ></p>
+
+<p>Binary Trees might be unbalanced- if you added the values in numerical order, you would end up with just a line from the lowest value at the top to the highest value at the bottom right. The tree would be very tall, and thus it would take just as long to traverse as a regular array. The &ldquo;balancing&rdquo; of the tree, which is the distribution of values so that the right and left branches of the tree and its nodes are approximately equal, makes it possible to find values much more quickly, because each node is linked to not one but two different values, and you still know which of the links to follow simply by knowing if you are looking for a larger or smaller value. A cool trick is that if the values you are putting in can be expected to have a large degree of randomness, the tree has a high probability of being well-balanced (since subsequently-added values are equally likely to go to the left or the right of existing values, and not just all in one direction), and therefore not too tall, which will make it quickly searchable.</p>
+
+<p>We implemented a Binary Tree structure in Swift, which was exciting because of its simplicity in code once we understood how the structure worked.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">class</span> <span class="n">BinaryTree</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">data:</span> <span class="n">Int</span><span class="o">?</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">left:</span> <span class="n">BinaryTree</span><span class="o">?</span>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">right:</span> <span class="n">BinaryTree</span><span class="o">?</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">init</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">func</span> <span class="n">insert</span><span class="p">(</span><span class="nl">d:</span> <span class="n">Int</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">if</span> <span class="o">!</span><span class="n">self</span><span class="p">.</span><span class="n">data</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="k">if</span> <span class="n">d</span> <span class="o">&lt;</span> <span class="n">self</span><span class="p">.</span><span class="n">data</span> <span class="p">{</span>
+</span><span class='line'>                <span class="k">if</span> <span class="n">let</span> <span class="n">l</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">left</span> <span class="p">{</span>
+</span><span class='line'>                    <span class="n">l</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+</span><span class='line'>                <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>                    <span class="n">var</span> <span class="n">tree</span> <span class="o">=</span> <span class="n">BinaryTree</span><span class="p">()</span>
+</span><span class='line'>                    <span class="n">tree</span><span class="p">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">d</span>
+</span><span class='line'>                    <span class="n">self</span><span class="p">.</span><span class="n">left</span> <span class="o">=</span> <span class="n">tree</span>
+</span><span class='line'>                <span class="p">}</span>
+</span><span class='line'>            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>                <span class="k">if</span> <span class="n">let</span> <span class="n">r</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">right</span> <span class="p">{</span>
+</span><span class='line'>                    <span class="n">r</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+</span><span class='line'>                <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>                    <span class="n">var</span> <span class="n">tree</span> <span class="o">=</span> <span class="n">BinaryTree</span><span class="p">()</span>
+</span><span class='line'>                    <span class="n">tree</span><span class="p">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">d</span>
+</span><span class='line'>                    <span class="n">self</span><span class="p">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">tree</span>
+</span><span class='line'>                <span class="p">}</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Because we are simultaneously trying to learn the new tools available in Swift, we implemented a second version of the Binary Tree using a switch statement with a tuple and Swift&rsquo;s new pattern matching rules instead of if/else statements.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">class</span> <span class="n">BinaryTree2</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">data:</span> <span class="n">Int</span><span class="o">?</span>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">left:</span> <span class="n">BinaryTree2</span><span class="o">?</span>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">right:</span> <span class="n">BinaryTree2</span><span class="o">?</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">init</span> <span class="p">(</span><span class="nl">n:</span> <span class="n">Int</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">self</span><span class="p">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">n</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">func</span> <span class="n">insert</span> <span class="p">(</span><span class="nl">n:</span> <span class="n">Int</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">switch</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">data</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">right</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">case</span> <span class="n">let</span> <span class="p">(.</span><span class="n">None</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span><span class="o">:</span>
+</span><span class='line'>            <span class="n">self</span><span class="p">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">n</span>
+</span><span class='line'>        <span class="k">case</span> <span class="n">let</span> <span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="p">.</span><span class="n">Some</span><span class="p">(</span><span class="n">l</span><span class="p">),</span> <span class="n">_</span><span class="p">)</span> <span class="n">where</span> <span class="n">data</span> <span class="o">&lt;</span> <span class="nl">n:</span>
+</span><span class='line'>            <span class="n">l</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+</span><span class='line'>        <span class="k">case</span> <span class="n">let</span> <span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="p">.</span><span class="n">None</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="n">where</span> <span class="n">data</span> <span class="o">&lt;</span> <span class="nl">n:</span>
+</span><span class='line'>            <span class="n">self</span><span class="p">.</span><span class="n">left</span> <span class="o">=</span> <span class="n">BinaryTree2</span><span class="p">(</span><span class="nl">n:</span><span class="n">n</span><span class="p">)</span>
+</span><span class='line'>        <span class="k">case</span> <span class="n">let</span> <span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="p">.</span><span class="n">Some</span><span class="p">(</span><span class="n">r</span><span class="p">))</span> <span class="n">where</span> <span class="n">data</span> <span class="o">&gt;=</span> <span class="nl">n:</span>
+</span><span class='line'>            <span class="n">r</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+</span><span class='line'>        <span class="k">case</span> <span class="n">let</span> <span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="p">.</span><span class="n">None</span><span class="p">)</span> <span class="n">where</span> <span class="n">data</span> <span class="o">&gt;=</span> <span class="nl">n:</span>
+</span><span class='line'>            <span class="n">self</span><span class="p">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">BinaryTree2</span><span class="p">(</span><span class="nl">n:</span><span class="n">n</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We kept getting an error with this version that we hadn&rsquo;t covered every possible case, and every time we added a default case or a universal pattern match, XCode would crash. After many attempts, we learned that this is actually due to a known bug in Swift that will hopefully be fixed soon.</p>
+
+<p>I&rsquo;m looking forward to learning a lot more about data structures with this group. It&rsquo;s amazing how accelerated my gaining of knowledge is in a co-learning environment like this- it&rsquo;s like the worlds&#8217; best study group that I get to work with every day. We were getting excited about putting a group together to go through some <a href="https://archive.org/details/Non-euclideanGeometry">advanced math textbooks I found online</a>, and I feel sad that Hacker School is only 3 months and I won&rsquo;t be here learning all of these things for at least the next year!</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
