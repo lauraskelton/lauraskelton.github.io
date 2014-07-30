@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Hacker School Daily Log</title>
+  <title>Hacker School Log</title>
   <meta name="author" content="Laura Skelton">
 
   
-  <meta name="description" content="First day of Hacker School! It was amazing to meet so many people who shared interests and had new ideas about programming. I had planned to get to &hellip;">
+  <meta name="description" content="Things got much more tricky when I started trying to implement SimpleShare, my Bluetooth LE (CoreBluetooth) mesh network sharing app, in Swift, using &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -21,7 +21,7 @@
   <link rel="canonical" href="http://lauraskelton.github.io/blog/page/3">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-  <link href="/atom.xml" rel="alternate" title="Hacker School Daily Log" type="application/atom+xml">
+  <link href="/atom.xml" rel="alternate" title="Hacker School Log" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
@@ -54,7 +54,7 @@
 
 <body >
   <header role="banner"><hgroup>
-  <h1><a href="/">Hacker School Daily Log</a></h1>
+  <h1><a href="/">Hacker School Log</a></h1>
   
     <h2>Laura Skelton | Summer 2014 Batch</h2>
   
@@ -87,6 +87,92 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/06/10/hacker-school-day-1/">Hacker School Day 1: Swift Tricks</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-10T14:25:15-04:00" pubdate data-updated="true">Jun 10<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Things got much more tricky when I started trying to implement <a href="https://github.com/lauraskelton/simple-share">SimpleShare</a>, my Bluetooth LE (CoreBluetooth) mesh network sharing app, in Swift, using the new Multipeer Connectivity framework instead of Bluetooth. There were much more complicated things I needed to do in Obj-C, and the app couldn&rsquo;t be &ldquo;translated&rdquo; in the same way as the simpler apps just by changing to the new syntax, since Swift actually works differently in key ways than Obj-C does.</p>
+
+<p>Things I learned about Swift:</p>
+
+<ul>
+<li>Optional variables: You can no longer have variables that aren&rsquo;t set or that are nil like you could in Obj-C. If you don&rsquo;t know what a variable is when the class is created, you have to make it an optional variable by putting a <code>?</code> after the type declaration.</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">class</span> <span class="n">MyClass</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">mystring:</span> <span class="n">String</span><span class="o">?</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><p>Global variables: It seems that any variables you set within a class but outside of a function act like public parameters for that class and are accessible to read or set from other classes</p></li>
+<li><p>Calling functions from another class: You call a function from another class by writing the class name followed by a dot then the function name with its arguments, eg: <code>MyClass.someFunction(arg1,arg2)</code></p></li>
+<li><p>Init functions are a special case: Instead of calling <code>MyClass.init(arg1,arg2)</code> like you would for any other function, just calling <code>MyClass(arg1,arg2)</code>
+is how you can init an instance of a class.</p></li>
+<li><p>Convenience init: If your init function requires arguments to create a class instance, you can create a second init method for convenience that creates an instance with default values.</p></li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">class</span> <span class="n">SimpleMesh</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">init</span><span class="p">(</span><span class="nl">simpleMeshAppID:</span> <span class="n">String</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">self</span><span class="p">.</span><span class="n">simpleMeshAppID</span> <span class="o">=</span> <span class="n">simpleMeshAppID</span>
+</span><span class='line'>        <span class="n">self</span><span class="p">.</span><span class="n">myItemIDs</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;first&quot;</span><span class="p">,</span> <span class="s">&quot;second&quot;</span><span class="p">,</span> <span class="s">&quot;third&quot;</span><span class="p">,</span> <span class="s">&quot;fourth&quot;</span><span class="p">,</span> <span class="s">&quot;fifth&quot;</span><span class="p">]</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="n">convenience</span> <span class="n">init</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">self</span><span class="p">.</span><span class="n">init</span><span class="p">(</span><span class="nl">simpleMeshAppID:</span> <span class="s">&quot;[NO ID]&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In the afternoon, I made a plan with Jorge and Kyle to work on a mesh networking inspector to figure out the limitations of Multipeer Connectivity so that we can build a stable mesh networking messaging app. We decided to move forward on the project in Objective-C while continuing to learn Swift on the side so we can finish more quickly.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>

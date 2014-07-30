@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Hacker School Daily Log]]></title>
+  <title><![CDATA[Hacker School Log]]></title>
   <link href="http://lauraskelton.github.io/atom.xml" rel="self"/>
   <link href="http://lauraskelton.github.io/"/>
-  <updated>2014-07-30T14:33:38-04:00</updated>
+  <updated>2014-07-30T15:53:13-04:00</updated>
   <id>http://lauraskelton.github.io/</id>
   <author>
     <name><![CDATA[Laura Skelton]]></name>
@@ -12,6 +12,59 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Hacker School Week 7]]></title>
+    <link href="http://lauraskelton.github.io/blog/2014/07/26/hacker-school-week-7/"/>
+    <updated>2014-07-26T14:35:11-04:00</updated>
+    <id>http://lauraskelton.github.io/blog/2014/07/26/hacker-school-week-7</id>
+    <content type="html"><![CDATA[<p>I spent a large part of the week coordinating various awesome hardware projects and plans to get ready for the big party I planned on Friday! I got approval a few weeks ago from the Hacker School facilitators to plan a big summer bash in the Hacker School space, and it was an amazing experience to see everything come together for the big event this weekend.</p>
+
+<p>I posted a thread on our internal chat program letting people know that a big party was happening, sharing my plans for multiple photo booths and some LED decor, and asked my fellow Hacker Schoolers if anyone wanted to add their own party-related project to the event. I was so excited when a bunch of great people jumped on board with even more amazing ideas using Adafruit Neopixel programmable LED strips, sound sensors, Arduino, and even robotics to add extra awesomeness to the event. I coordinated between Sonali and the party project creators and worked on keeping projects on track for the event and linking up helpers with project creators who needed extra hands for soldering or design work. It was incredibly fun and energizing to work with such an enthusiastic group of creators on bringing this event together!</p>
+
+<p><img class="center" src="http://lauraskelton.github.io/images/posts/wk7-boothfront.jpg" title="'Photo Booth Front'" ></p>
+
+<p>For my contribution, I paired with <a href="https://github.com/izqui">Jorge</a> on setting up his Raspberry Pi to control my nice Canon DSLR camera so that we could upgrade the quality of the photo booth photos for the party. This worked beautifully! We thought this was going to be a bit tricky and might involve hacks and soldering and USB sniffing, but then we found a library called <a href="http://www.gphoto.org/news/">gphoto</a> that was already pre-programmed with all of the USB commands for my camera.</p>
+
+<p><img class="center" src="http://lauraskelton.github.io/images/posts/wk7-boothguts.jpg" title="'Photo Booth Inside'" ></p>
+
+<p>Jorge connected the Raspberry Pi to the local Hacker School WiFi, wrote a Go script that listened for my iPad to request an IP address from the Raspberry Pi, then triggered the camera and returned the captured photo. I extended the camera options of my Block Party photo booth iOS app to include the Raspberry Pi-controlled DSLR, in addition to the existing options of a GoPro camera and the built-in device camera.</p>
+
+<p><img class="center" src="http://lauraskelton.github.io/images/posts/wk7-boothusers.jpg" title="'Photo Booth Users'" ></p>
+
+<p>The booth has a giant glowing red button from Sparkfun that I soldered together with a button that triggers a volume-up press through the iPad&rsquo;s headphone input. My app listens for the volume-up press, and when it detects one, it updates an external display on the front of the photo booth (made from a replacement laptop screen) to count down 3&hellip;2&hellip;1 until the photo is taken. Then it triggers a script that sends a request to the Raspberry Pi. The Raspberry Pi, in turn, triggers the Canon DSLR to take a photo. When the Raspberry Pi detects a new photo saved in the camera, it copies it and sends it as the response to my iPad&rsquo;s request.</p>
+
+<p><img class="center" src="http://lauraskelton.github.io/images/posts/wk7-boothpic.jpg" title="'Photo Booth Pic'" ></p>
+
+<p>The iPad saves the photo, crops and filters it, and displays it on the external display to the user, while simultaneously uploading it to the Block Party server. My iPod is connected to the same Block Party event as the photo booth, and when a new photo is uploaded to the server, the iPod downloads it and adds it to the slideshow of all the photos from the night that it is playing on an external projector display at the party.</p>
+
+<p>I spent several hours building a new enclosure for the photo booth, set it up at the party, and it was a huge hit! I also built a small enclosure for a second photo booth that was set up with an iPod using its built-in camera to take photos with my ASCII-art filter, which we projected on a large wall throughout the party.</p>
+
+<p><img class="center" src="http://lauraskelton.github.io/images/posts/wk7-asciibooth.jpg" title="'ASCII Booth Pic'" ></p>
+
+<p>There were some AMAZING projects that people pulled together for the event. Georgi worked on turning the quadcopter into a party drone, to capture the event from above.</p>
+
+<p><img class="center" src="http://lauraskelton.github.io/images/posts/wk7-partydrone.jpg" title="'Party Drone'" ></p>
+
+<p>Puneeth and Kyle made this beautiful LED sound-reactive equalizer display with help and LED supplies from Dana which added some radness to the dance floor.</p>
+
+<p><img class="center" src="http://lauraskelton.github.io/images/posts/wk7-ledequalizer.jpg" title="'LED Equalizer'" ></p>
+
+<p>Nick ran LED light strips all along the windows of the front of the space, and had them pulse with the music he DJ&rsquo;d all night using a neat trick of using the audio line&rsquo;s voltage variation to directly alter the brightness of the LED string lights.</p>
+
+<p><img class="center" src="http://lauraskelton.github.io/images/posts/wk7-hopperlights.jpg" title="'LED Hopper Lights'" ></p>
+
+<p>This project was hilarious due to the late-night whiteboarding and discussion of how the problem of how to place the light strings around the window squares to have full coverage with minimal overlap was an <a href="http://en.wikipedia.org/wiki/NP-complete">NP-complete problem</a> similar to the <a href="http://en.wikipedia.org/wiki/Travelling_salesman_problem">Travelling Salesman problem</a>. It was a very Hacker School approach to party decor.</p>
+
+<p><img class="center" src="http://lauraskelton.github.io/images/posts/wk7-npcomplete.jpg" title="'NP Complete Lights'" ></p>
+
+<p>Travis McDemus brought a super cool drum that reacted to drum-hits by shooting LED lights up and down the sides. It was a huge hit with everyone, and it was especially cool how the lights changed color with every drum hit.</p>
+
+<p><img class="center" src="http://lauraskelton.github.io/images/posts/wk7-drum.jpg" title="'LED Drum'" ></p>
+
+<p>There were even more cool projects going on throughout the party. It was such a blast! It was great that so many Hacker School alumni came out that night. It was so much fun having projects we had worked on that were shared and enjoyed for the whole evening, and I hope we set a precedent for future Hacker School batches to do their own open house parties with fun projects to showcase.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Hacker School Week 6: Modular Application Design and Swift in the Terminal]]></title>
@@ -2171,65 +2224,6 @@
 <p>We&rsquo;re planning to link the mesh network up with a hardware project using the programmable RGB LED lights from Adafruit to represent the users of the network. I thought it would be cool to make a sort of giant firefly jar with light-dots flying around inside, with one dot representing each user-node of the mesh network. The ObjC iOS app would allow users to join the network and then set their dot&rsquo;s color, which would be reflected in the physical firefly jar.</p>
 
 <p>We found a source for an affordable Bluetooth LE adapter for the Arduino and mapped out a plan for how to design the network on the whiteboard. Excited to give it a go tomorrow!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Hacker School Day 1: Swift Tricks]]></title>
-    <link href="http://lauraskelton.github.io/blog/2014/06/10/hacker-school-day-1/"/>
-    <updated>2014-06-10T14:25:15-04:00</updated>
-    <id>http://lauraskelton.github.io/blog/2014/06/10/hacker-school-day-1</id>
-    <content type="html"><![CDATA[<p>Things got much more tricky when I started trying to implement <a href="https://github.com/lauraskelton/simple-share">SimpleShare</a>, my Bluetooth LE (CoreBluetooth) mesh network sharing app, in Swift, using the new Multipeer Connectivity framework instead of Bluetooth. There were much more complicated things I needed to do in Obj-C, and the app couldn&rsquo;t be &ldquo;translated&rdquo; in the same way as the simpler apps just by changing to the new syntax, since Swift actually works differently in key ways than Obj-C does.</p>
-
-<p>Things I learned about Swift:</p>
-
-<ul>
-<li>Optional variables: You can no longer have variables that aren&rsquo;t set or that are nil like you could in Obj-C. If you don&rsquo;t know what a variable is when the class is created, you have to make it an optional variable by putting a <code>?</code> after the type declaration.</li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">class</span> <span class="n">MyClass</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">var</span> <span class="nl">mystring:</span> <span class="n">String</span><span class="o">?</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li><p>Global variables: It seems that any variables you set within a class but outside of a function act like public parameters for that class and are accessible to read or set from other classes</p></li>
-<li><p>Calling functions from another class: You call a function from another class by writing the class name followed by a dot then the function name with its arguments, eg: <code>MyClass.someFunction(arg1,arg2)</code></p></li>
-<li><p>Init functions are a special case: Instead of calling <code>MyClass.init(arg1,arg2)</code> like you would for any other function, just calling <code>MyClass(arg1,arg2)</code>
-is how you can init an instance of a class.</p></li>
-<li><p>Convenience init: If your init function requires arguments to create a class instance, you can create a second init method for convenience that creates an instance with default values.</p></li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">class</span> <span class="n">SimpleMesh</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">init</span><span class="p">(</span><span class="nl">simpleMeshAppID:</span> <span class="n">String</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="n">self</span><span class="p">.</span><span class="n">simpleMeshAppID</span> <span class="o">=</span> <span class="n">simpleMeshAppID</span>
-</span><span class='line'>        <span class="n">self</span><span class="p">.</span><span class="n">myItemIDs</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;first&quot;</span><span class="p">,</span> <span class="s">&quot;second&quot;</span><span class="p">,</span> <span class="s">&quot;third&quot;</span><span class="p">,</span> <span class="s">&quot;fourth&quot;</span><span class="p">,</span> <span class="s">&quot;fifth&quot;</span><span class="p">]</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="n">convenience</span> <span class="n">init</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>        <span class="n">self</span><span class="p">.</span><span class="n">init</span><span class="p">(</span><span class="nl">simpleMeshAppID:</span> <span class="s">&quot;[NO ID]&quot;</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>In the afternoon, I made a plan with Jorge and Kyle to work on a mesh networking inspector to figure out the limitations of Multipeer Connectivity so that we can build a stable mesh networking messaging app. We decided to move forward on the project in Objective-C while continuing to learn Swift on the side so we can finish more quickly.</p>
 ]]></content>
   </entry>
   
