@@ -4,7 +4,7 @@
   <title><![CDATA[Hacker School Daily Log]]></title>
   <link href="http://lauraskelton.github.io/atom.xml" rel="self"/>
   <link href="http://lauraskelton.github.io/"/>
-  <updated>2014-07-15T12:26:48-04:00</updated>
+  <updated>2014-07-30T14:33:38-04:00</updated>
   <id>http://lauraskelton.github.io/</id>
   <author>
     <name><![CDATA[Laura Skelton]]></name>
@@ -12,6 +12,231 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Hacker School Week 6: Modular Application Design and Swift in the Terminal]]></title>
+    <link href="http://lauraskelton.github.io/blog/2014/07/19/hacker-school-week-6/"/>
+    <updated>2014-07-19T12:34:20-04:00</updated>
+    <id>http://lauraskelton.github.io/blog/2014/07/19/hacker-school-week-6</id>
+    <content type="html"><![CDATA[<p>This week I worked on fleshing out my rewrite of BeerChooser, my first iPhone app from 2010. I had written a Beer List module last week, and I realized that I could use several instances of this same module for each of the tabs in my beer app, instead of the similar-but-separate view controllers of my original app. This fits well with my goal of making bug-discouraging, maintainable code using a more modular architecture than is usually used in iOS development.</p>
+
+<p>I realized that the only things that were different in each tab in my beer app were the title, the tab image, and the data source for the list of beers, and that I could create something that would allow me to change only these settings for each instance of the beer list module.</p>
+
+<p>At first, I used an enum for the different tab settings.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">//  PageTypeDef.h</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">typedef</span> <span class="nf">NS_ENUM</span><span class="p">(</span><span class="n">NSInteger</span><span class="p">,</span> <span class="n">PageType</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">firstPage</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+</span><span class='line'>    <span class="n">PAGE_NEARBY</span> <span class="o">=</span> <span class="n">firstPage</span><span class="p">,</span>
+</span><span class='line'>    <span class="n">PAGE_RATINGS</span><span class="p">,</span>
+</span><span class='line'>    <span class="n">PAGE_POPULAR</span><span class="p">,</span>
+</span><span class='line'>    <span class="n">PAGE_SUGGESTIONS</span><span class="p">,</span>
+</span><span class='line'>    <span class="n">lastPage</span> <span class="o">=</span> <span class="n">PAGE_SUGGESTIONS</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This worked, and took advantage of reusing the module code like I wanted (which eliminates the bugs you can get from having to copy a change over to nearly-identical code in another class), but it was not a very object-oriented programming way of doing things, and it created work and bug-possibilities due to all of the switch statements it needed for managing the different property settings for each enum type.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">+</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nf">sectionTitleForType:</span><span class="p">(</span><span class="n">PageType</span><span class="p">)</span><span class="nv">pageType</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">switch</span> <span class="p">(</span><span class="n">pageType</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">case</span> <span class="nl">PAGE_NEARBY:</span>
+</span><span class='line'>            <span class="k">return</span> <span class="s">@&quot;Nearby Beers&quot;</span><span class="p">;</span>
+</span><span class='line'>            <span class="k">break</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">case</span> <span class="nl">PAGE_POPULAR:</span>
+</span><span class='line'>            <span class="k">return</span> <span class="s">@&quot;Popular Beers&quot;</span><span class="p">;</span>
+</span><span class='line'>            <span class="k">break</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">case</span> <span class="nl">PAGE_RATINGS:</span>
+</span><span class='line'>            <span class="k">return</span> <span class="s">@&quot;Your Ratings&quot;</span><span class="p">;</span>
+</span><span class='line'>            <span class="k">break</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">case</span> <span class="nl">PAGE_SUGGESTIONS:</span>
+</span><span class='line'>            <span class="k">return</span> <span class="s">@&quot;Beers to Try&quot;</span><span class="p">;</span>
+</span><span class='line'>            <span class="k">break</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">default</span><span class="o">:</span>
+</span><span class='line'>            <span class="k">break</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>After talking through some of the problems with this solution, I had the idea of using a Property List to define the particulars of each tab, and the loading the .plist into a class and pulling out the dictionary keys of each tab to define the settings for that Beer List module instance.</p>
+
+<p><img class="center" src="http://lauraskelton.github.io/images/posts/wk6-pagetypes.jpg" title="'Page Types Plist'" ></p>
+
+<p>This greatly simplified the code for defining the properties of a Beer List instance, and makes it incredibly easy to update and maintain, with a low likelihood of introducing bugs through editing page titles. To reorder the tabs, I just drag that tab&rsquo;s dictionary to a different position in the Property List array, and the tabs reorder themselves to match.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nf">pageTitle</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">plist</span><span class="p">[</span><span class="n">PageTitleKey</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nf">tabTitle</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">plist</span><span class="p">[</span><span class="n">TabTitleKey</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nf">tabImageName</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">plist</span><span class="p">[</span><span class="n">TabImageKey</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nf">apiLink</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">plist</span><span class="p">[</span><span class="n">APILinkKey</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nf">indexKey</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">plist</span><span class="p">[</span><span class="n">IndexNameKey</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I figured out a sensible way to add a network API manager within the framework of the VIPER software architecture model. In order to keep network separated from the rest of my application code, I created a network API manager in a similar way to the local data store manager.</p>
+
+<p>There&rsquo;s a base API manager class for the entire application, which is the only class that actually talks to the server and knows that I&rsquo;m using the <a href="http://afnetworking.com">AFNetworking</a> framework to manage server requests. This is awesome because if I decide to use another framework, I only have to worry about updating one file. This same file loads in my secret Configuration variables (like my OAuth Client ID and Client Secret, which are cleverly hidden from my public GitHub repository using <a href="http://blog.lazerwalker.com/blog/2014/05/14/handling-private-api-keys-in-open-source-ios-apps/">this technique Mike Walker shared with me</a>), and remembers the base URL of my server. It knows how to send a general <code>POST</code> request to the server, and adds the authentication parameters to the request it&rsquo;s told to send.</p>
+
+<p>Then, each module has its own API manager that&rsquo;s in charge of talking to the base API manager, which calls the API link for the instance, and manages saving the beers with the proper index for that instance.</p>
+
+<p>I&rsquo;ve found that using a more robust, maintainable architecture in my application has slowed down my development a bit, as for each feature I add (such as communicating with an API), I have to stop and think about the smartest way to implement that feature to keep to the goal of modular code with different aspects kept separated. The plus side is that it seems to just work in a way that Massive View Controller-style programming often does not, so some of the initial design time is saved in much less debugging time. Plus, as soon as you need to make a change (to the view layout, to the data store, etc), the time saved by having those aspects of the code in their own isolated files more than makes up for the initial time invested in separating these functions intelligently.</p>
+
+<p>On Friday, I worked with <a href="https://github.com/thomasballinger">Tom</a> on <a href="https://code.google.com/codejam/contest/351101/dashboard">Google&rsquo;s Store Credit challenge</a> in Swift.</p>
+
+<p>The problem:</p>
+
+<blockquote><p>You receive a credit C at a local store and would like to buy two items. You first walk through the store and create a list L of all available items. From this list you would like to buy two items that add up to the entire value of the credit. The solution you provide will consist of the two integers indicating the positions of the items in your list (smaller number first).</p></blockquote>
+
+<p>We spent a good amount of time figuring out how to use Swift to run in the terminal instead of how it would typically be used in Xcode as a file within an app project target. We were successful with this, and figured out not only how to read in text from a file on the local filesystem and output our answer to another local text file, but were successful in calling a Swift file to run in the terminal.</p>
+
+<p>Running in the terminal:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="o">/</span><span class="n">Applications</span><span class="o">/</span><span class="n">Xcode6</span><span class="o">-</span><span class="n">Beta3</span><span class="p">.</span><span class="n">app</span><span class="o">/</span><span class="n">Contents</span><span class="o">/</span><span class="n">Developer</span><span class="o">/</span><span class="n">Toolchains</span><span class="o">/</span><span class="n">XcodeDefault</span><span class="p">.</span><span class="n">xctoolchain</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">swift</span> <span class="o">-</span><span class="n">i</span> <span class="n">StoreCredit</span><span class="p">.</span><span class="n">swift</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Reading and writing text:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">//reading</span>
+</span><span class='line'><span class="n">var</span> <span class="n">text</span> <span class="o">:</span> <span class="n">String</span><span class="o">!</span> <span class="o">=</span> <span class="n">String</span><span class="p">.</span><span class="n">stringWithContentsOfFile</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="nl">encoding:</span> <span class="n">NSUTF8StringEncoding</span><span class="p">,</span> <span class="nl">error:</span> <span class="nb">nil</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//writing</span>
+</span><span class='line'><span class="n">outputString</span><span class="p">.</span><span class="n">writeToFile</span><span class="p">(</span><span class="n">pathAnswer</span><span class="p">,</span> <span class="nl">atomically:</span> <span class="n">false</span><span class="p">,</span> <span class="nl">encoding:</span> <span class="n">NSUTF8StringEncoding</span><span class="p">,</span> <span class="nl">error:</span> <span class="nb">nil</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This is great, because for larger computations like this, Swift Playgrounds will crash, or run so slowly that they never find an answer.</p>
+
+<p>The <a href="https://github.com/lauraskelton/friday-exercises/blob/master/StoreCredit.swift">coding challenge itself</a> was a lot of fun. We created a dictionary that, for each item we found, stored its cost as a key in a dictionary, with the value being an array of each position in the original list of items where the item was found.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">func</span> <span class="n">findMatches</span><span class="p">(</span><span class="nl">items:</span><span class="p">[</span><span class="n">NSInteger</span><span class="p">],</span> <span class="nl">keysDictionary:</span><span class="p">[</span><span class="nl">NSInteger:</span> <span class="p">[</span><span class="n">Int</span><span class="p">]],</span> <span class="nl">credit:</span> <span class="n">NSInteger</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">Int</span><span class="p">,</span> <span class="n">Int</span><span class="p">)</span><span class="o">?</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">for</span> <span class="n">anItem</span> <span class="k">in</span> <span class="n">items</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">let</span> <span class="n">pairMatch</span> <span class="o">:</span> <span class="n">NSInteger</span> <span class="o">=</span> <span class="n">credit</span> <span class="o">-</span> <span class="n">anItem</span>
+</span><span class='line'>        <span class="k">if</span> <span class="n">let</span> <span class="n">pairMatchPositions</span> <span class="o">=</span> <span class="n">keysDictionary</span><span class="p">[</span><span class="n">pairMatch</span><span class="p">]</span> <span class="p">{</span>
+</span><span class='line'>            <span class="c1">// found a match</span>
+</span><span class='line'>            <span class="k">if</span> <span class="n">pairMatch</span> <span class="o">==</span> <span class="n">anItem</span> <span class="p">{</span>
+</span><span class='line'>                <span class="k">if</span> <span class="n">pairMatchPositions</span><span class="p">.</span><span class="n">count</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="p">{</span>
+</span><span class='line'>                    <span class="k">continue</span>
+</span><span class='line'>                <span class="p">}</span>
+</span><span class='line'>                <span class="k">return</span> <span class="p">(</span><span class="n">pairMatchPositions</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pairMatchPositions</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>            <span class="k">return</span> <span class="p">(</span><span class="n">keysDictionary</span><span class="p">[</span><span class="n">anItem</span><span class="p">]</span><span class="o">!</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pairMatchPositions</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nb">nil</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This solved the problem we initially ran into with repeated items being the answer, when we were using a dictionary with the keys being items, and the values being the (single) position where we found that item.</p>
+
+<p>Every time we added a new item to the dictionary, we looked to see if the difference between that item and the store credit had been previously stored in the dictionary. If it was there, then we had our pair of items that we could buy with the store credit.</p>
+
+<p>This was a TON of fun. I especially enjoyed starting off whiteboarding the problem, and discussing how various solutions would change if the constraints of the problem changed slightly, and then moving on to more individual coding solutions to the problem. I&rsquo;m hoping to spend a lot more time doing fun challenges like this in the coming weeks!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Hacker School Week 5: VIPER iOS Architecture and Recursion]]></title>
@@ -2005,73 +2230,6 @@ is how you can init an instance of a class.</p></li>
 
 
 <p>In the afternoon, I made a plan with Jorge and Kyle to work on a mesh networking inspector to figure out the limitations of Multipeer Connectivity so that we can build a stable mesh networking messaging app. We decided to move forward on the project in Objective-C while continuing to learn Swift on the side so we can finish more quickly.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Hacker School Day 0: Swift Playgrounds]]></title>
-    <link href="http://lauraskelton.github.io/blog/2014/06/09/hacker-school-day-0/"/>
-    <updated>2014-06-09T13:37:53-04:00</updated>
-    <id>http://lauraskelton.github.io/blog/2014/06/09/hacker-school-day-0</id>
-    <content type="html"><![CDATA[<p>First day of Hacker School! It was amazing to meet so many people who shared interests and had new ideas about programming.</p>
-
-<p>I had planned to get to work on Machine Learning and getting comfortable with neural networks, but since the announcement of the new Swift language for iOS, there was a lot of interest in diving into learning that.</p>
-
-<p>I learned about algebraic data structures from some other Hacker Schoolers over lunch, which was cool. I could see the recursive tree structure being a useful way to set up a decision tree in another language and will have to learn more about whether the data structures available in some other programming languages would make the machine learning algorithms possible to be coded in a more obvious, intuitive way than they are generally set up in Python.</p>
-
-<p>I got together with a group in the afternoon to learn about Swift and the new Playgrounds Apple introduced in XCode 6. Playgrounds are cool because you can copy a snippet of code you&rsquo;re working on and see how the variables are being set and the values are changing over time as it runs through a loop.</p>
-
-<p>I paired with Denise on getting some Swift code working. We figured out the brand-new syntax for hooking up variables to Storyboard outlets so we could generate a simple app with a button and some labels that changed text. We learned that every variable in Swift is public, as opposed to Obj-C which lets you set only certain parameters to be accessible from other classes. Once we got things going, the syntax seems much simpler and faster than all of the boilerplate code you have to write to do the same things in Obj-C.</p>
-
-<p>Later in the afternoon I worked on copying some simple demo apps I&rsquo;d written previously in Obj-C into Swift so I could get more comfortable with the new syntax. Translating the very basic apps was relatively straightforward.</p>
-
-<p>Coolest thing from Day 0:
-Emoji as variable and function names in Swift! Cutest language ever?</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">import</span> <span class="n">UIKit</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">class</span> <span class="nl">MyViewController:</span> <span class="n">UIViewController</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="err">@</span><span class="kt">IBOutlet</span> <span class="n">var</span> <span class="err">🐶</span><span class="o">:</span> <span class="n">UILabel</span>
-</span><span class='line'>    <span class="n">var</span> <span class="err">😻</span> <span class="o">=</span> <span class="s">&quot;🐶🐷🐹🐰🐱&quot;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="err">@</span><span class="kt">IBOutlet</span> <span class="n">var</span> <span class="err">🐹</span><span class="o">:</span> <span class="n">UIButton</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">override</span> <span class="n">func</span> <span class="n">viewDidLoad</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>        <span class="n">super</span><span class="p">.</span><span class="n">viewDidLoad</span><span class="p">()</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="err">🐶</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="err">😻</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="err">@</span><span class="kt">IBAction</span> <span class="n">func</span> <span class="err">🐭</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>        <span class="err">🐶</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="s">&quot;🐰🐯🐵🐮🐨&quot;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
 ]]></content>
   </entry>
   
