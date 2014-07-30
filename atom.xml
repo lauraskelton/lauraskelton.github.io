@@ -4,7 +4,7 @@
   <title><![CDATA[Hacker School Log]]></title>
   <link href="http://lauraskelton.github.io/atom.xml" rel="self"/>
   <link href="http://lauraskelton.github.io/"/>
-  <updated>2014-07-30T15:59:14-04:00</updated>
+  <updated>2014-07-30T16:28:16-04:00</updated>
   <id>http://lauraskelton.github.io/</id>
   <author>
     <name><![CDATA[Laura Skelton]]></name>
@@ -38,9 +38,11 @@
 
 <p>The iPad saves the photo, crops and filters it, and displays it on the external display to the user, while simultaneously uploading it to the Block Party server. My iPod is connected to the same Block Party event as the photo booth, and when a new photo is uploaded to the server, the iPod downloads it and adds it to the slideshow of all the photos from the night that it is playing on an external projector display at the party.</p>
 
+<p><img class="center" src="http://lauraskelton.github.io/images/posts/wk7-asciibooth.jpg" title="'ASCII Booth Pic'" ></p>
+
 <p>I spent several hours building a new enclosure for the photo booth, set it up at the party, and it was a huge hit! I also built a small enclosure for a second photo booth that was set up with an iPod using its built-in camera to take photos with my ASCII-art filter, which we projected on a large wall throughout the party.</p>
 
-<p><img class="center" src="http://lauraskelton.github.io/images/posts/wk7-asciibooth.jpg" title="'ASCII Booth Pic'" ></p>
+<p><img class="center" src="http://lauraskelton.github.io/images/posts/wk7-asciiwall.jpg" title="'ASCII Wall'" ></p>
 
 <p>There were some AMAZING projects that people pulled together for the event. <a href="https://github.com/georgicodes">Georgi</a> worked on turning the quadcopter into a party drone, to capture the event from above.</p>
 
@@ -54,6 +56,9 @@
 
 <p><img class="center" src="http://lauraskelton.github.io/images/posts/wk7-hopperlights.jpg" title="'LED Hopper Lights'" ></p>
 
+<iframe src="//player.vimeo.com/video/102166046" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+
+
 <p>This project was hilarious due to the late-night whiteboarding and discussion of how the problem of how to place the light strings around the window squares to have full coverage with minimal overlap was an <a href="http://en.wikipedia.org/wiki/NP-complete">NP-complete problem</a> similar to the <a href="http://en.wikipedia.org/wiki/Travelling_salesman_problem">Travelling Salesman problem</a>. It was a very Hacker School approach to party decor.</p>
 
 <p><img class="center" src="http://lauraskelton.github.io/images/posts/wk7-npcomplete.jpg" title="'NP Complete Lights'" ></p>
@@ -62,7 +67,11 @@
 
 <p><img class="center" src="http://lauraskelton.github.io/images/posts/wk7-drum.jpg" title="'LED Drum'" ></p>
 
-<p>There were even more cool projects going on throughout the party, including some beautiful LED strip installations that <a href="https://github.com/danasf">Dana</a> made with some other Hacker Schoolers that were programmable via Bluetooth LE. It was such a blast! It was great that so many Hacker School alumni came out that night. It was so much fun having projects we had worked on that were shared and enjoyed for the whole evening, and I hope we set a precedent for future Hacker School batches to do their own open house parties with fun projects to showcase.</p>
+<p>There were even more cool projects going on throughout the party, including some beautiful LED strip installations that <a href="https://github.com/danasf">Dana</a> made with some other Hacker Schoolers that were programmable via Bluetooth LE.</p>
+
+<p><img class="center" src="http://lauraskelton.github.io/images/posts/wk7-ledparty.jpg" title="'LED Party Lights'" ></p>
+
+<p>It was such a blast! It was great that so many Hacker School alumni came out that night. It was so much fun having projects we had worked on that were shared and enjoyed for the whole evening, and I hope we set a precedent for future Hacker School batches to do their own open house parties with fun projects to showcase.</p>
 
 <p>Thanks to <a href="https://twitter.com/itwasntandy">Andrew</a> for documenting the party so beautifully!</p>
 ]]></content>
